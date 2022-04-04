@@ -1,0 +1,380 @@
+@page "/visitor/employees"
+
+@using CleanArchitecture.Blazor.Application.Features.KeyValues.DTOs
+@using CleanArchitecture.Blazor.Application.Features.KeyValues.Queries.ByName
+@using CleanArchitecture.Blazor.Application.Features.Employees.Commands.Delete
+@using CleanArchitecture.Blazor.Application.Features.Employees.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Employees.Queries.Pagination
+@using CleanArchitecture.Blazor.Application.Features.Employees.Commands.AddEdit
+
+@inject IJSRuntime JS
+@inject IStringLocalizer<Employees> L
+@attribute [Authorize(Policy = Permissions.Employees.View)]
+<PageTitle>@Title</PageTitle>
+<style>
+    .mud-table-toolbar {
+        height: 84px !important;
+    }
+</style>
+<ErrorBoundary>
+    <ChildContent>
+        <AdvancedSearchEmployeesComponent TRequest="query" OnFilterChanged="OnFilterChanged"></AdvancedSearchEmployeesComponent>
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<EmployeeDto>>>(ServerReload))"
+                  FixedHeader="true"
+                  FixedFooter="true"
+                  Height="calc(100vh - 265px)"
+                  Loading="@_loading"
+                  SortLabel="@L["Sort By"]"
+                  MultiSelection="true" @bind-SelectedItems="_selectedItems"
+                  Hover="true" @ref="_table">
+            <ToolBarContent>
+                <div class="justify-start pt-3">
+                    <MudText Typo="Typo.h6">@L["Employees"]</MudText>
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                        <MudButton DisableElevation Variant="Variant.Outlined"
+                                   Size="Size.Small"
+                                   Disabled="@_loading"
+                                   OnClick="@(()=>OnRefresh())"
+                                   StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Primary"
+                                   Style="margin-right: 4px; margin-bottom:4px">@L["Refresh"]</MudButton>
+                        @if (_canCreate)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Add"
+                                   Disabled="@_loading"
+                                   Size="Size.Small"
+                                   OnClick="OnCreate"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   IconColor="Color.Surface">@L["Create"]</MudButton>
+                        }
+                        @if (_canDelete)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Delete"
+                                   Disabled="@(!(_selectedItems.Count>0))"
+                                   Size="Size.Small"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   OnClick="OnDeleteChecked"
+                                   IconColor="Color.Surface">@L["Delete"]</MudButton>
+                        }
+                        @if (_canImport)
+                        {
+                            <MudButton Disabled="@_uploading" DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Upload"
+                                   Size="Size.Small"
+                                   Style="margin-right:1px; margin-bottom:4px"
+                                   for="importdataInput"
+                                   HtmlTag="label"
+                                   IconColor="Color.Surface">
+                                @if (_uploading)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                    <MudText Class="ms-2"> @L["Uploading..."]</MudText>
+                                }
+                                else
+                                {
+                                    <MudText>@L["Import Data"]</MudText>
+                                }
+
+                            </MudButton>
+                            <InputFile id="importdataInput" OnChange="OnImportData" hidden accept=".xlsx" />
+                        }
+                        @if (_canExport)
+                        {
+                            <MudButton Disabled="@_downloading" DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Download"
+                                   Size="Size.Small"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   OnClick="OnExport"
+                                   IconColor="Color.Surface">
+                                @if (_downloading)
+                                {
+                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true" />
+                                    <MudText Class="ms-2"> @L["Downloading..."]</MudText>
+                                }
+                                else
+                                {
+                                    <MudText>@L["Export Data"]</MudText>
+                                }
+                            </MudButton>
+                        }
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                        <MudMenu AnchorOrigin="Origin.BottomLeft" StartIcon="@Icons.Filled.KeyboardCommandKey" EndIcon="@Icons.Filled.KeyboardArrowDown" Label="@L["Action"]" Color="Color.Primary" Variant="Variant.Filled">
+                            <MudMenuItem Disabled="@_loading" OnClick="@(()=>OnRefresh())">@L["Refresh"]</MudMenuItem>
+                            @if (_canCreate)
+                            {
+                                <MudMenuItem Disabled="@_loading" OnClick="OnCreate">@L["Create"]</MudMenuItem>
+                            }
+                            @if (_canDelete)
+                            {
+                                <MudMenuItem OnClick="OnDeleteChecked">@L["Delete"]</MudMenuItem>
+                            }
+                            @if (_canImport)
+                            {
+                                <InputFile id="importdataInput" OnChange="OnImportData" hidden accept=".xlsx" />
+                                <MudMenuItem for="importdataInput"
+                                         HtmlTag="label">@L["Import Data"]</MudMenuItem>
+                            }
+                            @if (_canExport)
+                            {
+                                <MudMenuItem OnClick="OnExport">@L["Export Data"]</MudMenuItem>
+                            }
+                        </MudMenu>
+                    </MudHidden>
+                </div>
+                <MudSpacer />
+                <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Value="@_searchString" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <ColGroup>
+                <col style="width:50px;" />
+                <col style="width:120px;" />
+                <col style="width:100px;" />
+            </ColGroup>
+            <HeaderContent>
+                <MudTh Style="width:80px">@L["Actions"]</MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Avatar" T="EmployeeDto">@L["Avatar"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Name" T="EmployeeDto">@L["Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="DepartmentId" T="EmployeeDto">@L["Department"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Email" T="EmployeeDto">@L["Email"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="EmployeeDto">@L["Phone Number"]</MudTableSortLabel></MudTh>
+
+
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="@L["Actions"]">
+                    @if (_canEdit || _canDelete)
+                    {
+                        <MudMenu Label="@L["Actions"]" Variant="Variant.Filled" DisableElevation="true" Size="Size.Small"
+                             Dense="true"
+                             EndIcon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Info" Direction="Direction.Left"
+                             OffsetX="true">
+                            @if (_canEdit)
+                            {
+                                <MudMenuItem OnClick="@(()=>OnEdit(context))">@L["Edit"]</MudMenuItem>
+                            }
+                            @if (_canDelete)
+                            {
+                                <MudMenuItem OnClick="@(()=>OnDelete(context))">@L["Delete"]</MudMenuItem>
+                            }
+                        </MudMenu>
+                    }
+                    else
+                    {
+                        <MudButton Variant="Variant.Filled" DisableElevation="true"
+                               StartIcon="@Icons.Material.Filled.DoNotTouch" IconColor="Color.Secondary" Size="Size.Small"
+                               Color="Color.Surface">
+                            @L["No Allowed"]
+                        </MudButton>
+                    }
+                </MudTd>
+                <MudTd HideSmall="true" DataLabel="@L["Avatar"]">
+                    @if (string.IsNullOrEmpty(context.Avatar))
+                        {
+               
+                                <MudAvatar Style="height:48px; width:48px; font-size:2rem;">@context.Name?.First()</MudAvatar>
+                        
+                        }
+                        else
+                        {
+                     
+                                <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
+                          
+                        }
+                </MudTd>
+                <MudTd DataLabel="@L["Name"]">
+                    <MudText>@context.Name</MudText>
+                    <MudText Typo="Typo.body2">@context.Designation</MudText>
+                </MudTd>
+                <MudTd DataLabel="@L["Department"]">@context.Department</MudTd>
+                <MudTd DataLabel="@L["Email"]">@context.Email</MudTd>
+                <MudTd DataLabel="@L["Phone Number"]">@context.PhoneNumber</MudTd>
+            </RowTemplate>
+            <NoRecordsContent>
+                <MudText>@L["No matching records found"]</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>@L["Loading.."].</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    public string? Title { get; private set; }
+    private HashSet<EmployeeDto> _selectedItems = new HashSet<EmployeeDto>();
+    private MudTable<EmployeeDto> _table = default!;
+    private int _totalItems;
+    private string _searchString = string.Empty;
+    private bool _loading;
+    private bool _uploading;
+    private bool _downloading;
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    private IEnumerable<KeyValueDto> _datasource = default!;
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+    private EmployeesWithPaginationQuery query { get; set; } = new();
+
+    private bool _canSearch;
+    private bool _canCreate;
+    private bool _canEdit;
+    private bool _canDelete;
+    private bool _canImport;
+    private bool _canExport;
+    protected override async Task OnInitializedAsync()
+    {
+        Title = L["Employees"];
+        var state = await AuthState;
+        _canCreate = (await AuthService.AuthorizeAsync(state.User, Permissions.Employees.Create)).Succeeded;
+        _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.Employees.Search)).Succeeded;
+        _canEdit = (await AuthService.AuthorizeAsync(state.User, Permissions.Employees.Edit)).Succeeded;
+        _canDelete = (await AuthService.AuthorizeAsync(state.User, Permissions.Employees.Delete)).Succeeded;
+        _canImport = false;
+        _canExport = false;
+
+    }
+    private async Task<TableData<EmployeeDto>> ServerReload(TableState state)
+    {
+        try
+        {
+            _loading = true;
+            query.Keyword = _searchString;
+            query.OrderBy = string.IsNullOrEmpty(state.SortLabel) ? "Id" : state.SortLabel;
+            query.SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString());
+            query.PageNumber = state.Page + 1;
+            query.PageSize = state.PageSize;
+            var result = await _mediator.Send(query);
+            return new TableData<EmployeeDto>() { TotalItems = result.TotalItems, Items = result.Items };
+        }
+        finally
+        {
+            _loading = false;
+        }
+
+    }
+    private void OnFilterChanged(string s)
+    {
+        InvokeAsync(async () =>
+        {
+            await _table.ReloadServerData();
+        });
+    }
+    private async Task OnSearch(string text)
+    {
+        _selectedItems = new();
+        _searchString = text;
+        await _table.ReloadServerData();
+    }
+    private async Task OnRefresh()
+    {
+        _selectedItems = new();
+        _searchString = string.Empty;
+        await _table.ReloadServerData();
+    }
+    private async Task OnCreate()
+    {
+        var command = new AddEditEmployeeCommand();
+        var parameters = new DialogParameters
+            {
+        { nameof(_EmployeeFormDialog.model),command },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = DialogService.Show<_EmployeeFormDialog>
+        (L["Create a new Employee"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var result = await _mediator.Send(command);
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Create successfully"]}", MudBlazor.Severity.Info);
+        }
+    }
+    private async Task OnEdit(EmployeeDto dto)
+    {
+        var command = new AddEditEmployeeCommand()
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Email = dto.Email,
+                About = dto.About,
+                Avatar = dto.Avatar,
+                DepartmentId = dto.DepartmentId,
+                DesignationId = dto.DesignationId,
+                Gender = dto.Gender,
+                PhoneNumber = dto.PhoneNumber
+
+            };
+        var parameters = new DialogParameters
+                {
+            { nameof(_EmployeeFormDialog.model),command },
+                };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = DialogService.Show<_EmployeeFormDialog>
+        (L["Edit the Employee"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var result = await _mediator.Send(command);
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Save successfully"]}", MudBlazor.Severity.Info);
+        }
+    }
+
+    private async Task OnDelete(EmployeeDto dto)
+    {
+        var deleteContent = L["You're sure you want to delete the Employee:{0}?"];
+        var parameters = new DialogParameters
+                    {
+                { nameof(DeleteConfirmation.ContentText), string.Format(deleteContent, dto.Name) }
+                    };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true, DisableBackdropClick = true };
+        var dialog = DialogService.Show<DeleteConfirmation>
+        (L["Delete"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var command = new DeleteEmployeeCommand(new int[] { dto.Id });
+            var result = await _mediator.Send(command);
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Deleted successfully"]}", MudBlazor.Severity.Info);
+        }
+    }
+
+    private async Task OnDeleteChecked()
+    {
+        var deleteContent = L["You're sure you want to delete the selected items:{0}?"];
+        var parameters = new DialogParameters
+                        {
+                    { nameof(DeleteConfirmation.ContentText), string.Format(deleteContent,_selectedItems.Count) }
+                        };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, DisableBackdropClick = true };
+        var dialog = DialogService.Show<DeleteConfirmation>
+        (L["Delete"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var command = new DeleteEmployeeCommand(_selectedItems.Select(x => x.Id).ToArray());
+            var result = await _mediator.Send(command);
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Deleted successfully"]}", MudBlazor.Severity.Info);
+            _selectedItems = new HashSet<EmployeeDto>
+            ();
+        }
+    }
+    private void OnExport()
+    {
+
+    }
+    private void OnImportData(InputFileChangeEventArgs e)
+    {
+
+    }
+    }

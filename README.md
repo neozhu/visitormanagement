@@ -1,2 +1,32 @@
-# vsitormanagement
-helps in managing visitors visiting the institutions for various reasons. It allows visitors to check-in digitally to eliminate the tedious registeration and other paperwork. Additionally, it also keeps a track of every individual inside the campus and their timings. Institutions has guards who enter their detail in some notebooks to keep a log which are practically impossible to reconcile. It is really unpleasent and hectic for visitor to stand at the gate and give details about the visit. To ease the process of registeration, Entry-In, Entry-Out, time tracking and logging the history, this VMS can be of great use!! 
+# CleanArchitectureWithBlazorServer
+This is a repository for creating a  Blazor Server application following the principles of Clean Architecture
+## Live Demo
+-  Blazor Server mode: https://mudblazor-s.dotnet6.cn/
+-  (cloudflare accelerate): https://dashboard.i247365.net/
+## Screenshots and video
+[![Everything Is AWESOME](doc/main_screenshot.png)](https://www.youtube.com/embed/GyZJl_dG-Pg "Everything Is AWESOME")
+
+## Development Enviroment
+- Microsoft Visual Studio Community 2022 (64-bit) 
+- Docker
+- .NET 6.0
+## Code generation
+- CleanArchitectureCodeGenerator 
+- https://github.com/neozhu/CleanArchitectureCodeGenerator
+## Why develop with blazor server mode
+- Develop fast
+- Runing fast
+- Most simple
+
+## Characteristic
+- Clean principles
+- Simple principles
+- Easy to start with
+
+## About
+Coming up.
+
+
+
+## License
+Apache 2.0

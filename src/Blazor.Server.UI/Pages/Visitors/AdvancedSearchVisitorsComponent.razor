@@ -1,0 +1,86 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
+@inject IStringLocalizer<Visitors> L
+<MudExpansionPanel @bind-IsExpanded="_advancedSearchExpanded"
+                   Style="border-radius: var(--mud-default-borderradius) !important;"
+                   Class="mud-elevation-25 pa-2 mb-3" Text="@L["Advanced Search"]">
+    <MudGrid>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="TRequest.Name" 
+                          Placeholder="@L["Search for visitor's name"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="TRequest.LicensePlateNumber" 
+                          Placeholder="@L["Search for visitor's license plate number"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="TRequest.CompanyName" 
+                          Placeholder="@L["Search for visitor's company name"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6"  md="4">
+           <PicklistAutocomplete Picklist="Picklist.Purpose"
+                                Placeholder="@L["Search for visitor's purpose"]"
+                                TextChanged="OnSearchStringChanged"
+                                ResetValueOnEmptyText="true"
+                                @bind-Value="TRequest.Purpose"></PicklistAutocomplete>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="TRequest.Employee" 
+                          Placeholder="@L["Search for employee"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
+            <MudCheckBox T="Nullable<bool>" Value="TRequest.Approved"
+                          Label="@L["Search for approved"]"
+                          CheckedChanged="ApproveCheckedChange">
+            </MudCheckBox>
+        </MudItem>
+        <MudItem xs="12" sm="6"  md="4">
+           <MudDateRangePicker @ref="_picker1" Label="@L["Search for expected date"]" Clearable="true" DateRangeChanged="OnDateRangeChanged1">
+                <PickerActions>
+                    <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker1.Clear())">@L["Clear"]</MudButton>
+                    <MudButton OnClick="@(() => _picker1.Close(false))">@L["Cancel"]</MudButton>
+                    <MudButton Color="Color.Primary" OnClick="@(() => _picker1.Close())">@L["Ok"]</MudButton>
+                </PickerActions>
+            </MudDateRangePicker>
+        </MudItem>
+        
+    </MudGrid>
+</MudExpansionPanel>
+
+@code {
+    private MudDateRangePicker _picker1;
+    [EditorRequired][Parameter] public VisitorsWithPaginationQuery TRequest { get; set; } = default!;
+    [EditorRequired][Parameter] public EventCallback<string> OnFilterChanged { get; set; }
+    private bool _advancedSearchExpanded { get; set; }
+    private async Task OnSearchStringChanged(string str)
+    {
+        if (_advancedSearchExpanded)
+        {
+            await OnFilterChanged.InvokeAsync(str);
+        }
+    }
+    private async Task OnDateRangeChanged1(DateRange dateRange)
+    {
+        TRequest.ExpectedDate1 = dateRange?.Start;
+        TRequest.ExpectedDate2 = dateRange?.End;
+        if (_advancedSearchExpanded)
+        {
+            await OnFilterChanged.InvokeAsync(dateRange?.ToString());
+        }
+    }
+    private async Task ApproveCheckedChange(bool? s)
+    {
+        
+    }
+}

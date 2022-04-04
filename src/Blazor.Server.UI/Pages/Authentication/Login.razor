@@ -1,0 +1,116 @@
+@page "/pages/authentication/login"
+@using System.Text.RegularExpressions
+@using CleanArchitecture.Blazor.Application.Common.Security
+@using CleanArchitecture.Blazor.Infrastructure.Services.Authentication
+@using Microsoft.AspNetCore.DataProtection
+@using Microsoft.AspNetCore.Identity
+@using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
+
+@inherits ComponentBase
+@inject IStringLocalizer<Login> L
+
+<EditForm Model="@model"
+          OnValidSubmit="OnValidSubmit">
+    <MudText Typo="Typo.h4" GutterBottom="true">@L["Sign In"]</MudText>
+
+    <MudText>@L["Don't have an account?"] <MudLink Href="/pages/authentication/register">@L["Sign Up"]</MudLink></MudText>
+
+    <MudTextField T="string"
+                  @bind-Value="model.UserName" For="@(() => model.UserName)"
+                  Label="@L["User name"]"
+                  Variant="Variant.Outlined"
+                  Required="true"
+                  RequiredError="@L["user name is required!"]"
+                  Class="my-6"></MudTextField>
+
+    <MudTextField @bind-Value="model.Password" For="@(() => model.Password)"
+                  Label="@L["Password"]"
+                  Variant="Variant.Outlined"
+                  InputType="@PasswordInput"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@PasswordInputIcon"
+                  Validation="@(new Func<string, IEnumerable<string>>(PasswordStrength))"
+                  Required="true"
+                  RequiredError="@L["Password is required!"]"
+                  OnAdornmentClick="TogglePasswordVisibility" />
+
+    <div Class="d-flex justify-space-between align-center">
+        <MudCheckBox For="@(() => model.RememberMe)" @bind-Checked="model.RememberMe" Label="@L["Remember me?"]" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
+        <MudLink Href="/pages/authentication/forgot-password">@L["Forgot password?"]</MudLink>
+    </div>
+
+
+    <MudButton Variant="Variant.Filled"
+               Color="Color.Primary"
+               Size="Size.Large"
+               ButtonType="ButtonType.Submit"
+               FullWidth="true">@L["Sign In"]</MudButton>
+</EditForm>
+@code {
+
+  
+    [Inject] private IdentityAuthenticationService _authenticationService { get; set; } = default!;
+    [Inject] private ILogger<Login> _logger { get; set; } = default!;
+    LoginFormModel model = new LoginFormModel()
+        {
+            UserName = "administrator",
+            Password = "Password123!",
+            RememberMe = true
+        };
+
+    bool success = false;
+    bool PasswordVisibility;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    private IEnumerable<string> PasswordStrength(string pw)
+    {
+        if (string.IsNullOrWhiteSpace(pw))
+        {
+            yield return L["Password is required!"];
+            yield break;
+        }
+        if (pw.Length < 6)
+            yield return L["Password must be at least of length 6"];
+        if (!Regex.IsMatch(pw, @"[A-Z]"))
+            yield return L["Password must contain at least one capital letter"];
+        if (!Regex.IsMatch(pw, @"[a-z]"))
+            yield return L["Password must contain at least one lowercase letter"];
+        if (!Regex.IsMatch(pw, @"[0-9]"))
+            yield return L["Password must contain at least one digit"];
+    }
+
+    void TogglePasswordVisibility()
+    {
+        @if (PasswordVisibility)
+        {
+            PasswordVisibility = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            PasswordVisibility = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+    private async Task OnValidSubmit(EditContext context)
+    {
+        if (context.Validate())
+        {
+            var result = await _authenticationService.Login(model);
+            if (!result)
+            {
+                _logger.LogWarning("{@UserName} login fail.",model.UserName);
+                Snackbar.Add(L["Please check your username and password. If you are still unable to log in, contact your administrator."], MudBlazor.Severity.Error);
+            }
+            else
+            {
+                 _logger.LogInformation("{@UserName} login successfully.",model.UserName);
+            }
+
+        }
+
+    }
+}

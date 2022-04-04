@@ -1,0 +1,66 @@
+@using CleanArchitecture.Blazor.Application.Features.Devices.Commands.AddEdit
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@inherits MudComponentBase
+@inject IStringLocalizer<Devices> L
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Device Name"]" @bind-Value="model.Name"
+                                  For="@(() => model.Name)"
+                                  Required="true"
+                                  RequiredError="@L["device name is required!"]"
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Device's IP Address'"]" @bind-Value="model.IPAddress"
+                                  For="@(() => model.IPAddress)"
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Parameters"]" @bind-Value="model.Parameters"
+                                  For="@(() => model.Parameters)"
+                                  Lines="3"
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <CheckinPointAutocomplete Label="@L["Select Checkin Point"]"
+                                  Required="true"
+                                  RequiredError="@L["checkin point is required!"]"
+                                  For="@(() => model.CheckinPointId)"
+                                  @bind-Value="model.CheckinPointId"></CheckinPointAutocomplete>
+                </MudItem>
+                
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@L["Ok"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    MudForm form = default!;
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    AddEditDeviceCommandValidator modelValidator = new AddEditDeviceCommandValidator();
+    [EditorRequired] [Parameter] public AddEditDeviceCommand model { get; set; } = default!;
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+    }
+    void Cancel() => MudDialog.Cancel();
+}

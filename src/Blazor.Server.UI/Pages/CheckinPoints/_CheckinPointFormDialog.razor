@@ -1,0 +1,60 @@
+@using CleanArchitecture.Blazor.Application.Features.CheckinPoints.Commands.AddEdit
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@inherits MudComponentBase
+@inject IStringLocalizer<CheckinPoints> L
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
+            <MudGrid>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Checin Point"]" @bind-Value="model.Name"
+                                  For="@(() => model.Name)"
+                                  Required="true"
+                                  RequiredError="@L["checin point is required!"]"
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Description"]" @bind-Value="model.Description"
+                                  For="@(() => model.Description)"
+                          
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <SiteAutocomplete Label="@L["Select Site"]"
+                                  Required="true"
+                                  RequiredError="@L["site is required!"]"
+                                  For="@(() => model.SiteId)"
+                                  @bind-Value="model.SiteId"></SiteAutocomplete>
+                </MudItem>
+                
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@L["Ok"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    MudForm form = default!;
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    AddEditCheckinPointCommandValidator modelValidator = new AddEditCheckinPointCommandValidator();
+    [EditorRequired] [Parameter] public AddEditCheckinPointCommand model { get; set; } = default!;
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+    }
+    void Cancel() => MudDialog.Cancel();
+}
