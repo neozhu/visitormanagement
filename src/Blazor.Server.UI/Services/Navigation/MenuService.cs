@@ -21,7 +21,7 @@ public class MenuService : IMenuService
                 new()
                 {
                     Title = "Departments",
-                    Icon = Icons.Material.Filled.Apartment,
+                    Icon = Icons.Material.Filled.AccountTree,
                     Href = "/visitor/departments",
                     PageStatus = PageStatus.Completed
                 },
@@ -71,7 +71,7 @@ public class MenuService : IMenuService
                 {
                     IsParent = true,
                     Title = "Sites & Org",
-                    Icon = Icons.Material.Filled.Devices,
+                    Icon = Icons.Material.Filled.LocationCity,
                     MenuItems = new List<MenuSectionSubItemModel>
                     {
                         new()
