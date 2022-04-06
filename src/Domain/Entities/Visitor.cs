@@ -37,7 +37,8 @@ public class Visitor : AuditableEntity, IHasDomainEvent, IAuditTrial
     public string? Status { get; set; }
     public bool? Apppoved { get; set; }
     public string? ApprovalOutcome { get; set; }
-
+    public int? SiteId { get; set; }
+    public virtual Site? Site { get; set; }  
     public virtual ICollection<VisitorHistory> VisitorHistories { get; set; }=new HashSet<VisitorHistory>();
     public List<DomainEvent> DomainEvents { get; set; } = new();
 }

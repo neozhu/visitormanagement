@@ -127,7 +127,7 @@
     <value>新建</value>
   </data>
   <data name="Create a new designation" xml:space="preserve">
-    <value>新建称呼</value>
+    <value>新建职位</value>
   </data>
   <data name="Create successfully" xml:space="preserve">
     <value>创建成功</value>
@@ -139,7 +139,7 @@
     <value>删除成功</value>
   </data>
   <data name="Designations" xml:space="preserve">
-    <value>称呼</value>
+    <value>职位</value>
   </data>
   <data name="Downloading..." xml:space="preserve">
     <value>下载中..</value>
@@ -193,9 +193,9 @@
     <value>你确定要删除:{0}?</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>称呼</value>
+    <value>职位</value>
   </data>
   <data name="name is required!" xml:space="preserve">
-    <value>称呼必填!</value>
+    <value>职位必填!</value>
   </data>
 </root>

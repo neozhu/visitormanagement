@@ -142,16 +142,7 @@ public static class ApplicationDbContextSeed
             context.Employees.Add(new Domain.Entities.Employee() { Name="Mike Brown",Email= "Brown.Mike@gmail.com",PhoneNumber="021-76888098",  DepartmentId= depId, DesignationId= desId, Gender= "Female", About="Nice" });
             await context.SaveChangesAsync();
         }
-        if (!context.Visitors.Any())
-        {
-            var depId = context.Departments.First().Id;
-            var desId = context.Designations.First().Id;
-            var empId=context.Employees.First().Id;
-            var hashids = new Hashids("Blazor.net");
-            var hash = hashids.EncodeLong(DateTime.Now.Ticks);
-            context.Visitors.Add(new Domain.Entities.Visitor() { Name = "Json Mic", Email = "Json.mic@gmail.com", PhoneNumber = "021-76888098", IdentificationNo="3205830000000001", DesignationId = desId, Gender = "Female", Purpose = "Meeting",Comment="have a meeting...", Address="China", PrivacyPolicy=true, Promise=true,  ExpectedDate= DateTime.Now, ExpectedTime=new TimeSpan(12,0,0), CompanyName="Google Inc.", EmployeeId= empId , PassCode= hash});
-            await context.SaveChangesAsync();
-        }
+        
         if (!context.Sites.Any())
         {
             context.Sites.Add(new Domain.Entities.Site() { Name="Kunshan Center", Address= "in southeastern Jiangsu province with Shanghai bordering its eastern border and Suzhou on its western boundary" });
@@ -176,6 +167,17 @@ public static class ApplicationDbContextSeed
             context.Devices.Add(new Domain.Entities.Device() { Name = "Gate Machine 3", IPAddress = "192.168.100.122", CheckinPointId = checkpoints[2].Id });
             context.Devices.Add(new Domain.Entities.Device() { Name = "IPAD wifi", IPAddress = "192.168.100.123", CheckinPointId = checkpoints[3].Id });
             context.Devices.Add(new Domain.Entities.Device() { Name = "Face Id", IPAddress = "192.168.100.124", CheckinPointId = checkpoints[4].Id });
+            await context.SaveChangesAsync();
+        }
+        if (!context.Visitors.Any())
+        {
+            var siteid = context.Sites.First().Id;
+            var depId = context.Departments.First().Id;
+            var desId = context.Designations.First().Id;
+            var empId = context.Employees.First().Id;
+            var hashids = new Hashids("Blazor.net");
+            var hash = hashids.EncodeLong(DateTime.Now.Ticks);
+            context.Visitors.Add(new Domain.Entities.Visitor() { Name = "Json Mic", SiteId=siteid, Email = "Json.mic@gmail.com", PhoneNumber = "021-76888098", IdentificationNo = "3205830000000001", DesignationId = desId, Gender = "Female", Purpose = "Meeting", Comment = "have a meeting...", Address = "China", PrivacyPolicy = true, Promise = true, ExpectedDate = DateTime.Now, ExpectedTime = new TimeSpan(12, 0, 0), CompanyName = "Google Inc.", EmployeeId = empId, PassCode = hash });
             await context.SaveChangesAsync();
         }
     }

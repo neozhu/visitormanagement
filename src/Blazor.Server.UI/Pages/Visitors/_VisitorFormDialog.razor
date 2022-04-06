@@ -7,6 +7,7 @@
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.Formats
 @using SixLabors.ImageSharp.Processing
+@using Blazor.Server.UI.Pages.CheckinPoints
 @inherits MudComponentBase
 @inject IStringLocalizer<Visitors> L
 <MudDialog>
@@ -103,14 +104,14 @@
                                    For="@(() => model.ExpectedTime)"
                                    @bind-Time="model.ExpectedTime"></MudTimePicker>
                 </MudItem>
-                <MudItem xs="12" sm="6" >
-                    <MudTextField Label="@L["Address"]"
-                                  Lines="2"
+                <MudItem xs="12" sm="12" >
+                    <SiteAutocomplete Label="@L["Select Site - Address"]"
                                   Disabled="@(model.Apppoved==true)"
-                                  For="@(() => model.Address)"
-                                  @bind-Value="model.Address"></MudTextField>
+                                  For="@(() => model.SiteId)"
+                                  Required="true" RequiredError="@L["site - address is required!"]"
+                                  @bind-Value="model.SiteId"></SiteAutocomplete>
                 </MudItem>
-                <MudItem xs="12" sm="6">
+                <MudItem xs="12" sm="12">
                     <MudTextField Label="@L["Comment"]"
                                   For="@(() => model.Comment)"
                                   Lines="2"
@@ -125,7 +126,7 @@
                                  For="@(() => model.Apppoved)" ReadOnly="true"
                                  @bind-Checked="model.Apppoved"></MudCheckBox>
                 </MudItem>
-                <MudItem xs="12">
+                <MudItem xs="12" sm="6" md="8">
                     <MudTextField Label="@L["Approval Outcome"]"
                                   Disabled="@(model.Apppoved==true)"
                                   For="@(() => model.ApprovalOutcome)"

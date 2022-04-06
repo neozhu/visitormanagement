@@ -279,6 +279,9 @@
   <data name="Search for visitor's company name" xml:space="preserve">
     <value>Search for visitor's company name</value>
   </data>
+  <data name="Search for visitor's email or phone number." xml:space="preserve">
+    <value>Search for visitor's email or phone number.</value>
+  </data>
   <data name="Search for visitor's license plate number" xml:space="preserve">
     <value>Search for visitor's license plate number</value>
   </data>
@@ -287,6 +290,12 @@
   </data>
   <data name="Select Employee" xml:space="preserve">
     <value>Select Employee</value>
+  </data>
+  <data name="Select Site - Address" xml:space="preserve">
+    <value>Select Site - Address</value>
+  </data>
+  <data name="site - address is required!" xml:space="preserve">
+    <value>site - address is required!</value>
   </data>
   <data name="Sort By" xml:space="preserve">
     <value>Sort By</value>
@@ -300,8 +309,17 @@
   <data name="Trip Code" xml:space="preserve">
     <value>Trip Code</value>
   </data>
+  <data name="Upload a health code" xml:space="preserve">
+    <value>Upload a health code</value>
+  </data>
   <data name="Upload a nucleic acid test report" xml:space="preserve">
     <value>Upload a nucleic acid test report</value>
+  </data>
+  <data name="Upload a Photo" xml:space="preserve">
+    <value>Upload a Photo</value>
+  </data>
+  <data name="Upload a trip code" xml:space="preserve">
+    <value>Upload a trip code</value>
   </data>
   <data name="Upload health code successfully" xml:space="preserve">
     <value>Upload health code successfully</value>

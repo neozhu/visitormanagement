@@ -12,6 +12,7 @@ public class VisitorDto:IMapFrom<Visitor>
             profile.CreateMap<Visitor, VisitorDto>()
                .ForMember(x => x.Designation, s => s.MapFrom(y => y.Designation.Name))
                .ForMember(x => x.Employee, s => s.MapFrom(y => y.Employee.Name))
+               .ForMember(x => x.Address, s => s.MapFrom(y => y.Site.Address))
                .ForMember(x => x.EmployeeDesignation, s => s.MapFrom(y => y.Employee.Designation.Name));
             profile.CreateMap<VisitorDto, Visitor>(MemberList.None);
         
@@ -38,6 +39,7 @@ public class VisitorDto:IMapFrom<Visitor>
     public DateTime? CheckoutDate { get; set; }
     public DateTime? ExpectedDate { get; set; }
     public TimeSpan? ExpectedTime { get; set; }
+    public int? SiteId { get; set; }
     public string? Avatar { get; set; }
     public string? TripCode { get; set; }
     public string? HealthCode { get; set; }

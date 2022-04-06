@@ -348,4 +348,25 @@
   <data name="You're sure you want to delete the Visitor:{0}?" xml:space="preserve">
     <value>你确定要删除访客:{0}?</value>
   </data>
+  <data name="Make sure you haven't been to a medium-high risk area for 14 days" xml:space="preserve">
+    <value>确认14天内没有到过中高风险地区</value>
+  </data>
+  <data name="Select Site - Address" xml:space="preserve">
+    <value>选择访问的地址</value>
+  </data>
+  <data name="site - address is required!" xml:space="preserve">
+    <value>地址必填!</value>
+  </data>
+  <data name="Search for visitor's email or phone number." xml:space="preserve">
+    <value>按邮件或手机号码查询</value>
+  </data>
+  <data name="Upload a health code" xml:space="preserve">
+    <value>上传健康码</value>
+  </data>
+  <data name="Upload a Photo" xml:space="preserve">
+    <value>上传照片</value>
+  </data>
+  <data name="Upload a trip code" xml:space="preserve">
+    <value>上传行程码</value>
+  </data>
 </root>

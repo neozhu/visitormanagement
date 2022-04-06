@@ -2,6 +2,7 @@
 
 
 @using Blazor.Server.UI.Services
+@using Blazor.Server.UI.Pages.CheckinPoints
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
@@ -27,7 +28,7 @@
         <MudGrid>
             <MudItem xs="12" sm="7">
                 <MudPaper Class="pa-4 mt-4">
-                    <MudTextField @bind-Value="_searchString" Label="Search for visitor's email or phone number.'" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearch" />
+                    <MudTextField @bind-Value="_searchString" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearch" />
                 </MudPaper>
                 <MudPaper Class="pa-4 mt-4">
                     <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
@@ -121,14 +122,14 @@
                                                For="@(() => model.ExpectedTime)"
                                                @bind-Time="model.ExpectedTime"></MudTimePicker>
                             </MudItem>
-                            <MudItem xs="12" sm="6">
-                                <MudTextField Label="@L["Address"]"
-                                              Lines="2"
-                                              Disabled="@(model.Apppoved==true)"
-                                              For="@(() => model.Address)"
-                                              @bind-Value="model.Address"></MudTextField>
+                            <MudItem xs="12" sm="12">
+                                <SiteAutocomplete Label="@L["Select Site - Address"]"
+                                  Disabled="@(model.Apppoved==true)"
+                                  For="@(() => model.SiteId)"
+                                  Required="true" RequiredError="@L["site - address is required!"]"
+                                  @bind-Value="model.SiteId"></SiteAutocomplete>
                             </MudItem>
-                            <MudItem xs="12" sm="6">
+                            <MudItem xs="12" sm="12">
                                 <MudTextField Label="@L["Comment"]"
                                               For="@(() => model.Comment)"
                                               Lines="2"
@@ -143,7 +144,7 @@
                                              For="@(() => model.Apppoved)" ReadOnly="true"
                                              @bind-Checked="model.Apppoved"></MudCheckBox>
                             </MudItem>
-                            <MudItem xs="12">
+                            <MudItem xs="12" sm="6" md="8">
                                 <MudTextField Label="@L["Approval Outcome"]"
                                               Disabled="@(model.Apppoved==true)"
                                               For="@(() => model.ApprovalOutcome)"
