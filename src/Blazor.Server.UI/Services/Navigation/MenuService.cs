@@ -137,8 +137,8 @@ public class MenuService : IMenuService
                     MenuItems = new List<MenuSectionSubItemModel>
                     {   new()
                         {
-                            Title = "Dictionaries",
-                            Href = "/system/dictionaries",
+                            Title = "Picklist",
+                            Href = "/system/picklist",
                             PageStatus = PageStatus.Completed
                         },
                         new()
