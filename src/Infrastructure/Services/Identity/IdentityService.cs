@@ -45,8 +45,16 @@ public class IdentityService : IIdentityService
 
     public async Task<string> GetUserNameAsync(string userId)
     {
-        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
-        return user?.UserName;
+        await _semaphore.WaitAsync();
+        try
+        {
+            var user = await _userManager.Users.SingleOrDefaultAsync(u => u.Id == userId);
+            return user?.UserName;
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 
     public async Task<(Result Result, string UserId)> CreateUserAsync(string userName, string password)
