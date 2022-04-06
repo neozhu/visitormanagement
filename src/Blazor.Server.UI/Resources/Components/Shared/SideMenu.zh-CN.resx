@@ -174,4 +174,40 @@
   <data name="Users" xml:space="preserve">
     <value>账号</value>
   </data>
+  <data name="Departments" xml:space="preserve">
+    <value>部门信息</value>
+  </data>
+  <data name="Deshbord" xml:space="preserve">
+    <value>看板</value>
+  </data>
+  <data name="Designations" xml:space="preserve">
+    <value>称号</value>
+  </data>
+  <data name="Devices" xml:space="preserve">
+    <value>设备信息</value>
+  </data>
+  <data name="Check-in Points" xml:space="preserve">
+    <value>检查点</value>
+  </data>
+  <data name="Employees" xml:space="preserve">
+    <value>员工信息</value>
+  </data>
+  <data name="Histories" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="Pre-registers" xml:space="preserve">
+    <value>访客注册</value>
+  </data>
+  <data name="Reports" xml:space="preserve">
+    <value>报表</value>
+  </data>
+  <data name="Sites" xml:space="preserve">
+    <value>站点</value>
+  </data>
+  <data name="Sites &amp; Org" xml:space="preserve">
+    <value>组织 &amp;  站点</value>
+  </data>
+  <data name="Visitors" xml:space="preserve">
+    <value>访客信息</value>
+  </data>
 </root>

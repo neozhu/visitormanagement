@@ -195,7 +195,7 @@
                 <MudText>@L["No matching records found"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading..."].</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager />
@@ -288,7 +288,7 @@
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<_EmployeeFormDialog>
-        (L["Create a new Employee"], parameters, options);
+        (L["Create a new employee"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -318,7 +318,7 @@
                 };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<_EmployeeFormDialog>
-        (L["Edit the Employee"], parameters, options);
+        (L["Edit the employee"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {

@@ -131,7 +131,7 @@
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="SiteDto">@L["Site Name"]</MudTableSortLabel></MudTh>
-                <MudTh>@L["Checkin Points"]</MudTh>
+                <MudTh>@L["Check-in Points"]</MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd DataLabel="@L["Actions"]">
@@ -164,7 +164,7 @@
                     <MudText>@context.Name</MudText>
                     <MudText Typo="Typo.body2">@context.Address</MudText>
                 </MudTd>
-                <MudTd DataLabel="@L["Checkin Points"]">
+                <MudTd DataLabel="@L["Check-in Points"]">
                     @foreach(var str in context.CheckinPoints)
                     {
                         <MudText Typo="Typo.body2" Style="color:#00000060 !important">@str</MudText>
@@ -175,7 +175,7 @@
                 <MudText>@L["No matching records found"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading..."].</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager />

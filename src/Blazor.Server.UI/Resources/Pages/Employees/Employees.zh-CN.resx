@@ -117,13 +117,112 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="more" xml:space="preserve">
-    <value>более</value>
+  <data name="About" xml:space="preserve">
+    <value>介绍</value>
   </data>
-  <data name="faster and easier web development" xml:space="preserve">
-    <value>более быстрая и простая веб-разработка</value>
+  <data name="Actions" xml:space="preserve">
+    <value>操作</value>
   </data>
-  <data name="Blazor Components" xml:space="preserve">
-    <value>Компоненты Blazor</value>
+  <data name="Avatar" xml:space="preserve">
+    <value>头像</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Click upload a photo." xml:space="preserve">
+    <value>上传照片</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Create a new employee" xml:space="preserve">
+    <value>新建员工</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>创建成功</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>部门</value>
+  </data>
+  <data name="department is required!" xml:space="preserve">
+    <value>部门名称必填!</value>
+  </data>
+  <data name="Downloading..." xml:space="preserve">
+    <value>下载中..</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Edit the employee" xml:space="preserve">
+    <value>编辑员工</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="email is required!" xml:space="preserve">
+    <value>电子邮件必填!</value>
+  </data>
+  <data name="employee name is required!" xml:space="preserve">
+    <value>员工姓名必填!</value>
+  </data>
+  <data name="Employees" xml:space="preserve">
+    <value>员工信息</value>
+  </data>
+  <data name="Export Data" xml:space="preserve">
+    <value>导出Excel</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="Import Data" xml:space="preserve">
+    <value>导入Excel</value>
+  </data>
+  <data name="No Allowed" xml:space="preserve">
+    <value>没有授权</value>
+  </data>
+  <data name="No matching records found" xml:space="preserve">
+    <value>没有找到记录</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Phone Number" xml:space="preserve">
+    <value>联系电话</value>
+  </data>
+  <data name="phone number is required!" xml:space="preserve">
+    <value>联系电话必填!</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Save successfully" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="Select Department" xml:space="preserve">
+    <value>选择部门</value>
+  </data>
+  <data name="Select Designation" xml:space="preserve">
+    <value>选择称呼</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="Upload photo successfully" xml:space="preserve">
+    <value>上传照片成功</value>
+  </data>
+  <data name="Uploading..." xml:space="preserve">
+    <value>上传中..</value>
+  </data>
+  <data name="You're sure you want to delete the selected items:{0}?" xml:space="preserve">
+    <value>你确定删除选择的记录:{0}?</value>
+  </data>
+  <data name="You're sure you want to delete the Employee:{0}?" xml:space="preserve">
+    <value>你确定要删除员工:{0}?</value>
   </data>
 </root>

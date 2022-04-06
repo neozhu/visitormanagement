@@ -36,16 +36,16 @@
                     <MudTextField Label="@L["Name"]" @bind-Value="model.Name"
                                   For="@(() => model.Name)"
                                   Required="true"
-                                  RequiredError="@L["Employee name is required!"]">
+                                  RequiredError="@L["employee name is required!"]">
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6">
                     <DepartmentAutocomplete @bind-Value="model.DepartmentId"
                                             For="@(() => model.DepartmentId)"
-                                            Label="@L["Department"]"
-                                            Placeholder="@L["Department"]"
+                                            Label="@L["Select Department"]"
+                                            Placeholder="@L["Select Department"]"
                                             Required="true"
-                                            RequiredError="@L["Department name is required!"]"
+                                            RequiredError="@L["department is required!"]"
                                             Clearable="true"
                                             >
                     </DepartmentAutocomplete>
@@ -53,14 +53,14 @@
                 <MudItem xs="12" sm="6">
                     <MudTextField Label="@L["Phone Number"]"
                                   Required="true"
-                                  RequiredError="@L["Employee name is required!"]"
+                                  RequiredError="@L["phone number is required!"]"
                                   For="@(() => model.PhoneNumber)"
                                   @bind-Value="model.PhoneNumber"></MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6">
                     <MudTextField Label="@L["Email"]"
                                   Required="true"
-                                  RequiredError="@L["Email is required!"]"
+                                  RequiredError="@L["email is required!"]"
                                   For="@(() => model.Email)"
                                   @bind-Value="model.Email"></MudTextField>
                 </MudItem>
@@ -74,7 +74,7 @@
                 <MudItem xs="12" sm="6">
                     <DesignationAutocomplete @bind-Value="model.DesignationId"
                                             For="@(() => model.DesignationId)"
-                                            Label="@L["Designation"]"
+                                            Label="@L["Select Designation"]"
                                             Placeholder="@L["Designation"]"
                                             Clearable="true"
                                             >
@@ -131,7 +131,7 @@
                     });
                 model.Avatar = result;
                 //Do your validations here
-                Snackbar.Add($"{L["Update successfully"]}", MudBlazor.Severity.Info);
+                Snackbar.Add($"{L["Upload photo successfully"]}", MudBlazor.Severity.Info);
             }
         }
     }

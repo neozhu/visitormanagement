@@ -17,7 +17,7 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudTextField Label="@L["Device's IP Address'"]" @bind-Value="model.IPAddress"
+                    <MudTextField Label="@L["Device's IP"]" @bind-Value="model.IPAddress"
                                   For="@(() => model.IPAddress)"
                                   >
                     </MudTextField>
@@ -30,9 +30,9 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
-                    <CheckinPointAutocomplete Label="@L["Select Checkin Point"]"
+                    <CheckinPointAutocomplete Label="@L["Select Check-in Point"]"
                                   Required="true"
-                                  RequiredError="@L["checkin point is required!"]"
+                                  RequiredError="@L["check-in point is required!"]"
                                   For="@(() => model.CheckinPointId)"
                                   @bind-Value="model.CheckinPointId"></CheckinPointAutocomplete>
                 </MudItem>

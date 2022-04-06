@@ -82,7 +82,7 @@ public class MenuService : IMenuService
                         },
                         new()
                         {
-                            Title = "Checkin Points",
+                            Title = "Check-in Points",
                             Href = "/visitor/checkinpoints",
                             PageStatus = PageStatus.Completed
                         },

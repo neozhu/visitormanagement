@@ -9,10 +9,10 @@
         <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField Label="@L["Checin Point"]" @bind-Value="model.Name"
+                    <MudTextField Label="@L["Check-in Point"]" @bind-Value="model.Name"
                                   For="@(() => model.Name)"
                                   Required="true"
-                                  RequiredError="@L["checin point is required!"]"
+                                  RequiredError="@L["check-in point is required!"]"
                                   >
                     </MudTextField>
                 </MudItem>

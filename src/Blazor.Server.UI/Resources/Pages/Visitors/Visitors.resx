@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="Advanced Search" xml:space="preserve">
+    <value>Advanced Search</value>
+  </data>
+  <data name="Agree Privacy Policy" xml:space="preserve">
+    <value>Agree Privacy Policy</value>
+  </data>
+  <data name="Apppoved" xml:space="preserve">
+    <value>Apppoved</value>
+  </data>
+  <data name="Approval Outcome" xml:space="preserve">
+    <value>Approval Outcome</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Check-in Date" xml:space="preserve">
+    <value>Check-in Date</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>Comment</value>
+  </data>
+  <data name="Company Name" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Create a new visitor" xml:space="preserve">
+    <value>Create a new visitor</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>Create successfully</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>Deleted successfully</value>
+  </data>
+  <data name="Downloading..." xml:space="preserve">
+    <value>Downloading...</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Edit the visitor" xml:space="preserve">
+    <value>Edit the visitor</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="email is required!" xml:space="preserve">
+    <value>email is required!</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Employee</value>
+  </data>
+  <data name="employee is required!" xml:space="preserve">
+    <value>employee is required!</value>
+  </data>
+  <data name="Expected Date" xml:space="preserve">
+    <value>Expected Date</value>
+  </data>
+  <data name="expected date is required!" xml:space="preserve">
+    <value>expected date is required!</value>
+  </data>
+  <data name="Expected Time" xml:space="preserve">
+    <value>Expected Time</value>
+  </data>
+  <data name="expected time is required!" xml:space="preserve">
+    <value>expected time is required!</value>
+  </data>
+  <data name="Export Data" xml:space="preserve">
+    <value>Export Data</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Gender</value>
+  </data>
+  <data name="Has apppoved" xml:space="preserve">
+    <value>Has apppoved</value>
+  </data>
+  <data name="Health Code" xml:space="preserve">
+    <value>Health Code</value>
+  </data>
+  <data name="I promise the truth" xml:space="preserve">
+    <value>I promise the truth</value>
+  </data>
+  <data name="Identification No." xml:space="preserve">
+    <value>Identification No.</value>
+  </data>
+  <data name="Identification No. is required!" xml:space="preserve">
+    <value>Identification No. is required!</value>
+  </data>
+  <data name="Import Data" xml:space="preserve">
+    <value>Import Data</value>
+  </data>
+  <data name="License Plate Number" xml:space="preserve">
+    <value>License Plate Number</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="Make sure you haven't been to a medium-high risk area for 14 days" xml:space="preserve">
+    <value>Make sure you haven't been to a medium-high risk area for 14 days</value>
+  </data>
+  <data name="No Allowed" xml:space="preserve">
+    <value>No Allowed</value>
+  </data>
+  <data name="No matching records found" xml:space="preserve">
+    <value>No matching records found</value>
+  </data>
+  <data name="Nucleic Acid Test Report" xml:space="preserve">
+    <value>Nucleic Acid Test Report</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Only green codes are allowed" xml:space="preserve">
+    <value>Only green codes are allowed</value>
+  </data>
+  <data name="Pass Code" xml:space="preserve">
+    <value>Pass Code</value>
+  </data>
+  <data name="Phone Number" xml:space="preserve">
+    <value>Phone Number</value>
+  </data>
+  <data name="Phone Number is required!" xml:space="preserve">
+    <value>Phone Number is required!</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>Purpose</value>
+  </data>
+  <data name="purpose is required!" xml:space="preserve">
+    <value>purpose is required!</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Save successfully" xml:space="preserve">
+    <value>Save successfully</value>
+  </data>
+  <data name="Search for approved" xml:space="preserve">
+    <value>Search for approved</value>
+  </data>
+  <data name="Search for employee" xml:space="preserve">
+    <value>Search for employee</value>
+  </data>
+  <data name="Search for expected date" xml:space="preserve">
+    <value>Search for expected date</value>
+  </data>
+  <data name="Search for purpose" xml:space="preserve">
+    <value>Search for purpose</value>
+  </data>
+  <data name="Search for visitor's company name" xml:space="preserve">
+    <value>Search for visitor's company name</value>
+  </data>
+  <data name="Search for visitor's license plate number" xml:space="preserve">
+    <value>Search for visitor's license plate number</value>
+  </data>
+  <data name="Search for visitor's name" xml:space="preserve">
+    <value>Search for visitor's name</value>
+  </data>
+  <data name="Select Employee" xml:space="preserve">
+    <value>Select Employee</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>Sort By</value>
+  </data>
+  <data name="The photo is used for intelligent face recognition" xml:space="preserve">
+    <value>The photo is used for intelligent face recognition</value>
+  </data>
+  <data name="This QR code for your pass card" xml:space="preserve">
+    <value>This QR code for your pass card</value>
+  </data>
+  <data name="Trip Code" xml:space="preserve">
+    <value>Trip Code</value>
+  </data>
+  <data name="Upload a nucleic acid test report" xml:space="preserve">
+    <value>Upload a nucleic acid test report</value>
+  </data>
+  <data name="Upload health code successfully" xml:space="preserve">
+    <value>Upload health code successfully</value>
+  </data>
+  <data name="Upload photo successfully" xml:space="preserve">
+    <value>Upload photo successfully</value>
+  </data>
+  <data name="Upload test report successfully" xml:space="preserve">
+    <value>Upload test report successfully</value>
+  </data>
+  <data name="Upload trip code successfully" xml:space="preserve">
+    <value>Upload trip code successfully</value>
+  </data>
+  <data name="Uploading..." xml:space="preserve">
+    <value>Uploading...</value>
+  </data>
+  <data name="Visitor's Name" xml:space="preserve">
+    <value>Visitor's Name</value>
+  </data>
+  <data name="visitor's name is required!" xml:space="preserve">
+    <value>visitor's name is required!</value>
+  </data>
+  <data name="Visitor's Phone Number" xml:space="preserve">
+    <value>Visitor's Phone Number</value>
+  </data>
+  <data name="Visitors" xml:space="preserve">
+    <value>Visitors</value>
+  </data>
+  <data name="You must agree" xml:space="preserve">
+    <value>You must agree</value>
+  </data>
+  <data name="You must promise" xml:space="preserve">
+    <value>You must promise</value>
+  </data>
+  <data name="You must upload health code" xml:space="preserve">
+    <value>You must upload health code</value>
+  </data>
+  <data name="You must upload photo" xml:space="preserve">
+    <value>You must upload photo</value>
+  </data>
+  <data name="You must upload trip code" xml:space="preserve">
+    <value>You must upload trip code</value>
+  </data>
+  <data name="You're sure you want to delete the selected items:{0}?" xml:space="preserve">
+    <value>You're sure you want to delete the selected items:{0}?</value>
+  </data>
+  <data name="You're sure you want to delete the Visitor:{0}?" xml:space="preserve">
+    <value>You're sure you want to delete the Visitor:{0}?</value>
+  </data>
+</root>

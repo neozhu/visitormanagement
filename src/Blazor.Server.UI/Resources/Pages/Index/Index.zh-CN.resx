@@ -117,13 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="more" xml:space="preserve">
-    <value>Suite</value>
+  <data name="CHECK-IN VISITORS" xml:space="preserve">
+    <value>已入场访客</value>
   </data>
-  <data name="faster and easier web development" xml:space="preserve">
-    <value>développement web plus rapide et plus facile</value>
+  <data name="CHECK-OUT VISITORS" xml:space="preserve">
+    <value>已出场访客</value>
   </data>
-  <data name="Blazor Components" xml:space="preserve">
-    <value>Composants Blazor</value>
+  <data name="TOTAL VISITORS" xml:space="preserve">
+    <value>总访客人数</value>
+  </data>
+  <data name="Visitor History(days)" xml:space="preserve">
+    <value>访客历史记录</value>
+  </data>
+  <data name="Visitor's Purpose" xml:space="preserve">
+    <value>目的</value>
   </data>
 </root>

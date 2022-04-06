@@ -117,97 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Analytics" xml:space="preserve">
-    <value>Analytics</value>
+  <data name="CHECK-IN VISITORS" xml:space="preserve">
+    <value>CHECK-IN VISITORS</value>
   </data>
-  <data name="Application" xml:space="preserve">
-    <value>Application</value>
+  <data name="CHECK-OUT VISITORS" xml:space="preserve">
+    <value>CHECK-OUT VISITORS</value>
   </data>
-  <data name="Audit Trails" xml:space="preserve">
-    <value>Audit Trails</value>
+  <data name="TOTAL VISITORS" xml:space="preserve">
+    <value>TOTAL VISITORS</value>
   </data>
-  <data name="Authorization" xml:space="preserve">
-    <value>Authorization</value>
+  <data name="Visitor History(days)" xml:space="preserve">
+    <value>Visitor History(days)</value>
   </data>
-  <data name="Banking" xml:space="preserve">
-    <value>Banking</value>
-  </data>
-  <data name="Blazor Dashbord" xml:space="preserve">
-    <value>Blazor Dashbord</value>
-  </data>
-  <data name="Booking" xml:space="preserve">
-    <value>Booking</value>
-  </data>
-  <data name="Check-in Points" xml:space="preserve">
-    <value>Check-in Points</value>
-  </data>
-  <data name="Customers" xml:space="preserve">
-    <value>Customers</value>
-  </data>
-  <data name="Departments" xml:space="preserve">
-    <value>Departments</value>
-  </data>
-  <data name="Deshbord" xml:space="preserve">
-    <value>Deshbord</value>
-  </data>
-  <data name="Designations" xml:space="preserve">
-    <value>Designations</value>
-  </data>
-  <data name="Devices" xml:space="preserve">
-    <value>Devices</value>
-  </data>
-  <data name="Dictionaries" xml:space="preserve">
-    <value>Dictionaries</value>
-  </data>
-  <data name="E-Commerce" xml:space="preserve">
-    <value>E-Commerce</value>
-  </data>
-  <data name="Employees" xml:space="preserve">
-    <value>Employees</value>
-  </data>
-  <data name="Histories" xml:space="preserve">
-    <value>Histories</value>
-  </data>
-  <data name="Home" xml:space="preserve">
-    <value>Home</value>
-  </data>
-  <data name="Jobs" xml:space="preserve">
-    <value>Jobs</value>
-  </data>
-  <data name="Log" xml:space="preserve">
-    <value>Log</value>
-  </data>
-  <data name="MANAGEMENT" xml:space="preserve">
-    <value>MANAGEMENT</value>
-  </data>
-  <data name="Pre-registers" xml:space="preserve">
-    <value>Pre-registers</value>
-  </data>
-  <data name="Products" xml:space="preserve">
-    <value>Products</value>
-  </data>
-  <data name="Profile" xml:space="preserve">
-    <value>Profile</value>
-  </data>
-  <data name="Reports" xml:space="preserve">
-    <value>Reports</value>
-  </data>
-  <data name="Roles" xml:space="preserve">
-    <value>Roles</value>
-  </data>
-  <data name="Sites" xml:space="preserve">
-    <value>Sites</value>
-  </data>
-  <data name="Sites &amp; Org" xml:space="preserve">
-    <value>Sites &amp; Org</value>
-  </data>
-  <data name="System" xml:space="preserve">
-    <value>System</value>
-  </data>
-  <data name="Users" xml:space="preserve">
-    <value>Users</value>
-  </data>
-  <data name="Visitors" xml:space="preserve">
-    <value>Visitors</value>
+  <data name="Visitor's Purpose" xml:space="preserve">
+    <value>Visitor's Purpose</value>
   </data>
 </root>

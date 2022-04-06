@@ -117,13 +117,73 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Blazor Components" xml:space="preserve">
-    <value>Componentes Blazor</value>
+  <data name="Actions" xml:space="preserve">
+    <value>操作</value>
   </data>
-  <data name="faster and easier web development" xml:space="preserve">
-    <value>desarrollo web más rápido y fácil</value>
+  <data name="Check-in Points" xml:space="preserve">
+    <value>检查点</value>
   </data>
-  <data name="more" xml:space="preserve">
-    <value>más</value>
+  <data name="Create" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Create a new site" xml:space="preserve">
+    <value>新建站点</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>创建成功</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="Downloading..." xml:space="preserve">
+    <value>下载中..</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Edit the site" xml:space="preserve">
+    <value>编辑站点</value>
+  </data>
+  <data name="Export Data" xml:space="preserve">
+    <value>导出Excel</value>
+  </data>
+  <data name="Import Data" xml:space="preserve">
+    <value>导入Excel</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>加载中..</value>
+  </data>
+  <data name="No Allowed" xml:space="preserve">
+    <value>没有授权</value>
+  </data>
+  <data name="No matching records found" xml:space="preserve">
+    <value>没有找到记录</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Save successfully" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="Site Name" xml:space="preserve">
+    <value>站点名称</value>
+  </data>
+  <data name="Sites" xml:space="preserve">
+    <value>站点</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="Uploading..." xml:space="preserve">
+    <value>上传中..</value>
+  </data>
+  <data name="You're sure you want to delete the selected items:{0}?" xml:space="preserve">
+    <value>你确定删除选择的记录:{0}?</value>
+  </data>
+  <data name="You're sure you want to delete the site:{0}?" xml:space="preserve">
+    <value>你确定要删除站点:{0}?</value>
   </data>
 </root>

@@ -9,10 +9,10 @@
         <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
             <MudGrid>
                 <MudItem xs="12">
-                    <MudTextField Label="@L["Name"]" @bind-Value="model.Name"
+                    <MudTextField Label="@L["Department Name"]" @bind-Value="model.Name"
                                   For="@(() => model.Name)"
                                   Required="true"
-                                  RequiredError="@L["name is required!"]"
+                                  RequiredError="@L["department name is required!"]"
                                   >
                     </MudTextField>
                 </MudItem>

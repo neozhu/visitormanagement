@@ -132,7 +132,7 @@
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="DeviceDto">@L["Device Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="IPAddress" T="DeviceDto">@L["Device's  IP Address"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="CheckinPointId" T="DeviceDto">@L["Site - Checkin Point"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="CheckinPointId" T="DeviceDto">@L["Site - Check-in Point"]</MudTableSortLabel></MudTh>
 
             </HeaderContent>
             <RowTemplate>
@@ -184,7 +184,7 @@
                 <MudTd DataLabel="@L["Device's  IP Address"]">
                     @context.IPAddress
                 </MudTd>
-                <MudTd DataLabel="@L["Site - Checkin Point"]">
+                <MudTd DataLabel="@L["Site - Check-in Point"]">
                     @context.Site - @context.CheckinPoint
                 </MudTd>
             </RowTemplate>
@@ -192,7 +192,7 @@
                 <MudText>@L["No matching records found"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading..."].</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager />
@@ -278,7 +278,7 @@
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
         var dialog = DialogService.Show<_DeviceFormDialog>
-        (L["Create a new department"], parameters, options);
+        (L["Create a new device"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -303,7 +303,7 @@
                 };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
         var dialog = DialogService.Show<_DeviceFormDialog>
-        (L["Edit the department"], parameters, options);
+        (L["Edit the device"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -315,7 +315,7 @@
 
     private async Task OnDelete(DeviceDto dto)
     {
-        var deleteContent = L["You're sure you want to delete the department:{0}?"];
+        var deleteContent = L["You're sure you want to delete the device:{0}?"];
         var parameters = new DialogParameters
                     {
                 { nameof(DeleteConfirmation.ContentText), string.Format(deleteContent, dto.Name) }

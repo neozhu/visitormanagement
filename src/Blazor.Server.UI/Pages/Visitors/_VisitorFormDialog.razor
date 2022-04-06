@@ -19,7 +19,7 @@
                                   For="@(() => model.Name)"
                                   Disabled="@(model.Apppoved==true)"
                                   Required="true"
-                                  RequiredError="@L["product name is required!"]">
+                                  RequiredError="@L["visitor's name is required!"]">
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6" md="8">
@@ -43,7 +43,7 @@
                                   @bind-Value="model.Email"></MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6" md="4">
-                    <MudTextField Label="@L["Phone Number"]"
+                    <MudTextField Label="@L["Visitor's Phone Number"]"
                                   For="@(() => model.PhoneNumber)"
                                   Disabled="@(model.Apppoved==true)"
                                   Required="true"

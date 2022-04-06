@@ -27,7 +27,7 @@
                   Hover="true" @ref="_table">
             <ToolBarContent>
                 <div class="justify-start pt-3">
-                    <MudText Typo="Typo.h6">@L["CheckinPoints"]</MudText>
+                    <MudText Typo="Typo.h6">@L["Check-in Points"]</MudText>
                     <MudHidden Breakpoint="Breakpoint.SmAndDown">
                         <MudButton DisableElevation Variant="Variant.Outlined"
                                    Size="Size.Small"
@@ -130,7 +130,7 @@
             </ColGroup>
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
-                <MudTh><MudTableSortLabel SortLabel="Name" T="CheckinPointDto">@L["Checkin Point"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Name" T="CheckinPointDto">@L["Check-in Point"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="SiteId" T="CheckinPointDto">@L["Site"]</MudTableSortLabel></MudTh>
                 <MudTh>@L["Devices"]</MudTh>
             </HeaderContent>
@@ -161,7 +161,7 @@
                         </MudButton>
                     }
                 </MudTd>
-                <MudTd DataLabel="@L["Checkin Point"]">
+                <MudTd DataLabel="@L["Check-in Point"]">
                     <MudText>@context.Name</MudText>
                     <MudText Typo="Typo.body2">@context.Description</MudText>
                 </MudTd>
@@ -197,7 +197,7 @@
                 <MudText>@L["No matching records found"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading..."].</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager />
@@ -232,7 +232,7 @@
     private bool _canExport;
     protected override async Task OnInitializedAsync()
     {
-        Title = L["CheckinPoints"];
+        Title = L["Check-in Points"];
         var state = await AuthState;
         _canCreate = (await AuthService.AuthorizeAsync(state.User, Permissions.CheckinPoints.Create)).Succeeded;
         _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.CheckinPoints.Search)).Succeeded;
@@ -283,7 +283,7 @@
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
         var dialog = DialogService.Show<_CheckinPointFormDialog>
-        (L["Create a new department"], parameters, options);
+        (L["Create a new check-in point"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -307,7 +307,7 @@
                 };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
         var dialog = DialogService.Show<_CheckinPointFormDialog>
-        (L["Edit the department"], parameters, options);
+        (L["Edit the check-in point"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -319,7 +319,7 @@
 
     private async Task OnDelete(CheckinPointDto dto)
     {
-        var deleteContent = L["You're sure you want to delete the department:{0}?"];
+        var deleteContent = L["You're sure you want to delete the check-in point:{0}?"];
         var parameters = new DialogParameters
                     {
                 { nameof(DeleteConfirmation.ContentText), string.Format(deleteContent, dto.Name) }

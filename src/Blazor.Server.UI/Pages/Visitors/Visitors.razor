@@ -133,13 +133,13 @@
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PassCode" T="VisitorDto">@L["Pass Code"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="Name" T="VisitorDto">@L["Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Name" T="VisitorDto">@L["Visitor's Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="VisitorDto">@L["Phone Number"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="IdentificationNo" T="VisitorDto">@L["Identification No."]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Purpose" T="VisitorDto">@L["Purpose"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Employee" T="VisitorDto">@L["Employee"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="ExpectedDate" T="VisitorDto">@L["Expected Date"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="CheckinDate" T="VisitorDto">@L["Checkin Date"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="CheckinDate" T="VisitorDto">@L["Check-in Date"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="TripCode" T="VisitorDto">@L["Trip Code"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Apppoved" T="VisitorDto">@L["Apppoved"]</MudTableSortLabel></MudTh>
             </HeaderContent>
@@ -171,11 +171,11 @@
                     }
                 </MudTd>
                 <MudTd HideSmall="true" DataLabel="@L["Pass Code"]">@context.PassCode</MudTd>
-                <MudTd DataLabel="@L["Visitor's' Name"]">
+                <MudTd DataLabel="@L["Visitor's Name"]">
                     <MudText>@context.Name</MudText>
                     <MudText Typo="Typo.body2">@context.CompanyName</MudText>
                 </MudTd>
-                <MudTd DataLabel="@L["Visitor's' Phone Number"]">
+                <MudTd DataLabel="@L["Visitor's Phone Number"]">
                     <MudText>@context.PhoneNumber</MudText>
                     <MudText Typo="Typo.body2">@context.Email</MudText>
                 </MudTd>
@@ -224,7 +224,7 @@
                 <MudText>@L["No matching records found"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading..."].</MudText>
             </LoadingContent>
             <PagerContent>
                 <MudTablePager />
@@ -326,7 +326,7 @@
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<_VisitorFormDialog>
-        (L["Create a new Visitor"], parameters, options);
+        (L["Create a new visitor"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -375,7 +375,7 @@
                 };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
         var dialog = DialogService.Show<_VisitorFormDialog>
-        (L["Edit the Visitor"], parameters, options);
+        (L["Edit the visitor"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {

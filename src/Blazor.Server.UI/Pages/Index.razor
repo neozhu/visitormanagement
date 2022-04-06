@@ -13,7 +13,7 @@
     <div class="lp-app-grid">
         <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
             <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">TOTAL VISITORS</MudText>
+                <MudText Typo="Typo.h6">@L["TOTAL VISITORS"]</MudText>
                 <div class="d-flex align-center my-1">
                     <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-primary-hover);" Size="Size.Small">
                         <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.TrendingDown" Size="Size.Small" />
@@ -37,7 +37,7 @@
         </MudPaper>
         <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
             <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">CHECKIN VISITORS</MudText>
+                <MudText Typo="Typo.h6">@L["CHECK-IN VISITORS"]</MudText>
                 <div class="d-flex align-center my-1">
                     <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-secondary-hover);" Size="Size.Small">
                         <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small" />
@@ -61,7 +61,7 @@
         </MudPaper>
         <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
             <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">CHECKOUT VISITORS</MudText>
+                <MudText Typo="Typo.h6">@L["CHECK-OUT VISITORS"]</MudText>
                 <div class="d-flex align-center my-1">
                     <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-tertiary-hover);" Size="Size.Small">
                         <MudIcon Color="Color.Tertiary" Icon="@Icons.Material.Filled.TrendingFlat" Size="Size.Small" />
@@ -87,7 +87,7 @@
     <div class="my-6 d-flex gap-6 flex-wrap">
         <MudPaper Class="py-4 px-6 rounded-lg d-flex flex-column flex-grow-1">
             <div>
-                <MudText Typo="Typo.h6">Visitor History(days) @day</MudText>
+                <MudText Typo="Typo.h6">@L["Visitor History(days)"] @day</MudText>
                 <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="day" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
                 <MudButton @onclick="RandomizeData">Randomize Data</MudButton>
 
@@ -95,7 +95,7 @@
         </MudPaper>
         <MudPaper Class="pa-4 px-6 rounded-lg d-flex flex-column flex-grow-0">
             <div>
-                <MudText Typo="Typo.h6">Visitor's Purpose</MudText>
+                <MudText Typo="Typo.h6">@L["Visitor's Purpose"]</MudText>
                <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="200px" Height="200px" />
             </div>
         </MudPaper>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>操作</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>地址</value>
+  </data>
+  <data name="Advanced Search" xml:space="preserve">
+    <value>高级搜索</value>
+  </data>
+  <data name="Agree Privacy Policy" xml:space="preserve">
+    <value>同意隐私保护策略</value>
+  </data>
+  <data name="Apppoved" xml:space="preserve">
+    <value>审批状态</value>
+  </data>
+  <data name="Approval Outcome" xml:space="preserve">
+    <value>审批结果</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Check-in Date" xml:space="preserve">
+    <value>检查时间</value>
+  </data>
+  <data name="Comment" xml:space="preserve">
+    <value>备注</value>
+  </data>
+  <data name="Company Name" xml:space="preserve">
+    <value>公司名称</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="Create a new visitor" xml:space="preserve">
+    <value>新建访客</value>
+  </data>
+  <data name="Create successfully" xml:space="preserve">
+    <value>创建成功</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="Deleted successfully" xml:space="preserve">
+    <value>删除成功</value>
+  </data>
+  <data name="Downloading..." xml:space="preserve">
+    <value>下载中..</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="Edit the visitor" xml:space="preserve">
+    <value>编辑访客</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>电子邮件</value>
+  </data>
+  <data name="email is required!" xml:space="preserve">
+    <value>电子邮件必填!</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>员工</value>
+  </data>
+  <data name="employee is required!" xml:space="preserve">
+    <value>员工必填!</value>
+  </data>
+  <data name="Expected Date" xml:space="preserve">
+    <value>预计拜访日期</value>
+  </data>
+  <data name="expected date is required!" xml:space="preserve">
+    <value>预计拜访日期必填!</value>
+  </data>
+  <data name="Expected Time" xml:space="preserve">
+    <value>预计拜访时间</value>
+  </data>
+  <data name="expected time is required!" xml:space="preserve">
+    <value>预计拜访时间必填!</value>
+  </data>
+  <data name="Export Data" xml:space="preserve">
+    <value>导出Excel</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>性别</value>
+  </data>
+  <data name="Has apppoved" xml:space="preserve">
+    <value>已审批</value>
+  </data>
+  <data name="Health Code" xml:space="preserve">
+    <value>健康码</value>
+  </data>
+  <data name="I promise the truth" xml:space="preserve">
+    <value>我承认真实上报</value>
+  </data>
+  <data name="Identification No." xml:space="preserve">
+    <value>身份证号</value>
+  </data>
+  <data name="Identification No. is required!" xml:space="preserve">
+    <value>身份证号必填!</value>
+  </data>
+  <data name="Import Data" xml:space="preserve">
+    <value>导入Excel</value>
+  </data>
+  <data name="License Plate Number" xml:space="preserve">
+    <value>访客车牌号</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>加载中..</value>
+  </data>
+  <data name="No Allowed" xml:space="preserve">
+    <value>没有授权</value>
+  </data>
+  <data name="No matching records found" xml:space="preserve">
+    <value>没有找到记录</value>
+  </data>
+  <data name="Nucleic Acid Test Report" xml:space="preserve">
+    <value>核酸检查报告</value>
+  </data>
+  <data name="Ok" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Only green codes are allowed" xml:space="preserve">
+    <value>只允许绿码通行</value>
+  </data>
+  <data name="Pass Code" xml:space="preserve">
+    <value>通行代码</value>
+  </data>
+  <data name="Phone Number" xml:space="preserve">
+    <value>联系电话</value>
+  </data>
+  <data name="Phone Number is required!" xml:space="preserve">
+    <value>联系电话必填!</value>
+  </data>
+  <data name="Purpose" xml:space="preserve">
+    <value>目的</value>
+  </data>
+  <data name="purpose is required!" xml:space="preserve">
+    <value>目的必填!</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="Save successfully" xml:space="preserve">
+    <value>保存成功</value>
+  </data>
+  <data name="Search for approved" xml:space="preserve">
+    <value>按审批状态查询</value>
+  </data>
+  <data name="Search for employee" xml:space="preserve">
+    <value>按员工姓名查询</value>
+  </data>
+  <data name="Search for expected date" xml:space="preserve">
+    <value>按访问日期查询</value>
+  </data>
+  <data name="Search for purpose" xml:space="preserve">
+    <value>按目的查询</value>
+  </data>
+  <data name="Search for visitor's company name" xml:space="preserve">
+    <value>按访客公司查询</value>
+  </data>
+  <data name="Search for visitor's license plate number" xml:space="preserve">
+    <value>按车牌查询</value>
+  </data>
+  <data name="Search for visitor's name" xml:space="preserve">
+    <value>按访客姓名查询</value>
+  </data>
+  <data name="Select Employee" xml:space="preserve">
+    <value>选择拜访员工</value>
+  </data>
+  <data name="Sort By" xml:space="preserve">
+    <value>排序</value>
+  </data>
+  <data name="The photo is used for intelligent face recognition" xml:space="preserve">
+    <value>照片将用于人脸识别</value>
+  </data>
+  <data name="This QR code for your pass card" xml:space="preserve">
+    <value>这是通行二维码</value>
+  </data>
+  <data name="Trip Code" xml:space="preserve">
+    <value>行程码</value>
+  </data>
+  <data name="Upload a nucleic acid test report" xml:space="preserve">
+    <value>上传24内核酸报告</value>
+  </data>
+  <data name="Upload health code successfully" xml:space="preserve">
+    <value>上传健康码</value>
+  </data>
+  <data name="Upload photo successfully" xml:space="preserve">
+    <value>上传照片成功</value>
+  </data>
+  <data name="Upload test report successfully" xml:space="preserve">
+    <value>上传核酸测试报告成功</value>
+  </data>
+  <data name="Upload trip code successfully" xml:space="preserve">
+    <value>上传行程码成功</value>
+  </data>
+  <data name="Uploading..." xml:space="preserve">
+    <value>上传中..</value>
+  </data>
+  <data name="Visitors" xml:space="preserve">
+    <value>访客信息</value>
+  </data>
+  <data name="Visitor's Name" xml:space="preserve">
+    <value>访客姓名</value>
+  </data>
+  <data name="visitor's name is required!" xml:space="preserve">
+    <value>访客姓名必填!</value>
+  </data>
+  <data name="Visitor's Phone Number" xml:space="preserve">
+    <value>访客联系电话</value>
+  </data>
+  <data name="You must agree" xml:space="preserve">
+    <value>你必须同意隐私政策</value>
+  </data>
+  <data name="You must promise" xml:space="preserve">
+    <value>你必须承诺上报的真实性</value>
+  </data>
+  <data name="You must upload health code" xml:space="preserve">
+    <value>你必须上传健康码</value>
+  </data>
+  <data name="You must upload photo" xml:space="preserve">
+    <value>你必须上传照片</value>
+  </data>
+  <data name="You must upload trip code" xml:space="preserve">
+    <value>你必须上传行程码</value>
+  </data>
+  <data name="You're sure you want to delete the selected items:{0}?" xml:space="preserve">
+    <value>你确定删除选择的记录:{0}?</value>
+  </data>
+  <data name="You're sure you want to delete the Visitor:{0}?" xml:space="preserve">
+    <value>你确定要删除访客:{0}?</value>
+  </data>
+</root>
