@@ -225,4 +225,19 @@
   <data name="You're sure you want to delete the Employee:{0}?" xml:space="preserve">
     <value>你确定要删除员工:{0}?</value>
   </data>
+  <data name="Advanced Search" xml:space="preserve">
+    <value>高级搜索</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>员工姓名</value>
+  </data>
+  <data name="Search for department" xml:space="preserve">
+    <value>按部门查询</value>
+  </data>
+  <data name="Search for email" xml:space="preserve">
+    <value>按邮件查询</value>
+  </data>
+  <data name="Search for name" xml:space="preserve">
+    <value>按姓名查询</value>
+  </data>
 </root>

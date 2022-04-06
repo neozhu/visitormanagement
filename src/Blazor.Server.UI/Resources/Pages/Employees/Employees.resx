@@ -123,6 +123,9 @@
   <data name="Actions" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="Advanced Search" xml:space="preserve">
+    <value>Advanced Search</value>
+  </data>
   <data name="Avatar" xml:space="preserve">
     <value>Avatar</value>
   </data>
@@ -206,6 +209,15 @@
   </data>
   <data name="Save successfully" xml:space="preserve">
     <value>Save successfully</value>
+  </data>
+  <data name="Search for department" xml:space="preserve">
+    <value>Search for department</value>
+  </data>
+  <data name="Search for email" xml:space="preserve">
+    <value>Search for email</value>
+  </data>
+  <data name="Search for name" xml:space="preserve">
+    <value>Search for name</value>
   </data>
   <data name="Select Department" xml:space="preserve">
     <value>Select Department</value>

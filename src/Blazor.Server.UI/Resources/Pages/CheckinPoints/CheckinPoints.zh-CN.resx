@@ -210,4 +210,7 @@
   <data name="You're sure you want to delete the department:{0}?" xml:space="preserve">
     <value>你确定要删除:{0}?</value>
   </data>
+  <data name="You're sure you want to delete the check-in point:{0}?" xml:space="preserve">
+    <value>你确定要删除:{0}?</value>
+  </data>
 </root>

@@ -192,4 +192,10 @@
   <data name="You're sure you want to delete the designation:{0}?" xml:space="preserve">
     <value>你确定要删除:{0}?</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>称呼</value>
+  </data>
+  <data name="name is required!" xml:space="preserve">
+    <value>称呼必填!</value>
+  </data>
 </root>
