@@ -43,7 +43,7 @@ public class IdentityService : IIdentityService
         _localizer = localizer;
     }
 
-    public async Task<string> GetUserNameAsync(string userId)
+    public async Task<string?> GetUserNameAsync(string userId)
     {
         await _semaphore.WaitAsync();
         try
