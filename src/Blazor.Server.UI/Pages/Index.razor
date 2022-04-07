@@ -106,7 +106,7 @@
         <MudPaper Width="400px">
             <MudList Clickable="true">
                 <MudListSubheader>
-                    @L["Online sessions"]
+                    @L["Online sessions"] (@(_usersStateContainer.UsersByConnectionId.Count))
                 </MudListSubheader>
                 @foreach(var user in _usersStateContainer.UsersByConnectionId)
                 {
