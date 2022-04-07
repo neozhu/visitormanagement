@@ -133,6 +133,7 @@
             </ColGroup>
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Avatar" T="VisitorDto">@L["Visitor's Avatar"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PassCode" T="VisitorDto">@L["Pass Code"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="VisitorDto">@L["Visitor's Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="VisitorDto">@L["Phone Number"]</MudTableSortLabel></MudTh>
@@ -170,6 +171,16 @@
                             @L["No Allowed"]
                         </MudButton>
                     }
+                </MudTd>
+                <MudTd HideSmall="true" DataLabel="@L["Visitor's Avatar"]">
+                    @if (string.IsNullOrEmpty(context.Avatar))
+                        {
+                           <MudAvatar Image="@context.QrCode" Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important" />
+                        }
+                        else
+                        {
+                           <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
+                        }
                 </MudTd>
                 <MudTd HideSmall="true" DataLabel="@L["Pass Code"]">@context.PassCode</MudTd>
                 <MudTd DataLabel="@L["Visitor's Name"]">

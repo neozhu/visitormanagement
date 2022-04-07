@@ -369,4 +369,10 @@
   <data name="Upload a trip code" xml:space="preserve">
     <value>上传行程码</value>
   </data>
+  <data name="Search for pass code" xml:space="preserve">
+    <value>按通行代码查询</value>
+  </data>
+  <data name="Visitor's Avatar" xml:space="preserve">
+    <value>访客头像</value>
+  </data>
 </root>

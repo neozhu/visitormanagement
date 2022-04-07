@@ -5,6 +5,13 @@
                    Class="mud-elevation-25 pa-2 mb-3" Text="@L["Advanced Search"]">
     <MudGrid>
         <MudItem xs="12" sm="6" md="4">
+            <MudTextField @bind-Value="TRequest.PassCode" 
+                          Placeholder="@L["Search for pass code"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6" md="4">
             <MudTextField @bind-Value="TRequest.Name" 
                           Placeholder="@L["Search for visitor's name"]"
                           Clearable="true"

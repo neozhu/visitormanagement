@@ -8,6 +8,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Paginat
 
 public class VisitorsWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<VisitorDto>>, ICacheable
 {
+    public string? PassCode { get; set; }
     public string? Name { get; set; }
     public string? LicensePlateNumber { get; set; }
     public string? CompanyName { get; set; }
@@ -61,6 +62,10 @@ public class SearchVisitorSpecification : Specification<Visitor>
         AddInclude(x => x.Employee);
         AddInclude(x => x.Designation);
         Criteria = q => q.Name != null;
+        if (!string.IsNullOrEmpty(query.PassCode))
+        {
+            And(x => x.PassCode.Contains(query.PassCode));
+        }
         if (!string.IsNullOrEmpty(query.Keyword))
         {
             And(x => x.Name.Contains(query.Keyword) || x.Comment.Contains(query.Keyword) || x.CompanyName.Contains(query.Keyword));

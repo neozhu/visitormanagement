@@ -273,6 +273,9 @@
   <data name="Search for expected date" xml:space="preserve">
     <value>Search for expected date</value>
   </data>
+  <data name="Search for pass code" xml:space="preserve">
+    <value>Search for pass code</value>
+  </data>
   <data name="Search for purpose" xml:space="preserve">
     <value>Search for purpose</value>
   </data>
@@ -335,6 +338,9 @@
   </data>
   <data name="Uploading..." xml:space="preserve">
     <value>Uploading...</value>
+  </data>
+  <data name="Visitor's Avatar" xml:space="preserve">
+    <value>Visitor's Avatar</value>
   </data>
   <data name="Visitor's Name" xml:space="preserve">
     <value>Visitor's Name</value>
