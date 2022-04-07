@@ -348,7 +348,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-
+            return;
             item.Email = model.Email;
             item.PhoneNumber = model.PhoneNumber;
             item.ProfilePictureDataUrl = model.ProfilePictureDataUrl;
@@ -382,6 +382,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
+            return;
             foreach (var item in SelectItems)
             {
                 await _userManager.DeleteAsync(item);
@@ -416,6 +417,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
+            return;
             var token = await _userManager.GeneratePasswordResetTokenAsync(item);
             var state = await _userManager.ResetPasswordAsync(item, token, model.Password);
             if (state.Succeeded)
