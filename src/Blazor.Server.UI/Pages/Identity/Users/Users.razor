@@ -317,6 +317,7 @@
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                     ProfilePictureDataUrl = model.ProfilePictureDataUrl,
+                    IsActive = model.IsActive,
                 };
             var password = model.Password;
             var state = await _userManager.CreateAsync(applicationUser, password);
@@ -354,7 +355,7 @@
 
     private async Task OnEdit(UserModel item)
     {
-        var user = await _userManager.FindByIdAsync(item.UserId);
+  var user = await _userManager.FindByIdAsync(item.UserId);
         var roles = await _userManager.GetRolesAsync(user);
         var model = new UserFormModel()
             {
@@ -365,6 +366,7 @@
                 Email = item.Email,
                 PhoneNumber = item.PhoneNumber,
                 ProfilePictureDataUrl = item.Avatar,
+                IsActive = item.IsActive,
                 AssignRoles = roles.ToArray()
             };
         var parameters = new DialogParameters { ["model"] = model };
@@ -373,13 +375,22 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+
+            item.Email = model.Email;
+            item.PhoneNumber = model.PhoneNumber;
+            item.Avatar = model.ProfilePictureDataUrl;
+            item.DisplayName = model.DisplayName;
+            item.Site = model.Site;
+            item.UserName = model.UserName;
+            item.IsActive = model.IsActive;
+            
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
             user.ProfilePictureDataUrl = model.ProfilePictureDataUrl;
             user.DisplayName = model.DisplayName;
             user.Site = model.Site;
             user.UserName = model.UserName;
+            user.IsActive = model.IsActive;
             var state = await _userManager.UpdateAsync(user);
             if (model.AssignRoles is not null && model.AssignRoles.Length > 0)
             {
@@ -407,7 +418,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+   
             var deleteId = SelectItems.Select(x => x.UserId).ToArray();
             var deleteusers = await _userManager.Users.Where(x => deleteId.Contains(x.Id)).ToListAsync();
             foreach (var deleteuser in deleteusers)
@@ -448,7 +459,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+ 
             var user = await _userManager.FindByIdAsync(item.UserId);            
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var state = await _userManager.ResetPasswordAsync(user, token, model.Password);
