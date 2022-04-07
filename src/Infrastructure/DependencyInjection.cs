@@ -9,6 +9,7 @@ using CleanArchitecture.Blazor.Infrastructure.Services.Authentication;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using CleanArchitecture.Blazor.Infrastructure.Services.Picklist;
 using HashidsNet;
+using CleanArchitecture.Blazor.Infrastructure.Hubs;
 
 namespace CleanArchitecture.Blazor.Infrastructure;
 
@@ -103,6 +104,7 @@ public static class DependencyInjection
         services.AddControllers();
         services.AddSingleton<IUsersStateContainer, UsersStateContainer>();
         services.AddScoped<CircuitHandler, CircuitHandlerService>();
+        services.AddScoped<HubClient>();
         services.AddSignalR();
 
         return services;
