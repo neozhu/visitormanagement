@@ -11,11 +11,14 @@ using CleanArchitecture.Blazor.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.AspNetCore.Identity;
 using CleanArchitecture.Blazor.Infrastructure.Constants.Role;
+using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity;
 
 namespace Blazor.Server.UI.Pages.Identity.Users;
 
     public partial class Users : IDisposable
     {
+    [Inject]
+    private IUsersStateContainer _usersStateContainer { get; set; }
         private List<ApplicationUser> UserList = new List<ApplicationUser>();
         private HashSet<ApplicationUser> SelectItems = new HashSet<ApplicationUser>();
         private string _searchString = string.Empty;
@@ -54,17 +57,23 @@ namespace Blazor.Server.UI.Pages.Identity.Users;
             _canImport = false; // (await AuthService.AuthorizeAsync(state.User, Permissions.Users.Import)).Succeeded;
             _canExport = false; // (await AuthService.AuthorizeAsync(state.User, Permissions.Users.Export)).Succeeded;
             await LoadData();
-            (circuitHandler as CircuitHandlerService).CircuitsChanged += HandleCircuitsChanged;
+        _usersStateContainer.OnChange += HandleCircuitsChanged;
+
+
         }
         public void Dispose()
         {
-            (circuitHandler as CircuitHandlerService).CircuitsChanged -= HandleCircuitsChanged;
-        }
-        public void HandleCircuitsChanged(object sender, bool connected)
+        _usersStateContainer.OnChange -= HandleCircuitsChanged;
+    }
+        public void HandleCircuitsChanged()
         {
-            InvokeAsync(async () =>
+            InvokeAsync(() =>
             {
-                Snackbar.Add($"{L["Circuits changed."]}", MudBlazor.Severity.Info);
+                foreach (var session in _usersStateContainer.UsersByConnectionId)
+                {
+                    Snackbar.Add(L[$"{session.Value} session changed."], MudBlazor.Severity.Info);
+                }
+                
             });
         }
 

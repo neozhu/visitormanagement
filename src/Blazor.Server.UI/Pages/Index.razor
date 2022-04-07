@@ -1,5 +1,7 @@
 @page "/"
+@implements IDisposable
 @inject IStringLocalizer<Index> L
+@using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity
 @using Microsoft.AspNetCore.Authorization
 <style>
     .lp-app-grid {
@@ -96,15 +98,35 @@
         <MudPaper Class="pa-4 px-6 rounded-lg d-flex flex-column flex-grow-0">
             <div>
                 <MudText Typo="Typo.h6">@L["Visitor's Purpose"]</MudText>
-               <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="200px" Height="200px" />
+                <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="200px" Height="200px" />
             </div>
+        </MudPaper>
+    </div>
+    <div class="my-6 d-flex gap-6 flex-wrap">
+        <MudPaper Width="400px">
+            <MudList Clickable="true">
+                <MudListSubheader>
+                    @L["Online sessions"]
+                </MudListSubheader>
+                @foreach(var user in _usersStateContainer.UsersByConnectionId)
+                {
+                    <MudListItem Icon="@Icons.Material.Filled.Person">
+                        <MudText Typo="Typo.subtitle1">@user.Value</MudText>
+                        <MudText Typo="Typo.body2">@user.Key</MudText>
+                   </MudListItem>
+                }
+           
+                
+            </MudList>
         </MudPaper>
     </div>
 </MudContainer>
 
 @code {
+    [Inject]
+    private IUsersStateContainer _usersStateContainer { get; set; }
     private int day = -1; //default value cannot be 0 -> first selectedindex is 0.
-    double[] data = { 77, 25, 20, 5,15 };
+    double[] data = { 77, 25, 20, 5, 15 };
     string[] labels = { "Meeting", "Interview", "Conferences", "Working", "Others" };
 
     public List<ChartSeries> Series = new List<ChartSeries>()
@@ -129,5 +151,19 @@
         }
         Series = new_series;
         StateHasChanged();
+    }
+    public void Dispose()
+    {
+        _usersStateContainer.OnChange -= HandleCircuitsChanged;
+    }
+    protected override Task OnInitializedAsync()
+    {
+        _usersStateContainer.OnChange += HandleCircuitsChanged;
+        return Task.CompletedTask;
+    }
+
+    public async void HandleCircuitsChanged()
+    {
+        await InvokeAsync(StateHasChanged);
     }
 }
