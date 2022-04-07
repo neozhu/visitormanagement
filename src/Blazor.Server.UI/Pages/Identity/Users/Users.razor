@@ -437,7 +437,7 @@
         var user = await _userManager.FindByIdAsync(item.UserId);
         user.IsActive = !item.IsActive;
         var state = await _userManager.UpdateAsync(user);
-        //item.IsActive = !item.IsActive;
+        item.IsActive = !item.IsActive;
         if (state.Succeeded)
         {
             Snackbar.Add($"{L["Update successfully"]}", MudBlazor.Severity.Info);
