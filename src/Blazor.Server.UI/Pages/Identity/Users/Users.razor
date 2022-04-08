@@ -5,6 +5,7 @@
 @using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity
 @using CleanArchitecture.Blazor.Infrastructure.Constants.Role
 @using CleanArchitecture.Blazor.Infrastructure.Services
+@using CleanArchitecture.Blazor.Infrastructure.Services.Authentication
 @using Microsoft.AspNetCore.Components.Server.Circuits
 @using Microsoft.AspNetCore.Identity
 @inject IStringLocalizer<Users> L
@@ -209,6 +210,8 @@
     private UserManager<ApplicationUser> _userManager { get; set; } = default!;
     [Inject]
     public CircuitHandler circuitHandler { get; set; } = default!;
+    [Inject]
+    private ProfileService _profileService { get; set; } = default!;
     private bool _canCreate;
     private bool _canSearch;
     private bool _canEdit;
@@ -355,7 +358,7 @@
 
     private async Task OnEdit(UserModel item)
     {
-  var user = await _userManager.FindByIdAsync(item.UserId);
+        var user = await _userManager.FindByIdAsync(item.UserId);
         var roles = await _userManager.GetRolesAsync(user);
         var model = new UserFormModel()
             {
@@ -375,6 +378,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
+            var state = await AuthState;
 
             item.Email = model.Email;
             item.PhoneNumber = model.PhoneNumber;
@@ -383,7 +387,11 @@
             item.Site = model.Site;
             item.UserName = model.UserName;
             item.IsActive = model.IsActive;
-            
+            if(state.User.GetUserId()==item.UserId){
+               await _profileService.Update(item);
+            }
+
+
             user.Email = model.Email;
             user.PhoneNumber = model.PhoneNumber;
             user.ProfilePictureDataUrl = model.ProfilePictureDataUrl;
@@ -391,20 +399,19 @@
             user.Site = model.Site;
             user.UserName = model.UserName;
             user.IsActive = model.IsActive;
-            var state = await _userManager.UpdateAsync(user);
-            if (model.AssignRoles is not null && model.AssignRoles.Length > 0)
+            var identityResult = await _userManager.UpdateAsync(user);
+            if (identityResult.Succeeded)
             {
-                await _userManager.RemoveFromRolesAsync(user, roles);
-                await _userManager.AddToRolesAsync(user, model.AssignRoles);
-            }
-
-            if (state.Succeeded)
-            {
+                if (model.AssignRoles is not null && model.AssignRoles.Length > 0)
+                {
+                    await _userManager.RemoveFromRolesAsync(user, roles);
+                    await _userManager.AddToRolesAsync(user, model.AssignRoles);
+                }
                 Snackbar.Add($"{L["Update successfully"]}", MudBlazor.Severity.Info);
             }
             else
             {
-                Snackbar.Add($"{string.Join(",", (state.Errors.Select(x => x.Description).ToArray()))}", MudBlazor.Severity.Error);
+                Snackbar.Add($"{string.Join(",", (identityResult.Errors.Select(x => x.Description).ToArray()))}", MudBlazor.Severity.Error);
             }
         }
     }
@@ -418,7 +425,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-   
+
             var deleteId = SelectItems.Select(x => x.UserId).ToArray();
             var deleteusers = await _userManager.Users.Where(x => deleteId.Contains(x.Id)).ToListAsync();
             foreach (var deleteuser in deleteusers)
@@ -450,7 +457,7 @@
 
     private async Task OnResetPassword(UserModel item)
     {
-       
+
         var model = new ResetPasswordFormModel()
             { Id = item.UserId, DisplayName = item.DisplayName, UserName = item.UserName, ProfilePictureDataUrl = item.Avatar };
         var parameters = new DialogParameters { ["model"] = model };
@@ -459,8 +466,8 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
- 
-            var user = await _userManager.FindByIdAsync(item.UserId);            
+
+            var user = await _userManager.FindByIdAsync(item.UserId);
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var state = await _userManager.ResetPasswordAsync(user, token, model.Password);
             if (state.Succeeded)
