@@ -22,6 +22,7 @@
         <MudTable ServerData="@(new Func<TableState, Task<TableData<VisitorDto>>>(ServerReload))"
                   FixedHeader="true"
                   FixedFooter="true"
+                  Virtualize="true"
                   Height="calc(100vh - 265px)"
                   Loading="@_loading"
                   SortLabel="@L["Sort By"]"
@@ -293,7 +294,7 @@
             query.SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString());
             query.PageNumber = state.Page + 1;
             query.PageSize = state.PageSize;
-            var result = await _mediator.Send(query);
+            var result =await  _mediator.Send(query);
             return new TableData<VisitorDto>() { TotalItems = result.TotalItems, Items = result.Items };
         }
         finally
