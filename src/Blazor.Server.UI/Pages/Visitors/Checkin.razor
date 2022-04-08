@@ -45,9 +45,12 @@
             </MudItem>
             @if (!string.IsNullOrEmpty(_imgUri))
             {
-                <MudImage src="@_imgUri" Width="320" Height="240" />
+                 <div class="d-flex justify-center align-content-center">
+                    <MudCard Style="width:320px;height:290px">
+                        <MudCardMedia Image="@_imgUri" Style="width:320px;height:290px" ></MudCardMedia>
+                    </MudCard>
+                </div>                
             }
-
         </MudGrid>
     </ChildContent>
     <ErrorContent>
@@ -76,7 +79,7 @@
     protected override async Task OnInitializedAsync()
     {
 
-        captionFont = SystemFonts.CreateFont("Arial", 14, FontStyle.Regular);
+        captionFont = SystemFonts.CreateFont("Arial", 23, FontStyle.Bold);
         Title = L["Pre Registers"];
         var state = await AuthState;
 
@@ -88,34 +91,51 @@
         {
             await JS.InvokeVoidAsync("attachCamera", "#my_camera");
         }
-       await base.OnAfterRenderAsync(firstRender);
+        await base.OnAfterRenderAsync(firstRender);
     }
     private async Task TakePhoto(MouseEventArgs e)
     {
-         await JS.InvokeVoidAsync("takeSnapshot", DotNetObjectReference.Create(this));
+        await JS.InvokeVoidAsync("takeSnapshot", DotNetObjectReference.Create(this));
     }
 
     [JSInvokable]
     public Task ProcessImage(string imageString)
     {
         byte[] imageData = Convert.FromBase64String(imageString.Split(',')[1]);
-        _captionText = "Hello!";
+        _captionText = "adGaLOJWKjjb";
         //Do image processing here
 
-        DrawingOptions alignCenter = new DrawingOptions()
+        var drawingOptions = new DrawingOptions()
         { 
             GraphicsOptions = new  GraphicsOptions()
             {
-                  
+
             }
+        };
+        var textOptions = new TextOptions(captionFont)
+        {
+                TextAlignment = TextAlignment.Center,
+                HorizontalAlignment = SixLabors.Fonts.HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Bottom,
         };
 
         using (var image = Image.Load(imageData))
         {
+            var width = image.Width;
+            var height = image.Height + 50;
+            var resizeOptions = new ResizeOptions()
+                {
+                    Mode = ResizeMode.Pad,
+                    PadColor =SixLabors.ImageSharp.Color.Black,
+                    Size = new SixLabors.ImageSharp.Size(width, height),
+                    Position =   AnchorPositionMode.TopLeft
+                    
+                };
             image.Mutate(x => x
                 .Flip(FlipMode.Horizontal) //To match mirrored webcam image
-                .Fill(SixLabors.ImageSharp.Color.ParseHex("0008"), new RectangularPolygon(0, 220, 320, 20)) //Set footer bar for caption
-                .DrawText(alignCenter, _captionText, captionFont, SixLabors.ImageSharp.Color.White, new PointF(8, 222)) //center in footer bar)
+                .Resize(resizeOptions)
+                .Fill(SixLabors.ImageSharp.Color.ParseHex("0008"), new RectangularPolygon(0, 240, 320, 50)) //Set footer bar for caption
+                .DrawText(drawingOptions, _captionText, captionFont, SixLabors.ImageSharp.Color.White,  new PointF(75, 252)) //center in footer bar)
             );
             _imgUri = image.ToBase64String(JpegFormat.Instance);
         }
