@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "jsdelivr",
+  "libraries": [
+    {
+      "library": "webcam.js@1.0.1",
+      "destination": "wwwroot/js/webcam.js/",
+      "files": [
+        "src/webcam.js",
+        "src/webcam.min.js"
+      ]
+    }
+  ]
+}

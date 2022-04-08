@@ -1,0 +1,125 @@
+@page "/visitor/checkin"
+
+
+@using Blazor.Server.UI.Services
+@using Blazor.Server.UI.Pages.CheckinPoints
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@using HashidsNet
+@using Net.Codecrete.QrCodeGenerator
+@using SixLabors.Fonts;
+@using SixLabors.ImageSharp;
+@using SixLabors.ImageSharp.Drawing;
+@using SixLabors.ImageSharp.Drawing.Processing;
+@using SixLabors.ImageSharp.Formats.Jpeg
+@using SixLabors.ImageSharp.PixelFormats;
+@using SixLabors.ImageSharp.Processing;
+@inject IJSRuntime JS
+@inject IStringLocalizer<Visitors> L
+@attribute [Authorize(Policy = Permissions.Visitors.PreRegisters)]
+<PageTitle>@Title</PageTitle>
+<style>
+    .mud-table-toolbar {
+        height: 84px !important;
+    }
+</style>
+<ErrorBoundary>
+    <ChildContent>
+        <MudGrid>
+            <MudItem xs="12" sm="5">
+
+                <div class="d-flex justify-center align-content-center">
+                    <MudCard Style="width:320px">
+                        <div id="my_camera" class="mud-card-media pa-0 ma-0" style="width:320px; height:240px;"></div>
+                        <MudCardActions>
+                            <MudButton Variant="Variant.Text" OnClick="TakePhoto" Color="MudBlazor.Color.Primary">Take a photo</MudButton>
+                            <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary">Learn More</MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </div>
+
+            </MudItem>
+            @if (!string.IsNullOrEmpty(_imgUri))
+            {
+                <MudImage src="@_imgUri" Width="320" Height="240" />
+            }
+
+        </MudGrid>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    public string? Title { get; private set; }
+    private bool _loading;
+    private bool _uploading;
+    private string _imgUri;
+    private string _captionText;
+    [Inject] private IUploadService _uploadService { get; set; } = default!;
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Inject]
+    private Hashids hashids { get; set; } = default!;
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+
+    FontCollection collection = new FontCollection();
+    FontFamily sansFamily;
+    Font captionFont;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        captionFont = SystemFonts.CreateFont("Arial", 14, FontStyle.Regular);
+        Title = L["Pre Registers"];
+        var state = await AuthState;
+
+
+    }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("attachCamera", "#my_camera");
+        }
+       await base.OnAfterRenderAsync(firstRender);
+    }
+    private async Task TakePhoto(MouseEventArgs e)
+    {
+         await JS.InvokeVoidAsync("takeSnapshot", DotNetObjectReference.Create(this));
+    }
+
+    [JSInvokable]
+    public Task ProcessImage(string imageString)
+    {
+        byte[] imageData = Convert.FromBase64String(imageString.Split(',')[1]);
+        _captionText = "Hello!";
+        //Do image processing here
+
+        DrawingOptions alignCenter = new DrawingOptions()
+        { 
+            GraphicsOptions = new  GraphicsOptions()
+            {
+                  
+            }
+        };
+
+        using (var image = Image.Load(imageData))
+        {
+            image.Mutate(x => x
+                .Flip(FlipMode.Horizontal) //To match mirrored webcam image
+                .Fill(SixLabors.ImageSharp.Color.ParseHex("0008"), new RectangularPolygon(0, 220, 320, 20)) //Set footer bar for caption
+                .DrawText(alignCenter, _captionText, captionFont, SixLabors.ImageSharp.Color.White, new PointF(8, 222)) //center in footer bar)
+            );
+            _imgUri = image.ToBase64String(JpegFormat.Instance);
+        }
+        return Task.CompletedTask;
+    }
+
+}

@@ -53,6 +53,13 @@ public class MenuService : IMenuService
                     Href = "/visitor/preregisters",
                     PageStatus = PageStatus.Completed
                 },
+                  new()
+                {
+                    Title = "Check-in",
+                    Icon = Icons.Material.Filled.Camera,
+                    Href = "/visitor/checkin",
+                    PageStatus = PageStatus.Completed
+                },
                  new()
                 {
                     Title = "Reports",

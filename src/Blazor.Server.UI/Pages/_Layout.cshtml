@@ -39,6 +39,7 @@
     </div>
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="~/js/webcam.js/src/webcam.min.js"></script>
     <script type="text/javascript">
 
         async function downloadFileFromStream(fileName, contentStreamReference) {
@@ -58,7 +59,14 @@
             anchorElement.click();
             anchorElement.remove();
         }
-
+        function attachCamera(targer){
+            Webcam.attach(targer);
+        }
+        function takeSnapshot(dotNetHelper) {
+            Webcam.snap(function(dataUrl) {
+				dotNetHelper.invokeMethodAsync('ProcessImage', dataUrl);
+			} );
+        }
 
  
     </script>
