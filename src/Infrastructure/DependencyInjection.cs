@@ -49,7 +49,7 @@ public static class DependencyInjection
             .AddDefaultTokenProviders();
        
 
-        services.AddSingleton<ProfileService>();
+        services.AddScoped<ProfileService>();
         services.AddScoped<IdentityAuthenticationService>();
         services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<IdentityAuthenticationService>());
         services.AddScoped<IPicklistService,PicklistService>();

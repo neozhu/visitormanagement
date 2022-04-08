@@ -378,6 +378,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
+            return;
             var state = await AuthState;
 
             item.Email = model.Email;
@@ -388,7 +389,7 @@
             item.UserName = model.UserName;
             item.IsActive = model.IsActive;
             if(state.User.GetUserId()==item.UserId){
-               await _profileService.Update(item);
+                await _profileService.Update(item);
             }
 
 
@@ -425,7 +426,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-
+            return;
             var deleteId = SelectItems.Select(x => x.UserId).ToArray();
             var deleteusers = await _userManager.Users.Where(x => deleteId.Contains(x.Id)).ToListAsync();
             foreach (var deleteuser in deleteusers)
@@ -466,7 +467,7 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-
+            return;
             var user = await _userManager.FindByIdAsync(item.UserId);
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var state = await _userManager.ResetPasswordAsync(user, token, model.Password);
