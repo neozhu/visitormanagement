@@ -31,26 +31,52 @@
     <ChildContent>
         <MudGrid>
             <MudItem xs="12" sm="5">
-
                 <div class="d-flex justify-center align-content-center">
                     <MudCard Style="width:320px">
                         <div id="my_camera" class="mud-card-media pa-0 ma-0" style="width:320px; height:240px;"></div>
-                        <MudCardActions>
-                            <MudButton Variant="Variant.Text" OnClick="TakePhoto" Color="MudBlazor.Color.Primary">Take a photo</MudButton>
-                            <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary">Learn More</MudButton>
+                        <MudCardActions Style="height:45px">
+                            <MudButton Variant="Variant.Text" OnClick="TakePhoto" Color="MudBlazor.Color.Primary"></MudButton>
                         </MudCardActions>
+
                     </MudCard>
                 </div>
-
             </MudItem>
-            @if (!string.IsNullOrEmpty(_imgUri))
-            {
-                 <div class="d-flex justify-center align-content-center">
-                    <MudCard Style="width:320px;height:290px">
-                        <MudCardMedia Image="@_imgUri" Style="width:320px;height:290px" ></MudCardMedia>
-                    </MudCard>
-                </div>                
-            }
+          
+
+                <MudItem xs="12" sm="5">
+                    <div class="d-flex justify-center align-content-center">
+                        <MudCard Style="width:320px">
+                            <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor"]</MudAlert>
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudText Typo="Typo.h6">@L["Scanning Code"]: @_decodedText</MudText>
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardMedia Image="@_visitor?.Avatar"/>
+                            <MudCardContent>
+                                <MudForm>
+                                   <MudTextField T="string" Value="@_visitor?.Name" Label="@L["Visitor's Name"]" Required="true" RequiredError="visitor's Name is required!"/>
+                                   <MudTextField T="string" Value="@_visitor?.CompanyName" Label="@L["Company Name"]" />
+                                   <Blazor.Server.UI.Pages.Devices.CheckinPointAutocomplete
+                                       Label="@L["Select Check-in Point"]"
+                                       Required="true"
+                                       RequiredError="@L["check-in point is required!"]"
+                                    ></Blazor.Server.UI.Pages.Devices.CheckinPointAutocomplete>
+                                    <MudTextField T="string" Lines="3" Label="@L["Comment"]" />
+                                </MudForm>
+                            </MudCardContent>
+                            <MudCardActions Style="height:45px">
+                                <MudSwitch @bind-Checked="@_autoCheckin" Label="@L["Automatic Check-in"]" Color="MudBlazor.Color.Success" />
+                                <MudButton Variant="Variant.Text" OnClick="OnCheckin" Color="MudBlazor.Color.Primary">@L["Checkin-in"]</MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                        
+                        <MudCard>
+                            
+                        </MudCard>
+                    </div>
+                </MudItem>
+         
         </MudGrid>
     </ChildContent>
     <ErrorContent>
@@ -61,8 +87,11 @@
     public string? Title { get; private set; }
     private bool _loading;
     private bool _uploading;
+    private bool _autoCheckin;
     private string _imgUri;
     private string _captionText;
+    private string _decodedText;
+    private VisitorDto? _visitor;
     [Inject] private IUploadService _uploadService { get; set; } = default!;
     [Inject]
     private ISender _mediator { get; set; } = default!;
@@ -89,7 +118,7 @@
     {
         if (firstRender)
         {
-            await JS.InvokeVoidAsync("attachCamera", "#my_camera");
+            await JS.InvokeVoidAsync("initalScanner", "my_camera", DotNetObjectReference.Create(this));
         }
         await base.OnAfterRenderAsync(firstRender);
     }
@@ -97,7 +126,20 @@
     {
         await JS.InvokeVoidAsync("takeSnapshot", DotNetObjectReference.Create(this));
     }
-
+    [JSInvokable]
+    public async Task GetResult(string decodedText)
+    {
+        _decodedText = decodedText;
+        _visitor = await _mediator.Send(new SearchVisitorQuery(decodedText));
+        StateHasChanged();
+    }
+    [JSInvokable]
+    public Task ClearResult()
+    {
+        //_decodedText = "";
+        //StateHasChanged();
+        return Task.CompletedTask;
+    }
     [JSInvokable]
     public Task ProcessImage(string imageString)
     {
@@ -106,18 +148,18 @@
         //Do image processing here
 
         var drawingOptions = new DrawingOptions()
-        { 
-            GraphicsOptions = new  GraphicsOptions()
             {
+                GraphicsOptions = new GraphicsOptions()
+                {
 
-            }
-        };
+                }
+            };
         var textOptions = new TextOptions(captionFont)
-        {
+            {
                 TextAlignment = TextAlignment.Center,
                 HorizontalAlignment = SixLabors.Fonts.HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Bottom,
-        };
+            };
 
         using (var image = Image.Load(imageData))
         {
@@ -126,20 +168,24 @@
             var resizeOptions = new ResizeOptions()
                 {
                     Mode = ResizeMode.Pad,
-                    PadColor =SixLabors.ImageSharp.Color.Black,
+                    PadColor = SixLabors.ImageSharp.Color.Black,
                     Size = new SixLabors.ImageSharp.Size(width, height),
-                    Position =   AnchorPositionMode.TopLeft
-                    
+                    Position = AnchorPositionMode.TopLeft
+
                 };
             image.Mutate(x => x
                 .Flip(FlipMode.Horizontal) //To match mirrored webcam image
                 .Resize(resizeOptions)
                 .Fill(SixLabors.ImageSharp.Color.ParseHex("0008"), new RectangularPolygon(0, 240, 320, 50)) //Set footer bar for caption
-                .DrawText(drawingOptions, _captionText, captionFont, SixLabors.ImageSharp.Color.White,  new PointF(75, 252)) //center in footer bar)
+                .DrawText(drawingOptions, _captionText, captionFont, SixLabors.ImageSharp.Color.White, new PointF(75, 252)) //center in footer bar)
             );
             _imgUri = image.ToBase64String(JpegFormat.Instance);
         }
         return Task.CompletedTask;
+    }
+
+    private void OnCheckin(){
+        
     }
 
 }

@@ -138,6 +138,9 @@
   <data name="Booking" xml:space="preserve">
     <value>Booking</value>
   </data>
+  <data name="Check-in" xml:space="preserve">
+    <value>Check-in</value>
+  </data>
   <data name="Check-in Points" xml:space="preserve">
     <value>Check-in Points</value>
   </data>

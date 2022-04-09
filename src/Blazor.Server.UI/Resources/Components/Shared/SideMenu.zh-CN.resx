@@ -213,4 +213,7 @@
   <data name="Picklist" xml:space="preserve">
     <value>参数选用表</value>
   </data>
+  <data name="Check-in" xml:space="preserve">
+    <value>签到</value>
+  </data>
 </root>
