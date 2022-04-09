@@ -71,8 +71,8 @@ public class MenuService : IMenuService
                 {
                     Title = "Histories",
                     Icon = Icons.Material.Filled.History,
-                    Href = "/visitor/histories",
-                    PageStatus = PageStatus.ComingSoon
+                    Href = "/visitor/visitorhistories",
+                    PageStatus = PageStatus.Completed
                 },
                 new()
                 {

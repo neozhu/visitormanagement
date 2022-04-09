@@ -1,0 +1,161 @@
+@page "/visitor/visitorhistories"
+
+
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Commands.Delete
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.Pagination
+@inject IStringLocalizer<VisitorHistories> L
+@attribute [Authorize(Policy = Permissions.VisitorHistories.View)]
+<PageTitle>@Title</PageTitle>
+<style>
+    .mud-table-toolbar {
+        height: 84px !important;
+    }
+</style>
+<ErrorBoundary>
+    <ChildContent>
+        <MudTable ServerData="@(new Func<TableState, Task<TableData<VisitorHistoryDto>>>(ServerReload))"
+                  FixedHeader="true"
+                  FixedFooter="true"
+                  Virtualize="true"
+                  Height="calc(100vh - 265px)"
+                  Loading="@_loading"
+                  SortLabel="@L["Sort By"]"
+                  MultiSelection="true" @bind-SelectedItems="_selectedItems"
+                  Hover="true" @ref="_table">
+            <ToolBarContent>
+                <div class="justify-start pt-3">
+                    <MudText Typo="Typo.h6">@L["Visitor Histories"]</MudText>
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                        <MudButton DisableElevation Variant="Variant.Outlined"
+                                   Size="Size.Small"
+                                   Disabled="@_loading"
+                                   OnClick="@(()=>OnRefresh())"
+                                   StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Primary"
+                                   Style="margin-right: 4px; margin-bottom:4px">@L["Refresh"]</MudButton>
+                       
+                    </MudHidden>
+                    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                        <MudMenu AnchorOrigin="Origin.BottomLeft" StartIcon="@Icons.Filled.KeyboardCommandKey" EndIcon="@Icons.Filled.KeyboardArrowDown" Label="@L["Action"]" Color="Color.Primary" Variant="Variant.Filled">
+                            <MudMenuItem Disabled="@_loading" OnClick="@(()=>OnRefresh())">@L["Refresh"]</MudMenuItem>
+                        </MudMenu>
+                    </MudHidden>
+                </div>
+                <MudSpacer />
+                <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Value="@_searchString" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+            </ToolBarContent>
+            <ColGroup>
+                <col style="width:50px;" />
+                <col style="width:120px;" />
+            </ColGroup>
+            <HeaderContent>
+                <MudTh><MudTableSortLabel SortLabel="Id" T="VisitorHistoryDto">@L["ID"]</MudTableSortLabel></MudTh>
+                <MudTh>@L["Visitor's Avatar"]</MudTh>
+                <MudTh><MudTableSortLabel SortLabel="VisitorId" T="VisitorHistoryDto">@L["Visitor's Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="CheckinPointId" T="VisitorHistoryDto">@L["Check-in Point"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="TransitDateTime" T="VisitorHistoryDto">@L["Check-in Date"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Temperature" T="VisitorHistoryDto">@L["Temperature"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Comment" T="VisitorHistoryDto">@L["Comment"]</MudTableSortLabel></MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd HideSmall="true" DataLabel="@L["ID"]">@context.Id</MudTd>
+                <MudTd HideSmall="false" DataLabel="@L["Visitor's Avatar"]">
+                    @if (string.IsNullOrEmpty(context.Avatar))
+                        {
+                           <MudAvatar Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important">
+                               @context.Visitor.First()
+                           </MudAvatar>
+                        }
+                        else
+                        {
+                           <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
+                        }
+                </MudTd>
+                <MudTd DataLabel="@L["Visitor's Name"]">
+                    <MudText>@context.Visitor</MudText>
+                    <MudText Typo="Typo.body2">@context.CompanyName</MudText>
+                </MudTd>
+                <MudTd DataLabel="@L["Check-in Point"]">
+                    @context.CheckinPoint
+                </MudTd>
+
+                <MudTd DataLabel="@L["Check-in Date"]">
+                    <MudText>@context.TransitDateTime</MudText>
+                </MudTd>
+                <MudTd DataLabel="@L["Temperature"]">@context.Temperature</MudTd>
+                <MudTd DataLabel="@L["Comment"]">@context.Comment</MudTd>
+            </RowTemplate>
+            <NoRecordsContent>
+                <MudText>@L["No matching records found"]</MudText>
+            </NoRecordsContent>
+            <LoadingContent>
+                <MudText>@L["Loading..."].</MudText>
+            </LoadingContent>
+            <PagerContent>
+                <MudTablePager />
+            </PagerContent>
+        </MudTable>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    public string? Title { get; private set; }
+    private HashSet<VisitorHistoryDto> _selectedItems = new HashSet<VisitorHistoryDto>();
+    private MudTable<VisitorHistoryDto> _table = default!;
+    private int _totalItems;
+    private string _searchString = string.Empty;
+    private bool _loading;
+    private bool _uploading;
+    private bool _downloading;
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+    private VisitorHistoriesWithPaginationQuery query { get; set; } = new();
+
+    private bool _canSearch;
+    private bool _canCreate;
+    protected override async Task OnInitializedAsync()
+    {
+        Title = L["Visitor Histories"];
+        var state = await AuthState;
+        _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.VisitorHistories.Search)).Succeeded;
+    }
+    private async Task<TableData<VisitorHistoryDto>> ServerReload(TableState state)
+    {
+        try
+        {
+            _loading = true;
+            query.Keyword = _searchString;
+            query.OrderBy = string.IsNullOrEmpty(state.SortLabel) ? "Id" : state.SortLabel;
+            query.SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString());
+            query.PageNumber = state.Page + 1;
+            query.PageSize = state.PageSize;
+            var result =await  _mediator.Send(query);
+            return new TableData<VisitorHistoryDto>() { TotalItems = result.TotalItems, Items = result.Items };
+        }
+        finally
+        {
+            _loading = false;
+        }
+
+    }
+
+    private async Task OnSearch(string text)
+    {
+        _selectedItems = new();
+        _searchString = text;
+        await _table.ReloadServerData();
+    }
+    private async Task OnRefresh()
+    {
+        _selectedItems = new();
+        _searchString = string.Empty;
+        await _table.ReloadServerData();
+    }
+     
+    }

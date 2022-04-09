@@ -7,7 +7,7 @@ public static class VisitorHistoryCacheKey
 {
     public const string GetAllCacheKey = "all-VisitorHistories";
     public static string GetPagtionCacheKey(string parameters) {
-        return "VisitorHistoriesWithPaginationQuery,{parameters}";
+        return $"VisitorHistoriesWithPaginationQuery,{parameters}";
     }
         static VisitorHistoryCacheKey()
     {

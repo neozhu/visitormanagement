@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs;
@@ -8,7 +8,7 @@ namespace CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries
 
     public class VisitorHistoriesWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<VisitorHistoryDto>>, ICacheable
     {
-        public string CacheKey => VisitorHistoryCacheKey.GetPagtionCacheKey("{this}");
+        public string CacheKey => VisitorHistoryCacheKey.GetPagtionCacheKey($"{this}");
         public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(VisitorHistoryCacheKey.SharedExpiryTokenSource.Token));
     }
     
@@ -32,8 +32,7 @@ namespace CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries
 
         public async Task<PaginatedData<VisitorHistoryDto>> Handle(VisitorHistoriesWithPaginationQuery request, CancellationToken cancellationToken)
         {
-            //TODO:Implementing VisitorHistoriesWithPaginationQueryHandler method 
-           var data = await _context.VisitorHistories
+           var data = await _context.VisitorHistories.Where(x=>x.Visitor.Name.Contains(request.Keyword) || x.Visitor.CompanyName.Contains(request.Keyword) || x.Comment.Contains(request.Keyword))
                 .OrderBy($"{request.OrderBy} {request.SortDirection}")
                 .ProjectTo<VisitorHistoryDto>(_mapper.ConfigurationProvider)
                 .PaginatedDataAsync(request.PageNumber, request.PageSize);

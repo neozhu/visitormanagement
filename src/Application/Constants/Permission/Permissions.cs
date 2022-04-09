@@ -25,6 +25,13 @@ public static class Permissions
         public const string Search = "Permissions.Logs.Search";
         public const string Export = "Permissions.Logs.Export";
     }
+    [DisplayName("VisitorHistories")]
+    [Description("VisitorHistories Permissions")]
+    public static class VisitorHistories
+    {
+        public const string View = "Permissions.VisitorHistories.View";
+        public const string Search = "Permissions.VisitorHistories.Search";
+    }
     [DisplayName("Visitors")]
     [Description("Visitors Permissions")]
     public static class Visitors
