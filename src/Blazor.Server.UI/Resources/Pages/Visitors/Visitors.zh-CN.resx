@@ -375,7 +375,19 @@
   <data name="Visitor's Avatar" xml:space="preserve">
     <value>访客头像</value>
   </data>
+  <data name="Approval visitor request" xml:space="preserve">
+    <value>审批访客请求</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>审批</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>通过</value>
+  </data>
   <data name="Check-in/out Time" xml:space="preserve">
     <value>进出时间</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>拒绝</value>
   </data>
 </root>

@@ -1,0 +1,44 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inherits MudComponentBase
+@inject IStringLocalizer<Visitors> L
+<MudDialog>
+    <DialogContent>
+        <MudPaper Class="d-flex flex-column flex-grow-1 gap-4" Elevation="0">
+            @foreach (var visitor in Selected)
+            {
+                <MudPaper class="d-flex flex-row flex-grow-1 gap-4 align-center pa-3" Elevation="3">
+                    <MudAvatar Image="@visitor.Avatar"></MudAvatar>
+                    <div class="flex-grow-1">
+                        <MudText>@visitor.Name</MudText>
+                        <MudText>@visitor.CompanyName</MudText>
+                    </div>
+
+
+                </MudPaper>
+            }
+        </MudPaper>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Reject">@L["Reject"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Approve">@L["Approve"]</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    public string? ApproveOutcome { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public List<VisitorDto> Selected { get; set; } = new();
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    private void Reject()
+    {
+        ApproveOutcome = "Reject";
+        MudDialog.Close(DialogResult.Ok(ApproveOutcome));
+    }
+    private void Approve()
+    {
+        ApproveOutcome = "Approved";
+        MudDialog.Close(DialogResult.Ok(ApproveOutcome));
+    }
+
+}

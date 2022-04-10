@@ -47,10 +47,11 @@
             </MudTextField>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
-            <MudCheckBox T="Nullable<bool>" Value="TRequest.Approved"
-                          Label="@L["Search for approved"]"
-                          CheckedChanged="ApproveCheckedChange">
-            </MudCheckBox>
+            <MudTextField @bind-Value="TRequest.Outcome" 
+                          Placeholder="@L["Search for approve outome"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </MudTextField>
         </MudItem>
         <MudItem xs="12" sm="6"  md="4">
            <MudDateRangePicker @ref="_picker1" Label="@L["Search for expected date"]" Clearable="true" DateRangeChanged="OnDateRangeChanged1">
@@ -86,9 +87,5 @@
             await OnFilterChanged.InvokeAsync(dateRange?.ToString());
         }
     }
-    private async Task ApproveCheckedChange(bool? s)
-    {
-        TRequest.Approved = s;
-        await OnFilterChanged.InvokeAsync(s?.ToString());
-    }
+   
 }

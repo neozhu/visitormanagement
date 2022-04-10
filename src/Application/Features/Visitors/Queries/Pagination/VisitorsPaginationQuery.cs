@@ -16,11 +16,11 @@ public class VisitorsWithPaginationQuery : PaginationFilter, IRequest<PaginatedD
     public string? Employee { get; set; }
     public DateTime? ExpectedDate1 { get; set; }
     public DateTime? ExpectedDate2 { get; set; }
-    public bool? Approved { get; set; }
+    public string? Outcome { get; set; }
 
     public override string ToString()
     {
-        return $"{base.ToString()},Name:{Name},LicensePlateNumber:{LicensePlateNumber},CompanyName:{CompanyName},Purpose:{Purpose},Employee:{Employee},ExpectedDate1:{ExpectedDate1?.ToString()},ExpectedDate2:{ExpectedDate2?.ToString()},Approved:{Approved}";
+        return $"{base.ToString()},Name:{Name},LicensePlateNumber:{LicensePlateNumber},CompanyName:{CompanyName},Purpose:{Purpose},Employee:{Employee},ExpectedDate1:{ExpectedDate1?.ToString()},ExpectedDate2:{ExpectedDate2?.ToString()},Outcome:{Outcome}";
     }
     public string CacheKey => VisitorCacheKey.GetPagtionCacheKey($"{this}");
     public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(VisitorCacheKey.SharedExpiryTokenSource.Token));
@@ -90,9 +90,9 @@ public class SearchVisitorSpecification : Specification<Visitor>
         {
             And(x => x.Purpose==query.Purpose);
         }
-        if(query.Approved is not null)
+        if(query.Outcome is not null)
         {
-            And(x => x.Apppoved == query.Approved);
+            And(x => x.ApprovalOutcome.Contains(query.Outcome));
         }
         if (query.ExpectedDate1 is not null && query.ExpectedDate2 is not null)
         {

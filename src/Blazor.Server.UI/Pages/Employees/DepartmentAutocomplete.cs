@@ -43,12 +43,21 @@ public class DepartmentAutocomplete : MudAutocomplete<int?>
     private Task<IEnumerable<int?>> Search(string value)
     {
         var list = new List<int?>();
-        if (!_departments.Any(x => x.Name.Contains(value)))
-            return Task.FromResult(list.AsEnumerable());
-        var result = _departments.Where(x => x.Name.Contains(value)).Select(x => x.Id);
-        foreach (var i in result)
+        if (string.IsNullOrEmpty(value))
         {
-            list.Add(i);
+            var result = _departments.Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
+        }
+        else
+        {
+            var result = _departments.Where(x => x.Name.ToLower().Contains(value.ToLower())).Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
         }
         return Task.FromResult(list.AsEnumerable());
     }

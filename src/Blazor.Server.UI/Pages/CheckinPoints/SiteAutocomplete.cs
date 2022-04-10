@@ -45,15 +45,22 @@ public class SiteAutocomplete : MudAutocomplete<int?>
         var list = new List<int?>();
         if (string.IsNullOrEmpty(value))
         {
+            var result = _sites.Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
+
+        }
+        else
+        {
             var result = _sites.Where(x => x.Name.Contains(value)).Select(x => x.Id);
             foreach (var i in result)
             {
                 list.Add(i);
             }
-            return Task.FromResult(list.AsEnumerable());
         }
-        if (!_sites.Any(x => x.Name.Contains(value)))
-            return Task.FromResult(list.AsEnumerable());
+         
         return Task.FromResult(list.AsEnumerable());
     }
 

@@ -42,15 +42,24 @@ public class DesignationAutocomplete : MudAutocomplete<int?>
 
     private  Task<IEnumerable<int?>> Search(string value)
     {
-        var list = new List<int?>();
-        if (!_designations.Any(x => x.Name.Contains(value)))
-            return Task.FromResult(list.AsEnumerable());
-       var result= _designations.Where(x => x.Name.Contains(value)).Select(x => x.Id);
-       foreach(var i in result)
+       var list = new List<int?>();
+        if (string.IsNullOrEmpty(value))
         {
-            list.Add(i);
+            var result = _designations.Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
         }
-       return Task.FromResult(list.AsEnumerable());
+        else
+        {
+            var result = _designations.Where(x => x.Name.ToLower().Contains(value.ToLower())).Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
+        }
+        return Task.FromResult(list.AsEnumerable());
     }
 
     private string GetName(int? id) => _designations.Find(b => b.Id == id)?.Name ?? string.Empty;

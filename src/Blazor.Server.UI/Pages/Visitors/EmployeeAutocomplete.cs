@@ -45,16 +45,21 @@ public class EmployeeAutocomplete : MudAutocomplete<int?>
         var list = new List<int?>();
         if (string.IsNullOrEmpty(value))
         {
-            var result = _employees.Where(x => x.Name.Contains(value)).Select(x => x.Id);
+            var result = _employees.Select(x => x.Id);
             foreach (var i in result)
             {
                 list.Add(i);
             }
-            return Task.FromResult(list.AsEnumerable());
         }
-        if (!_employees.Any(x => x.Name.Contains(value)))
-            return Task.FromResult(list.AsEnumerable());
-
+        else
+        {
+            var result = _employees.Where(x => value.Contains(x.Name)).Select(x => x.Id);
+            foreach (var i in result)
+            {
+                list.Add(i);
+            }
+            
+        }
         return Task.FromResult(list.AsEnumerable());
     }
 

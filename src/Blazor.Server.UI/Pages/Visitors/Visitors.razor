@@ -1,6 +1,7 @@
 @page "/visitor/visitors"
 
 
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
@@ -38,6 +39,16 @@
                                    OnClick="@(()=>OnRefresh())"
                                    StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Primary"
                                    Style="margin-right: 4px; margin-bottom:4px">@L["Refresh"]</MudButton>
+                        @if (_canApprove)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.Approval"
+                                   Disabled="@(!(_selectedItems.Count>0))"
+                                   Size="Size.Small"
+                                   OnClick="OnApproval"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   IconColor="Color.Surface">@L["Approve"]</MudButton>
+                        }
                         @if (_canCreate)
                         {
                             <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
@@ -103,6 +114,10 @@
                     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                         <MudMenu AnchorOrigin="Origin.BottomLeft" StartIcon="@Icons.Filled.KeyboardCommandKey" EndIcon="@Icons.Filled.KeyboardArrowDown" Label="@L["Action"]" Color="Color.Primary" Variant="Variant.Filled">
                             <MudMenuItem Disabled="@_loading" OnClick="@(()=>OnRefresh())">@L["Refresh"]</MudMenuItem>
+                            @if (_canApprove)
+                            {
+                                <MudMenuItem Disabled="@(!(_selectedItems.Count>0))" OnClick="OnApproval">@L["Approve"]</MudMenuItem>
+                            }
                             @if (_canCreate)
                             {
                                 <MudMenuItem Disabled="@_loading" OnClick="OnCreate">@L["Create"]</MudMenuItem>
@@ -175,13 +190,13 @@
                 </MudTd>
                 <MudTd HideSmall="true" DataLabel="@L["Visitor's Avatar"]">
                     @if (string.IsNullOrEmpty(context.Avatar))
-                        {
-                           <MudAvatar Image="@context.QrCode" Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important" />
-                        }
-                        else
-                        {
-                           <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
-                        }
+                    {
+                        <MudAvatar Image="@context.QrCode" Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important" />
+                    }
+                    else
+                    {
+                        <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
+                    }
                 </MudTd>
                 <MudTd HideSmall="true" DataLabel="@L["Pass Code"]">@context.PassCode</MudTd>
                 <MudTd DataLabel="@L["Visitor's Name"]">
@@ -210,19 +225,19 @@
                     <MudText Typo="Typo.body2">@context.CheckoutDate</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Trip Code"]">
-                    @if(context.TripCode is not null)
+                    @if (context.TripCode is not null)
                     {
                         <MudTooltip Text="@L["Trip Code"]">
                             <MudIconButton Icon="@Icons.Material.Filled.Route" aria-label="@L["Trip Code"]" Title="@L["Trip Code"]" />
                         </MudTooltip>
                     }
-                    @if(context.HealthCode is not null)
+                    @if (context.HealthCode is not null)
                     {
                         <MudTooltip Text="@L["Health Code"]">
                             <MudIconButton Icon="@Icons.Material.Filled.MonitorHeart" aria-label="@L["Health Code"]" Title="@L["Health Code"]" />
                         </MudTooltip>
                     }
-                    @if(context.NucleicAcidTestReport is not null)
+                    @if (context.NucleicAcidTestReport is not null)
                     {
                         <MudTooltip Text="@L["Nucleic Acid Test Report"]">
                             <MudIconButton Icon="@Icons.Material.Filled.FactCheck" aria-label="@L["Nucleic Acid Test Report"]" Title="@L["Nucleic Acid Test Report"]" />
@@ -231,6 +246,7 @@
                 </MudTd>
                 <MudTd DataLabel="@L["Apppoved"]">
                     <MudCheckBox Disabled="true" Checked="@context.Apppoved"></MudCheckBox>
+                    <MudText Typo="Typo.body2">@context.ApprovalOutcome</MudText>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
@@ -270,6 +286,7 @@
     private bool _canCreate;
     private bool _canEdit;
     private bool _canDelete;
+    private bool _canApprove;
     private bool _canImport;
     private bool _canExport;
     protected override async Task OnInitializedAsync()
@@ -280,6 +297,7 @@
         _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Search)).Succeeded;
         _canEdit = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Edit)).Succeeded;
         _canDelete = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Delete)).Succeeded;
+        _canApprove = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Approve)).Succeeded;
         _canImport = false;
         _canExport = false;
 
@@ -294,7 +312,7 @@
             query.SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString());
             query.PageNumber = state.Page + 1;
             query.PageSize = state.PageSize;
-            var result =await  _mediator.Send(query);
+            var result = await _mediator.Send(query);
             return new TableData<VisitorDto>() { TotalItems = result.TotalItems, Items = result.Items };
         }
         finally
@@ -322,6 +340,24 @@
         _selectedItems = new();
         _searchString = string.Empty;
         await _table.ReloadServerData();
+    }
+    private async Task OnApproval()
+    {
+        var parameters = new DialogParameters
+            {
+
+        { nameof(_ApprovalDialog.Selected),_selectedItems.ToList() },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_ApprovalDialog>
+        (L["Approval visitor request"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var result = await _mediator.Send(new ApprovalVisitorsCommand(state.Data.ToString(), _selectedItems.Select(x => x.Id).ToArray()));
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Approved successfully"]}", MudBlazor.Severity.Info);
+        }
     }
     private async Task OnCreate()
     {

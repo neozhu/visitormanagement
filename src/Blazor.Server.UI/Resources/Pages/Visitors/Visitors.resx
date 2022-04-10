@@ -135,6 +135,15 @@
   <data name="Approval Outcome" xml:space="preserve">
     <value>Approval Outcome</value>
   </data>
+  <data name="Approval visitor request" xml:space="preserve">
+    <value>Approval visitor request</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
@@ -263,6 +272,9 @@
   </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Reject</value>
   </data>
   <data name="Save successfully" xml:space="preserve">
     <value>Save successfully</value>
