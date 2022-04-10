@@ -141,6 +141,9 @@
   <data name="Check-in Date" xml:space="preserve">
     <value>Check-in Date</value>
   </data>
+  <data name="Check-in/out Time" xml:space="preserve">
+    <value>Check-in/out Time</value>
+  </data>
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
   </data>

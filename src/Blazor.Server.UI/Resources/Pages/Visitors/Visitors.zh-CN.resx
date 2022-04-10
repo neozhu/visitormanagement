@@ -375,4 +375,7 @@
   <data name="Visitor's Avatar" xml:space="preserve">
     <value>访客头像</value>
   </data>
+  <data name="Check-in/out Time" xml:space="preserve">
+    <value>进出时间</value>
+  </data>
 </root>
