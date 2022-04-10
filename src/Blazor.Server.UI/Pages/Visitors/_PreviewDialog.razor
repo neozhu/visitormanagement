@@ -1,0 +1,53 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inherits MudComponentBase
+@inject IStringLocalizer<Visitors> L
+<MudDialog>
+    <DialogContent>
+        <MudContainer Style="max-width: 645px; overflow-x: scroll">
+              <MudPaper Class="d-flex flex-grow-1 gap-5"  Width="725px"  Elevation="0">
+            @if (dto.HealthCode is not null)
+            {
+                <MudCard Style="width:215px">
+                    <MudCardMedia Image="@dto.HealthCode" Height="390" />
+                    <MudCardContent>
+                       <MudText Typo="Typo.body2">@L["Health Code"]</MudText>
+                    </MudCardContent>
+                </MudCard>
+            }
+            @if (dto.TripCode is not null)
+            {
+                <MudCard Style="width:215px">
+                    <MudCardMedia Image="@dto.TripCode" Height="390" />
+                    <MudCardContent>
+                       <MudText Typo="Typo.body2">@L["Trip Code"]</MudText>
+                    </MudCardContent>
+                </MudCard>
+            }
+            @if (dto.NucleicAcidTestReport is not null)
+            {
+                <MudCard Style="width:215px">
+                    <MudCardMedia Image="@dto.NucleicAcidTestReport" Height="390" />
+                    <MudCardContent>
+                       <MudText Typo="Typo.body2">@L["Nucleic Acid Test Report"]</MudText>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </MudPaper>
+        </MudContainer>
+      
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@L["OK"]</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    [EditorRequired]
+    [Parameter]
+    public VisitorDto dto { get; set; } = new();
+    private void Submit()
+    {
+        MudDialog.Close();
+    }
+}

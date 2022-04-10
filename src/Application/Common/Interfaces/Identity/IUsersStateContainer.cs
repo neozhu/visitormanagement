@@ -10,6 +10,6 @@ public interface IUsersStateContainer
 {
     ConcurrentDictionary<string, string> UsersByConnectionId { get; }
     event Action? OnChange;
-    void Update(string connectionId, string name);
+    void Update(string connectionId, string? name);
     void Remove(string connectionId);
 }

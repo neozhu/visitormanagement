@@ -7,6 +7,7 @@
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit
 @using HashidsNet
+@using System.Globalization
 
 @inject IJSRuntime JS
 @inject IStringLocalizer<Visitors> L
@@ -217,10 +218,13 @@
                     <MudText Typo="Typo.body2">@context.EmployeeDesignation</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Expected Date"]">
-                    <MudText>@context.ExpectedDate?.Date.ToShortDateString()</MudText>
-                    <MudText Typo="Typo.body2">@context.ExpectedTime</MudText>
+                    <MudText>@context.ExpectedDate?.ToString("MM/dd/yy",CultureInfo.InvariantCulture)</MudText>
+                    @if (context.ExpectedTime is not null)
+                    {
+                        <MudText Typo="Typo.body2">@(new DateTime().Add(context.ExpectedTime.Value).ToString("hh:mm tt",CultureInfo.InvariantCulture))</MudText>
+                    }
                 </MudTd>
-                <MudTd DataLabel="@L["Checkin Date"]">
+                <MudTd DataLabel="@L["Check-in/out Time"]">
                     <MudText Typo="Typo.body2">@context.CheckinDate</MudText>
                     <MudText Typo="Typo.body2">@context.CheckoutDate</MudText>
                 </MudTd>
@@ -228,19 +232,19 @@
                     @if (context.TripCode is not null)
                     {
                         <MudTooltip Text="@L["Trip Code"]">
-                            <MudIconButton Icon="@Icons.Material.Filled.Route" aria-label="@L["Trip Code"]" Title="@L["Trip Code"]" />
+                            <MudIconButton OnClick="@(()=>OnShowPreview(context))" Icon="@Icons.Material.Filled.Route" aria-label="@L["Trip Code"]" Title="@L["Trip Code"]" />
                         </MudTooltip>
                     }
                     @if (context.HealthCode is not null)
                     {
                         <MudTooltip Text="@L["Health Code"]">
-                            <MudIconButton Icon="@Icons.Material.Filled.MonitorHeart" aria-label="@L["Health Code"]" Title="@L["Health Code"]" />
+                            <MudIconButton OnClick="@(()=>OnShowPreview(context))" Icon="@Icons.Material.Filled.MonitorHeart" aria-label="@L["Health Code"]" Title="@L["Health Code"]" />
                         </MudTooltip>
                     }
                     @if (context.NucleicAcidTestReport is not null)
                     {
                         <MudTooltip Text="@L["Nucleic Acid Test Report"]">
-                            <MudIconButton Icon="@Icons.Material.Filled.FactCheck" aria-label="@L["Nucleic Acid Test Report"]" Title="@L["Nucleic Acid Test Report"]" />
+                            <MudIconButton OnClick="@(()=>OnShowPreview(context))" Icon="@Icons.Material.Filled.FactCheck" aria-label="@L["Nucleic Acid Test Report"]" Title="@L["Nucleic Acid Test Report"]" />
                         </MudTooltip>
                     }
                 </MudTd>
@@ -340,6 +344,19 @@
         _selectedItems = new();
         _searchString = string.Empty;
         await _table.ReloadServerData();
+    }
+    private async Task OnShowPreview(VisitorDto dto)
+    {
+        var parameters = new DialogParameters {
+                 { nameof(_PreviewDialog.dto),dto }
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_PreviewDialog>
+        (L["Preview upload pictures"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+        }
     }
     private async Task OnApproval()
     {

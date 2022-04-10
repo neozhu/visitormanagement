@@ -46,6 +46,18 @@
                Size="Size.Large"
                ButtonType="ButtonType.Submit"
                FullWidth="true">@L["Sign In"]</MudButton>
+
+    <div class="d-flex justify-space-around flex-grow-1 my-4">
+        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Custom.Brands.Google" ButtonType="ButtonType.Button"
+                   title="Sign in with Google">
+              Google
+            </MudButton>
+         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Custom.Brands.Microsoft" ButtonType="ButtonType.Button"
+                   title="Sign in with Microsoft">
+              Microsoft
+            </MudButton>
+    </div>
+        
 </EditForm>
 @code {
 
