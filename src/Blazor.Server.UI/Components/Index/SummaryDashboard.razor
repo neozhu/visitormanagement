@@ -1,0 +1,94 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.GetAll
+@inherits MudComponentBase
+@inject IJSRuntime JS
+@inject IStringLocalizer<SummaryDashboard> L
+<div class="lp-app-grid">
+        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
+            <div class="flex-grow-1">
+                <MudText Typo="Typo.h6">@L["TOTAL VISITORS"]</MudText>
+                <div class="d-flex align-center my-1">
+                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-primary-hover);" Size="Size.Small">
+                        <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.TrendingDown" Size="Size.Small" />
+                    </MudAvatar>
+                    <MudText Typo="Typo.subtitle2">+2.6%</MudText>
+                </div>
+                <MudText Typo="Typo.h4">@TotalVisitors.ToString("#,0")</MudText>
+            </div>
+            <div class="d-flex align-end justify-end mud-height-full py-8">
+                <MudPaper Height="80%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="95%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="90%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="85%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="65%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="52%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="40%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="38%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+                <MudPaper Height="20%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
+            </div>
+        </MudPaper>
+        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
+            <div class="flex-grow-1">
+                <MudText Typo="Typo.h6">@L["CHECK-IN VISITORS"]</MudText>
+                <div class="d-flex align-center my-1">
+                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-secondary-hover);" Size="Size.Small">
+                        <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small" />
+                    </MudAvatar>
+                    <MudText Typo="Typo.subtitle2">+9.6%</MudText>
+                </div>
+                <MudText Typo="Typo.h4">@TotalCheckinVisitors.ToString("#,0")</MudText>
+            </div>
+            <div class="d-flex align-end justify-end mud-height-full py-8">
+                <MudPaper Height="15%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="20%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="53%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="35%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="45%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="70%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="58%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="76%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="85%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+                <MudPaper Height="61%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
+            </div>
+        </MudPaper>
+        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
+            <div class="flex-grow-1">
+                <MudText Typo="Typo.h6">@L["CHECK-OUT VISITORS"]</MudText>
+                <div class="d-flex align-center my-1">
+                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-tertiary-hover);" Size="Size.Small">
+                        <MudIcon Color="Color.Tertiary" Icon="@Icons.Material.Filled.TrendingFlat" Size="Size.Small" />
+                    </MudAvatar>
+                    <MudText Typo="Typo.subtitle2">~0.0%</MudText>
+                </div>
+               <MudText Typo="Typo.h4">@TotalCheckoutVisitors.ToString("#,0")</MudText>
+            </div>
+            <div class="d-flex align-end justify-end mud-height-full py-8">
+                <MudPaper Height="10%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="16%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="26%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="28%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="28%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
+            </div>
+        </MudPaper>
+    </div>
+
+@code {
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    public int TotalVisitors { get; private set; }
+    public int TotalCheckinVisitors { get; private set; }
+    public int TotalCheckoutVisitors { get; private set; }
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _mediator.Send(new GetDashboardDataQuery());
+        TotalVisitors = result.Item1;
+        TotalCheckinVisitors = result.Item2;
+        TotalCheckoutVisitors = result.Item3;
+    }
+
+}

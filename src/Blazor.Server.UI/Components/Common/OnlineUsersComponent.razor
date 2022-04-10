@@ -1,0 +1,40 @@
+@using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity
+@implements IDisposable
+@inherits MudComponentBase
+@inject IStringLocalizer<OnlineUsersComponent> L
+<div class="my-6 d-flex gap-6 flex-wrap">
+        <MudPaper Width="400px">
+            <MudList Clickable="true">
+                <MudListSubheader>
+                    @L["Online sessions"] (@(_usersStateContainer.UsersByConnectionId.Count))
+                </MudListSubheader>
+                @foreach(var user in _usersStateContainer.UsersByConnectionId)
+                {
+                    <MudListItem Icon="@Icons.Material.Filled.Person">
+                        <MudText Typo="Typo.subtitle1">@user.Value</MudText>
+                        <MudText Typo="Typo.body2">@user.Key</MudText>
+                   </MudListItem>
+                }
+           
+                
+            </MudList>
+        </MudPaper>
+    </div>
+@code {
+    [Inject]
+    private IUsersStateContainer _usersStateContainer { get; set; } = default!;
+    public void Dispose()
+    {
+        _usersStateContainer.OnChange -= UserSessionChanged;
+    }
+    protected override Task OnInitializedAsync()
+    {
+        _usersStateContainer.OnChange += UserSessionChanged;
+        return Task.CompletedTask;
+    }
+    private async void UserSessionChanged()
+    { 
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

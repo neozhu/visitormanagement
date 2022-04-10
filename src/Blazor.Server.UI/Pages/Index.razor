@@ -1,5 +1,4 @@
 @page "/"
-@implements IDisposable
 @inject IStringLocalizer<Index> L
 @using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity
 @using Microsoft.AspNetCore.Authorization
@@ -12,80 +11,7 @@
 </style>
 <PageTitle>@L["Dashboard"]</PageTitle>
 <MudContainer MaxWidth="MaxWidth.Large">
-    <div class="lp-app-grid">
-        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
-            <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">@L["TOTAL VISITORS"]</MudText>
-                <div class="d-flex align-center my-1">
-                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-primary-hover);" Size="Size.Small">
-                        <MudIcon Color="Color.Primary" Icon="@Icons.Material.Filled.TrendingDown" Size="Size.Small" />
-                    </MudAvatar>
-                    <MudText Typo="Typo.subtitle2">+2.6%</MudText>
-                </div>
-                <MudText Typo="Typo.h4">149,567</MudText>
-            </div>
-            <div class="d-flex align-end justify-end mud-height-full py-8">
-                <MudPaper Height="80%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="95%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="90%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="85%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="65%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="52%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="40%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="38%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-                <MudPaper Height="20%" Width="6px" Square="true" Class="mud-primary mr-1 rounded-t" />
-            </div>
-        </MudPaper>
-        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
-            <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">@L["CHECK-IN VISITORS"]</MudText>
-                <div class="d-flex align-center my-1">
-                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-secondary-hover);" Size="Size.Small">
-                        <MudIcon Color="Color.Secondary" Icon="@Icons.Material.Filled.TrendingUp" Size="Size.Small" />
-                    </MudAvatar>
-                    <MudText Typo="Typo.subtitle2">+9.6%</MudText>
-                </div>
-                <MudText Typo="Typo.h4">12%</MudText>
-            </div>
-            <div class="d-flex align-end justify-end mud-height-full py-8">
-                <MudPaper Height="15%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="20%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="53%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="35%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="45%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="70%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="58%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="76%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="85%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-                <MudPaper Height="61%" Width="6px" Square="true" Class="mud-secondary mr-1 rounded-t" />
-            </div>
-        </MudPaper>
-        <MudPaper Class="py-4 px-6 rounded-lg d-flex align-center">
-            <div class="flex-grow-1">
-                <MudText Typo="Typo.h6">@L["CHECK-OUT VISITORS"]</MudText>
-                <div class="d-flex align-center my-1">
-                    <MudAvatar Class="me-2 pa-4" Style="background-color: var(--mud-palette-tertiary-hover);" Size="Size.Small">
-                        <MudIcon Color="Color.Tertiary" Icon="@Icons.Material.Filled.TrendingFlat" Size="Size.Small" />
-                    </MudAvatar>
-                    <MudText Typo="Typo.subtitle2">~0.0%</MudText>
-                </div>
-                <MudText Typo="Typo.h4">3,6</MudText>
-            </div>
-            <div class="d-flex align-end justify-end mud-height-full py-8">
-                <MudPaper Height="10%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="16%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="26%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="28%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="28%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-                <MudPaper Height="36%" Width="6px" Square="true" Class="mud-tertiary mr-1 rounded-t" />
-            </div>
-        </MudPaper>
-    </div>
+    <Blazor.Server.UI.Components.Index.SummaryDashboard></Blazor.Server.UI.Components.Index.SummaryDashboard>
     <div class="my-6 d-flex gap-6 flex-wrap">
         <MudPaper Class="py-4 px-6 rounded-lg d-flex flex-column flex-grow-1">
             <div>
@@ -102,29 +28,12 @@
             </div>
         </MudPaper>
     </div>
-    <div class="my-6 d-flex gap-6 flex-wrap">
-        <MudPaper Width="400px">
-            <MudList Clickable="true">
-                <MudListSubheader>
-                    @L["Online sessions"] (@(_usersStateContainer.UsersByConnectionId.Count))
-                </MudListSubheader>
-                @foreach(var user in _usersStateContainer.UsersByConnectionId)
-                {
-                    <MudListItem Icon="@Icons.Material.Filled.Person">
-                        <MudText Typo="Typo.subtitle1">@user.Value</MudText>
-                        <MudText Typo="Typo.body2">@user.Key</MudText>
-                   </MudListItem>
-                }
-           
-                
-            </MudList>
-        </MudPaper>
-    </div>
+    <OnlineUsersComponent></OnlineUsersComponent>
 </MudContainer>
 
 @code {
-    [Inject]
-    private IUsersStateContainer _usersStateContainer { get; set; }
+     
+ 
     private int day = -1; //default value cannot be 0 -> first selectedindex is 0.
     double[] data = { 77, 25, 20, 5, 15 };
     string[] labels = { "Meeting", "Interview", "Conferences", "Working", "Others" };
@@ -152,18 +61,5 @@
         Series = new_series;
         StateHasChanged();
     }
-    public void Dispose()
-    {
-        _usersStateContainer.OnChange -= HandleCircuitsChanged;
-    }
-    protected override Task OnInitializedAsync()
-    {
-        _usersStateContainer.OnChange += HandleCircuitsChanged;
-        return Task.CompletedTask;
-    }
-
-    public async void HandleCircuitsChanged()
-    {
-        await InvokeAsync(StateHasChanged);
-    }
+     
 }
