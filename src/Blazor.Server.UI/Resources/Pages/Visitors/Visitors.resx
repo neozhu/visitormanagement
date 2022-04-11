@@ -246,6 +246,9 @@
   <data name="No matching records found" xml:space="preserve">
     <value>No matching records found</value>
   </data>
+  <data name="Not found visitor's information" xml:space="preserve">
+    <value>Not found visitor's information</value>
+  </data>
   <data name="Nucleic Acid Test Report" xml:space="preserve">
     <value>Nucleic Acid Test Report</value>
   </data>
@@ -314,6 +317,9 @@
   </data>
   <data name="Search for visitor's name" xml:space="preserve">
     <value>Search for visitor's name</value>
+  </data>
+  <data name="Search my QRcode" xml:space="preserve">
+    <value>Search my QRcode</value>
   </data>
   <data name="Select Employee" xml:space="preserve">
     <value>Select Employee</value>

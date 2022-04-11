@@ -3,6 +3,8 @@
 
 @using Blazor.Server.UI.Services
 @using Blazor.Server.UI.Pages.CheckinPoints
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
@@ -124,10 +126,10 @@
                             </MudItem>
                             <MudItem xs="12" sm="12">
                                 <SiteAutocomplete Label="@L["Select Site - Address"]"
-                                  Disabled="@(model.Apppoved==true)"
-                                  For="@(() => model.SiteId)"
-                                  Required="true" RequiredError="@L["site - address is required!"]"
-                                  @bind-Value="model.SiteId"></SiteAutocomplete>
+                                                  Disabled="@(model.Apppoved==true)"
+                                                  For="@(() => model.SiteId)"
+                                                  Required="true" RequiredError="@L["site - address is required!"]"
+                                                  @bind-Value="model.SiteId"></SiteAutocomplete>
                             </MudItem>
                             <MudItem xs="12" sm="12">
                                 <MudTextField Label="@L["Comment"]"
@@ -217,34 +219,68 @@
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="5">
-                @if (_submited)
-                {
-                    <div class="d-flex justify-center align-content-center">
-                        <MudCard Style="width:350px">
-                            <MudCardHeader>
-                                <CardHeaderAvatar>
-                                    <MudAvatar Color="MudBlazor.Color.Secondary" Size="MudBlazor.Size.Large" Image="@model.Avatar">@model.Name?.First()</MudAvatar>
-                                </CardHeaderAvatar>
-                                <CardHeaderContent>
-                                    <MudText Typo="Typo.body1">@model.Name</MudText>
-                                    <MudText Typo="Typo.body2">@model.CompanyName</MudText>
-                                </CardHeaderContent>
 
-                            </MudCardHeader>
-                            <MudCardMedia Image="@model.QrCode" Height="250" />
-                            <MudCardContent>
-                                <MudText Typo="Typo.body2">@model.ExpectedDate?.Date.ToShortDateString()</MudText>
-                                <MudText Typo="Typo.body2">@model.ExpectedTime?.ToString()</MudText>
-                                <MudText Typo="Typo.body2">@model.Purpose</MudText>
-                                <MudText Typo="Typo.body2">@model.Comment</MudText>
+                <div class="d-flex flex-column justify-center align-content-center">
+                    <MudPaper Class="pa-4 mt-4" Style="width:320px">
+                        <MudTextField @bind-Value="_searchQRcode" Label="@L["Search my QRcode"]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearchQRcode" />
+                    </MudPaper>
+                    <MudCard Class="pa-4 mt-4" Style="width:320px">
+                        @if (_notfound)
+                        {
+                            <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor's information"]</MudAlert>
+                        }
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">@L["Pass Code"]: @_visitorWithQRCode.PassCode</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardMedia Image="@_visitorWithQRCode.QrCode" Height="288" />
+                        <MudCardContent>
+                            <MudForm>
+                                <MudTextField For="@(() => _visitorWithQRCode.Name)" Value="@_visitorWithQRCode.Name" Label="@L["Visitor's Name"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.CompanyName)" Value="@_visitorWithQRCode.CompanyName" Label="@L["Company Name"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.LicensePlateNumber)" Value="@_visitorWithQRCode.LicensePlateNumber" Label="@L["License Plate Number"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.Purpose)" Value="@_visitorWithQRCode.Purpose" Label="@L["Purpose"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.Employee)" Value="@_visitorWithQRCode.Employee" Label="@L["Employee"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.ExpectedDate)" Value="@_visitorWithQRCode.ExpectedDate" Label="@L["Expected Date"]" ReadOnly="true" />
+                                <MudTextField For="@(() => _visitorWithQRCode.ExpectedTime)" Value="@_visitorWithQRCode.ExpectedTime" Label="@L["Expected Time"]" ReadOnly="true" />
+                            </MudForm>
+                        </MudCardContent>
+                        <MudCardActions>
+                            <MudText Class="mr-2">@L["Survey feedback"]</MudText>
+                            <MudRating SelectedValue="3" />
+                        </MudCardActions>
+                    </MudCard>
 
-                            </MudCardContent>
-                            <MudCardActions>
-                                <MudRating SelectedValue="3" />
-                            </MudCardActions>
-                        </MudCard>
-                    </div>
-                }
+                    <MudCard Class="pa-4 mt-4" Style="width:320px">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.h6">@L["Check-in Histories"] (0)</MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (_visitorHistories.Count > 0)
+                            {
+                                <MudTimeline>
+                                    @foreach (var item in _visitorHistories)
+                                    {
+                                        <MudTimelineItem Color="MudBlazor.Color.Info" Size="MudBlazor.Size.Small">
+                                            <ItemOpposite>
+                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body1">@item.CheckinPoint</MudText>
+                                            </ItemOpposite>
+                                            <ItemContent>
+                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body2" GutterBottom="true">@item.TransitDateTime</MudText>
+                                                <MudText>@item.Comment</MudText>
+                                            </ItemContent>
+                                        </MudTimelineItem>
+
+                                    }
+                                </MudTimeline>
+                            }
+                        </MudCardContent>
+                    </MudCard>
+                </div>
+
             </MudItem>
         </MudGrid>
     </ChildContent>
@@ -256,9 +292,13 @@
     public string? Title { get; private set; }
     private MudForm form = default!;
     private string _searchString = string.Empty;
+    private string _searchQRcode = string.Empty;
     private VisitorDto? _visitorDto = null;
+    private VisitorDto? _visitorWithQRCode = new();
+    private List<VisitorHistoryDto> _visitorHistories = new();
     private CreateVisitorCommandValidator modelValidator = new CreateVisitorCommandValidator();
     private CreateVisitorCommand model { get; set; } = new CreateVisitorCommand();
+    private bool _notfound;
     private bool _loading;
     private bool _uploading;
     private bool _submited;
@@ -304,6 +344,23 @@
         }
 
     }
+    private async Task OnSearchQRcode()
+    {
+        var visitor = await _mediator.Send(new SearchVisitorQuery(_searchQRcode));
+        if (visitor is null)
+        {
+            _notfound = true;
+            _visitorWithQRCode = new();
+        }
+        else
+        {
+            _notfound = false;
+            _visitorWithQRCode = visitor;
+            _visitorHistories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(_visitorWithQRCode.Id))).ToList();
+        }
+
+    }
+
     private async Task UploadAvatarPhoto(InputFileChangeEventArgs e)
     {
         var file = e.File;
@@ -467,6 +524,9 @@
             var result = await _mediator.Send(model);
             model.Id = result.Data;
             _submited = true;
+            _searchQRcode = model.PassCode;
+            await  OnSearchQRcode();
+            Snackbar.Add(L["Submit successfully"], MudBlazor.Severity.Info);            
         }
 
     }

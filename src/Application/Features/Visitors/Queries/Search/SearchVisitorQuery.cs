@@ -37,7 +37,7 @@ public class SearchVisitorQueryHandler :
 
     public async Task<VisitorDto?> Handle(SearchVisitorQuery request, CancellationToken cancellationToken)
     {
-        var item = await _context.Visitors.FirstOrDefaultAsync(x =>x.PassCode==request.Keyword || x.Email == request.Keyword || x.PhoneNumber == request.Keyword || x.Name == request.Keyword);
+        var item = await _context.Visitors.OrderByDescending(x=>x.Id).Include(x=>x.Employee).FirstOrDefaultAsync(x =>x.PassCode==request.Keyword || x.Email == request.Keyword || x.PhoneNumber == request.Keyword || x.Name == request.Keyword);
         if (item is null) return null;
         var dto= _mapper.Map<VisitorDto>(item);
         return dto;

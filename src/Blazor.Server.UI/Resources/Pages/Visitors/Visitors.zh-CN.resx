@@ -396,4 +396,10 @@
   <data name="Search for approve outcome" xml:space="preserve">
     <value>按审批结果查询</value>
   </data>
+  <data name="Not found visitor's information" xml:space="preserve">
+    <value>没有找到访客信息</value>
+  </data>
+  <data name="Search my QRcode" xml:space="preserve">
+    <value>查询我的二维码</value>
+  </data>
 </root>
