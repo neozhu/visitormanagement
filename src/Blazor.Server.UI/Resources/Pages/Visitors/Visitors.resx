@@ -264,6 +264,9 @@
   <data name="Phone Number is required!" xml:space="preserve">
     <value>Phone Number is required!</value>
   </data>
+  <data name="Preview upload pictures" xml:space="preserve">
+    <value>Preview upload pictures</value>
+  </data>
   <data name="Purpose" xml:space="preserve">
     <value>Purpose</value>
   </data>
@@ -278,6 +281,12 @@
   </data>
   <data name="Save successfully" xml:space="preserve">
     <value>Save successfully</value>
+  </data>
+  <data name="Search for approve outcome" xml:space="preserve">
+    <value>Search for approve outcome</value>
+  </data>
+  <data name="Search for approve outome" xml:space="preserve">
+    <value />
   </data>
   <data name="Search for approved" xml:space="preserve">
     <value>Search for approved</value>

@@ -20,20 +20,6 @@ public class MenuService : IMenuService
                 },
                 new()
                 {
-                    Title = "Departments",
-                    Icon = Icons.Material.Filled.AccountTree,
-                    Href = "/visitor/departments",
-                    PageStatus = PageStatus.Completed
-                },
-                new()
-                {
-                    Title = "Designations",
-                    Icon = Icons.Material.Filled.Fitbit,
-                    Href = "/visitor/designations",
-                    PageStatus = PageStatus.Completed
-                },
-                new()
-                {
                     Title = "Employees",
                     Icon = Icons.Material.Filled.AssignmentInd,
                     Href = "/visitor/employees",
@@ -81,6 +67,18 @@ public class MenuService : IMenuService
                     Icon = Icons.Material.Filled.LocationCity,
                     MenuItems = new List<MenuSectionSubItemModel>
                     {
+                        new()
+                        {
+                            Title = "Departments",
+                            Href = "/visitor/departments",
+                            PageStatus = PageStatus.Completed
+                        },
+                        new()
+                        {
+                            Title = "Designations",
+                            Href = "/visitor/designations",
+                            PageStatus = PageStatus.Completed
+                        },
                         new()
                         {
                             Title = "Sites",

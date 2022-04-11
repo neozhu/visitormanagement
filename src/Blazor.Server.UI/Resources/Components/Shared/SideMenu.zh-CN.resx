@@ -175,7 +175,7 @@
     <value>账号</value>
   </data>
   <data name="Departments" xml:space="preserve">
-    <value>部门信息</value>
+    <value>部门</value>
   </data>
   <data name="Deshbord" xml:space="preserve">
     <value>看板</value>
@@ -184,7 +184,7 @@
     <value>职位</value>
   </data>
   <data name="Devices" xml:space="preserve">
-    <value>设备信息</value>
+    <value>设备</value>
   </data>
   <data name="Check-in Points" xml:space="preserve">
     <value>检查点</value>

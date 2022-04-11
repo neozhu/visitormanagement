@@ -390,4 +390,10 @@
   <data name="Reject" xml:space="preserve">
     <value>拒绝</value>
   </data>
+  <data name="Preview upload pictures" xml:space="preserve">
+    <value>预览上传的照片</value>
+  </data>
+  <data name="Search for approve outcome" xml:space="preserve">
+    <value>按审批结果查询</value>
+  </data>
 </root>
