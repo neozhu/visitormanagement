@@ -10,7 +10,7 @@ public class GetByVisitorIdVisitorHistoriesQuery : IRequest<IEnumerable<VisitorH
 {
     public int? VisitorId { get; private set; }
     public string CacheKey => VisitorHistoryCacheKey.GetByVisitorIdCacheKey(VisitorId);
-    public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(VisitorHistoryCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => VisitorHistoryCacheKey.MemoryCacheEntryOptions;
     public GetByVisitorIdVisitorHistoriesQuery(int? visitorId)
     {
         VisitorId = visitorId;

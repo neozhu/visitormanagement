@@ -144,6 +144,9 @@
   <data name="Check-in Points" xml:space="preserve">
     <value>Check-in Points</value>
   </data>
+  <data name="Complete Visit Info" xml:space="preserve">
+    <value>Complete Visit Info</value>
+  </data>
   <data name="Customers" xml:space="preserve">
     <value>Customers</value>
   </data>
@@ -183,6 +186,24 @@
   <data name="MANAGEMENT" xml:space="preserve">
     <value>MANAGEMENT</value>
   </data>
+  <data name="Message Templates" xml:space="preserve">
+    <value>Message Templates</value>
+  </data>
+  <data name="My Visit Code" xml:space="preserve">
+    <value>My Visit Code</value>
+  </data>
+  <data name="Pending Approval" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="Pending Check-in" xml:space="preserve">
+    <value>Pending Check-in</value>
+  </data>
+  <data name="Pending Checking" xml:space="preserve">
+    <value>Pending Checking</value>
+  </data>
+  <data name="Pending Confirm" xml:space="preserve">
+    <value>Pending Confirm</value>
+  </data>
   <data name="Picklist" xml:space="preserve">
     <value>Picklist</value>
   </data>
@@ -201,6 +222,9 @@
   <data name="Roles" xml:space="preserve">
     <value>Roles</value>
   </data>
+  <data name="Site Configuration" xml:space="preserve">
+    <value>Site Configuration</value>
+  </data>
   <data name="Sites" xml:space="preserve">
     <value>Sites</value>
   </data>
@@ -212,6 +236,9 @@
   </data>
   <data name="Users" xml:space="preserve">
     <value>Users</value>
+  </data>
+  <data name="Visitor Request" xml:space="preserve">
+    <value>Visitor Request</value>
   </data>
   <data name="Visitors" xml:space="preserve">
     <value>Visitors</value>

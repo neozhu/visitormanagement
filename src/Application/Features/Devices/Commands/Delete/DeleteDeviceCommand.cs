@@ -11,7 +11,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Devices.Commands.Delete;
     {
       public int[] Id {  get; }
       public string CacheKey => DeviceCacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => DeviceCacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => DeviceCacheKey.SharedExpiryTokenSource();
       public DeleteDeviceCommand(int[] id)
       {
         Id = id;

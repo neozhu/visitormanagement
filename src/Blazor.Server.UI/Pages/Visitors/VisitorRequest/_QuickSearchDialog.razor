@@ -1,0 +1,23 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+
+@inject IStringLocalizer<Visitors> L
+<MudDialog>
+    <DialogContent>
+        <MudContainer>
+            <QuickSearchVisitorsComponent InputKeyword="@keyword" Selected="SelectedHandler" ></QuickSearchVisitorsComponent>
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [Parameter]
+    public string keyword { get; set; } = string.Empty;
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    private void SelectedHandler(VisitorDto item)
+    {    
+        MudDialog.Close(DialogResult.Ok(item));
+    }
+
+
+}

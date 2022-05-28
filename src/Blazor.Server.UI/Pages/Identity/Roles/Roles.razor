@@ -111,7 +111,8 @@
                 }
             </ToolBarContent>
             <ColGroup>
-                <col style="width:50px;" />
+               <col style="width:50px;" />
+                <col style="width:120px;" />
 
             </ColGroup>
             <HeaderContent>
@@ -260,6 +261,7 @@
     }
     private async Task OnEdit(ApplicationRole item)
     {
+        var name = item.Name;
         var model = new RoleFormModel()
             {
                 Id = item.Id,
@@ -272,7 +274,11 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+            if(name.ToLower()=="admin" || name.ToLower()=="basic")
+            {
+                Snackbar.Add($"Can't edit admin role", MudBlazor.Severity.Error);
+                return;
+            }
             item.Name = model.Name;
             item.Description = model.Description;
             var state = await _roleManager.UpdateAsync(item);
@@ -398,7 +404,11 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+            if(SelectItems.Any(x=>x.Name.ToLower()=="admin" || x.Name.ToLower()=="basic"))
+            {
+                Snackbar.Add($"Can't delete admin role", MudBlazor.Severity.Error);
+                return;
+            }
             foreach (var item in SelectItems)
             {
                 await _roleManager.DeleteAsync(item);

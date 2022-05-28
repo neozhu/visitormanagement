@@ -1,0 +1,109 @@
+@using Blazor.Server.UI.Pages.Visitors.RejectDialog
+@using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.Queries.GetByVisitorId
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Approve
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+
+@inject IStringLocalizer<Visitors> L
+@inherits MudComponentBase
+
+<div class="d-flex flex-column">
+    <VisitorViewComponent _visitor="@Visitor"></VisitorViewComponent>
+
+    <MudPaper Class="d-flex pa-4 mt-4">
+        <MudButton Class="ml-auto mx-2" Disabled="@(Visitor.Id==0)" OnClick="Reject">
+            @if (_rejecting)
+            {
+                <MudProgressCircular Class="ms-n1" Size="MudBlazor.Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@L["Processing"]</MudText>
+            }
+            else
+            {
+                <MudText>@L["Reject"]</MudText>
+            }
+        </MudButton>
+        <MudButton Disabled="@(Visitor.Id==0)"
+                   Color="MudBlazor.Color.Primary"
+                   OnClick="Approved">
+            @if (_submiting)
+            {
+                <MudProgressCircular Class="ms-n1" Size="MudBlazor.Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@L["Processing"]</MudText>
+            }
+            else
+            {
+                <MudText>@L["Agree"]</MudText>
+            }
+        </MudButton>
+    </MudPaper>
+</div>
+
+
+@code {
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Parameter]
+    public VisitorDto Visitor { get; set; } = new();
+
+    [Parameter]
+    [EditorRequired]
+    public EventCallback ApproveChanged { get; set; }
+    private bool _submiting;
+    private bool _rejecting;
+    private async Task OnShowPreview(CompanionDto item)
+    {
+        var parameters = new DialogParameters {
+                 { nameof(_PreviewDialog.HealthCode),item.HealthCode },
+                 { nameof(_PreviewDialog.NucleicAcidTestReport),item.NucleicAcidTestReport },
+                 { nameof(_PreviewDialog.TripCode),item.TripCode },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_PreviewDialog>
+        (L["Preview upload attachments"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+        }
+
+    }
+    private async Task Reject()
+    {
+        try
+        {
+            _rejecting = true;
+            var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
+            var dialog = DialogService.Show<RejectConfirmDialog>(L["Reject Confirm"],options);
+            var state = await dialog.Result;
+            if (!state.Cancelled)
+            {
+                await _mediator.Send(new ApprovalVisitorsCommand(ApprovalOutcome.Reject, new int[] { Visitor.Id },state.Data.ToString()));
+                Snackbar.Add(string.Format(L["{0} rejected"], Visitor.Name), MudBlazor.Severity.Normal);
+                await ApproveChanged.InvokeAsync();
+                Visitor = new();
+            }
+
+        }
+        finally
+        {
+            _rejecting = false;
+        }
+
+    }
+    private async Task Approved()
+    {
+        _submiting = true;
+        try
+        {
+            await _mediator.Send(new ApprovalVisitorsCommand(ApprovalOutcome.Approved, new int[] { Visitor.Id }));
+            Snackbar.Add(string.Format(L["{0} approved"], Visitor.Name), MudBlazor.Severity.Info);
+            await ApproveChanged.InvokeAsync();
+            Visitor = new();
+        }
+        finally
+        {
+            _submiting = false;
+        }
+    }
+}

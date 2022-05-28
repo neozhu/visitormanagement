@@ -1,0 +1,27 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Reports
+@inject IStringLocalizer<Index> L
+<MudPaper Class="pa-4 px-6 rounded-lg d-flex flex-column flex-grow-0">
+            <div>
+                <MudText Typo="Typo.h6">@L["Purpose statistics"]</MudText>
+                <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="200px" Height="200px" />
+            </div>
+</MudPaper>
+
+@code {
+    double[] data = { 77, 25, 20, 5, 15 };
+    string[] labels = { "Meeting", "Interview", "Conferences", "Working", "Others" };
+
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await _mediator.Send(new GetVisitorCountedPurposeDataQuery());
+        if (result is not null && result.Any())
+        {
+            data = result.Select(x =>Convert.ToDouble(x.Value)).ToArray();
+            labels = result.Select(x => x.Key).ToArray();
+        }
+    }
+ 
+}

@@ -11,7 +11,7 @@ public class DeleteDesignationCommand : IRequest<Result>, ICacheInvalidator
 {
     public int[] Id { get; }
     public string CacheKey => DesignationCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => DesignationCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => DesignationCacheKey.SharedExpiryTokenSource();
     public DeleteDesignationCommand(int[] id)
     {
         Id = id;

@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Sites.Queries.GetAll;
     public class GetAllSitesQuery : IRequest<IEnumerable<SiteDto>>, ICacheable
     {
        public string CacheKey => SiteCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(SiteCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => SiteCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllSitesQueryHandler :

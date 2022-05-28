@@ -11,13 +11,14 @@ public class EmployeesWithPaginationQuery : PaginationFilter, IRequest<Paginated
     public string? Name { get; set; }
     public string? Email { get; set; }
     public int? DepartmentId { get; set; }
+    public int? SiteId { get; set; }
 
     public override string ToString()
     {
         return $"{base.ToString()},Name:{Name},Email:{Email},DepartmentId:{DepartmentId}";
     }
     public string CacheKey => EmployeeCacheKey.GetPagtionCacheKey($"{this}");
-    public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(EmployeeCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => EmployeeCacheKey.MemoryCacheEntryOptions;
 }
 
 public class EmployeesWithPaginationQueryHandler :
@@ -55,6 +56,7 @@ public class SearchEmployeeSpecification : Specification<Employee>
     {
         AddInclude(x => x.Department);
         AddInclude(x => x.Designation);
+        AddInclude(x => x.Site);
         Criteria = q => q.Name != null;
         if (!string.IsNullOrEmpty(query.Keyword))
         {

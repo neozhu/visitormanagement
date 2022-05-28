@@ -165,6 +165,9 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Site Configuration" xml:space="preserve">
+    <value>Site Configuration</value>
+  </data>
   <data name="Sorry, there's nothing at this address." xml:space="preserve">
     <value>Sorry, there's nothing at this address.</value>
   </data>

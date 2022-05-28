@@ -29,6 +29,7 @@
 <body>
     @RenderBody()
 
+
     <div id="blazor-error-ui">
         <environment include="Staging,Production">
             An error has occurred. This application may no longer respond until reloaded.
@@ -39,53 +40,106 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+    <script type="text/javascript" src="https://alcdn.msauth.net/browser/2.23.0/js/msal-browser.min.js"></script>
+    <script src="~/js/msal/authConfig.js"></script>
+
+    <script src="https://accounts.google.com/gsi/client" ></script>
+    <script src="~/js/gapi/auth2config.js"></script>
+
     <script src="_framework/blazor.server.js"></script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="~/js/webcam.js/src/webcam.min.js"></script>
     <script src="~/js/html5-qrcode/html5-qrcode.min.js"></script>
     <script type="text/javascript">
 
-              async function downloadFileFromStream(fileName, contentStreamReference) {
-                  const arrayBuffer = await contentStreamReference.arrayBuffer();
-                  const blob = new Blob([arrayBuffer]);
-                  const url = URL.createObjectURL(blob);
+        async function downloadFileFromStream(fileName, contentStreamReference) {
+            const arrayBuffer = await contentStreamReference.arrayBuffer();
+            const blob = new Blob([arrayBuffer]);
+            const url = URL.createObjectURL(blob);
+            triggerFileDownload(fileName, url);
+            URL.revokeObjectURL(url);
+        }
 
-                  triggerFileDownload(fileName, url);
+        function triggerFileDownload(fileName, url) {
+            const anchorElement = document.createElement('a');
+            anchorElement.href = url;
+            anchorElement.download = fileName ?? '';
+            anchorElement.click();
+            anchorElement.remove();
+        }
+        function attachCamera(target){
+            Webcam.attach(target);
+        }
+        function takeSnapshot(dotNetHelper) {
+            Webcam.snap(function(dataUrl) {
+                dotNetHelper.invokeMethodAsync('ProcessImage', dataUrl);
+            } );
+        }
 
-                  URL.revokeObjectURL(url);
-              }
+        function initalScanner(target,dotNetHelper){
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+                target,
+               { fps: 10, qrbox: {width: 160, height: 160} },
+               /* verbose= */ false);
+            html5QrcodeScanner.render((decodedText, decodedResult)=>{
+                dotNetHelper.invokeMethodAsync('GetResult', decodedText);
+                //console.log(decodedText, decodedResult);
+            }, (error)=>{
+                dotNetHelper.invokeMethodAsync('ClearResult');
+                //console.log(error);
+            });
+        }
+        async function externalLogin(provider, dotNetHelper) {
+          if(provider=='Microsoft'){
+              await loginWithMicrosoft(provider,dotNetHelper);
+          }else if(provider=='Google') {
+              await loginWithGoogle(provider,dotNetHelper);
+          }
 
-              function triggerFileDownload(fileName, url) {
-                  const anchorElement = document.createElement('a');
-                  anchorElement.href = url;
-                  anchorElement.download = fileName ?? '';
-                  anchorElement.click();
-                  anchorElement.remove();
-              }
-              function attachCamera(target){
-                  Webcam.attach(target);
-              }
-              function takeSnapshot(dotNetHelper) {
-                  Webcam.snap(function(dataUrl) {
-                      dotNetHelper.invokeMethodAsync('ProcessImage', dataUrl);
-                  } );
-              }
+      }
+      async function loginWithMicrosoft(provider, dotNetHelper){
+           var client = new msal.PublicClientApplication(msalConfig);
+           var response = await client.loginPopup(loginRequest);
+           await dotNetHelper.invokeMethodAsync('ConfirmExternal', provider, response.account.username, response.account.name, response.accessToken);
+           console.log('login with microsoft success');
+           localStorage.setItem('microsoft_client_token', response.account.homeAccountId);
+      }
+      async function loginWithGoogle(provider, dotNetHelper) {
+          console.log(provider + 'initialize');
+          client = google.accounts.oauth2.initTokenClient({
+                 client_id: auth2Config.clientId,
+                 scope: auth2Config.scope,
+                 ux_mode: 'popup',
+                 callback: async (response) => {
+                      const access_token = response.access_token;
+                      const url=`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`;
+                      const data = await fetch(url).then((response) => response.json());
+                      await dotNetHelper.invokeMethodAsync('ConfirmExternal', provider, data.email, data.name, access_token);
+                      console.log('login with microsoft success');
+                      localStorage.setItem('google_client_token', access_token);
+                 
+                   }
+                });
+         client.requestAccessToken();
+      }
+      async function externalLogout() {
+            let client_token = localStorage.getItem('microsoft_client_token');
+            if(client_token) {
+                  const client = new msal.PublicClientApplication(msalConfig);
+                  const logoutRequest = {
+                          account: client.getAccountByHomeId(client_token)
+                         }
 
-              function initalScanner(target,dotNetHelper){
-                  let html5QrcodeScanner = new Html5QrcodeScanner(
-                      target,
-                     { fps: 10, qrbox: {width: 160, height: 160} },
-                     /* verbose= */ false);
-                  html5QrcodeScanner.render((decodedText, decodedResult)=>{
-                      dotNetHelper.invokeMethodAsync('GetResult', decodedText);
-                      //console.log(decodedText, decodedResult);
-                  }, (error)=>{
-                      dotNetHelper.invokeMethodAsync('ClearResult');
-                      //console.log(error);
-                  });
-              }
-
-
+                  await client.logoutPopup(logoutRequest);
+                  localStorage.removeItem('microsoft_client_token');
+            }else{
+                client_token = localStorage.getItem('google_client_token');
+                if(client_token) {
+                    google.accounts.oauth2.revoke(client_token);
+                    localStorage.removeItem('google_client_token');
+                }
+            }
+      }              
     </script>
 
 </body>

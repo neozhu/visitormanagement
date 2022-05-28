@@ -8,9 +8,9 @@ namespace CleanArchitecture.Blazor.Application.Features.Designations.Queries.Pag
 
     public class DesignationsWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<DesignationDto>>, ICacheable
     {
-        public string CacheKey => DesignationCacheKey.GetPagtionCacheKey("{this}");
-        public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DesignationCacheKey.SharedExpiryTokenSource.Token));
-    }
+        public string CacheKey => DesignationCacheKey.GetPagtionCacheKey($"{this}");
+        public MemoryCacheEntryOptions? Options => DesignationCacheKey.MemoryCacheEntryOptions;
+}
     
     public class DesignationsWithPaginationQueryHandler :
          IRequestHandler<DesignationsWithPaginationQuery, PaginatedData<DesignationDto>>

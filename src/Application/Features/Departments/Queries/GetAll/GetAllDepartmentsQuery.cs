@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Departments.Queries.GetA
     public class GetAllDepartmentsQuery : IRequest<IEnumerable<DepartmentDto>>, ICacheable
     {
        public string CacheKey => DepartmentCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DepartmentCacheKey.SharedExpiryTokenSource.Token));
+       public MemoryCacheEntryOptions? Options => DepartmentCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllDepartmentsQueryHandler :

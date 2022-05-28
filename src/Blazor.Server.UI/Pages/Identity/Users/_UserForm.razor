@@ -1,3 +1,5 @@
+@using CleanArchitecture.Blazor.Application.Features.Sites.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Sites.Queries.GetAll
 @using Microsoft.AspNetCore.Identity
 @using SixLabors.ImageSharp
 @using SixLabors.ImageSharp.Formats
@@ -31,8 +33,26 @@
                 </MudTooltip>
             </div>
         </MudItem>
-        <MudItem xs="12" sm="6">
-            <MudTextField For="@(() => model.Site)" @bind-Value="model.Site" Label="@L["Site"]" Variant="Variant.Text"></MudTextField>
+        <MudItem sm="6" xs="12">
+            <MudSelect For="@(() => model.SiteId)"
+                       T="int?"
+                       Label="@L["Select Site"]"
+                       Text="@model.Site"
+                       Required="true"
+                       RequiredError="@L["Site is required."]"
+                       ValueChanged="SiteIdChanged"
+                       Value="@model.SiteId">
+                @foreach (var item in _sites)
+                {
+                    <MudSelectItem T="int?" Value="@item.Id" >@item.Name</MudSelectItem>
+                }
+            </MudSelect>
+        </MudItem>
+        <MudItem sm="6" xs="12">
+            <AssignDepartmentAutocomplete For="@(() => model.Department)"
+                                          @bind-Value="model.Department"
+                                          Label="@L["Select Department"]"
+                                          Variant="Variant.Text"></AssignDepartmentAutocomplete>
         </MudItem>
         <MudItem xs="12" sm="6">
             <MudTextField For="@(() => model.UserName)" @bind-Value="model.UserName" Label="@L["User Name"]" Variant="Variant.Text"></MudTextField>
@@ -42,6 +62,9 @@
         </MudItem>
         <MudItem xs="12" sm="6">
             <MudTextField For="@(() => model.DisplayName)" @bind-Value="model.DisplayName" Label="@L["Display Name"]" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="6">
+            <MudTextField For="@(() => model.PhoneNumber)" @bind-Value="model.PhoneNumber" Label="@L["Phone Number"]" Variant="Variant.Text"></MudTextField>
         </MudItem>
         @if (string.IsNullOrEmpty(model.Id))
         {
@@ -72,13 +95,11 @@
                           OnAdornmentClick="TogglePasswordVisibility" Class="mt-4" />
             </MudItem>
         }
+       
         <MudItem xs="12" sm="6">
-            <MudTextField For="@(() => model.PhoneNumber)" @bind-Value="model.PhoneNumber" Label="@L["Phone Number"]" Variant="Variant.Text"></MudTextField>
-        </MudItem>
-       <MudItem xs="12" sm="6">
             <MudText Typo="Typo.caption">@L["Status"]</MudText>
             <div class="d-fex">
-                 <MudCheckBox For="@(() =>model.IsActive)" T="bool" @bind-Checked="model.IsActive" Label="@L["Is Active"]"></MudCheckBox>
+                <MudCheckBox For="@(() =>model.IsActive)" T="bool" @bind-Checked="model.IsActive" Label="@L["Is Active"]"></MudCheckBox>
             </div>
         </MudItem>
         <MudItem xs="12" sm="12">
@@ -102,6 +123,10 @@
     }
     MudForm form = default!;
     private List<keyvalue> _roles { get; set; } = new();
+    private List<SiteDto> _sites = new();
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+
 
     [Inject] private IUploadService _uploadService { get; set; } = default!;
     [Inject] private RoleManager<ApplicationRole> _roleManager { get; set; } = default!;
@@ -114,7 +139,7 @@
     protected override async Task OnInitializedAsync()
     {
         var array = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
-
+        _sites = (await _mediator.Send(new GetAllSitesQuery())).ToList();
         foreach (var role in array)
         {
             if (model.AssignRoles != null && model.AssignRoles.Contains(role))
@@ -127,6 +152,11 @@
             }
         }
 
+    }
+    private void SiteIdChanged(int? id)
+    {
+        model.SiteId = id;
+        model.Site = _sites.FirstOrDefault(x => x.Id == id)?.Name;
     }
     void TogglePasswordVisibility()
     {

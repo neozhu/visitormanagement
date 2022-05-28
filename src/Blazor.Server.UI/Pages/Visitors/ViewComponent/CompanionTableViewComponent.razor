@@ -1,0 +1,64 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inject IStringLocalizer<Visitors> L
+<MudSimpleTable Class="mt-3" Style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <td>@L["Name / Comment"]</td>
+                        <td>@L["Attchments"]</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Companion)
+                    {
+                        <tr>
+                            <td>
+                                <MudText Typo="Typo.body1">@item.Name</MudText>
+                                <MudText Typo="Typo.body2">@item.IdentificationNo</MudText>
+                                <MudText Typo="Typo.body2">@item.Description</MudText>
+                            </td>
+                            <td>
+                                @if (item.TripCode is not null)
+                                {
+                                    <MudTooltip Text="@L["Trip Code"]">
+                                        <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.Route" aria-label="@L["Trip Code"]" Title="@L["Trip Code"]" />
+                                    </MudTooltip>
+                                }
+                                @if (item.HealthCode is not null)
+                                {
+                                    <MudTooltip Text="@L["Health Code"]">
+                                        <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.MonitorHeart" aria-label="@L["Health Code"]" Title="@L["Health Code"]" />
+                                    </MudTooltip>
+                                }
+                                @if (item.NucleicAcidTestReport is not null)
+                                {
+                                    <MudTooltip Text="@L["Nucleic Acid Test Report"]">
+                                        <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.FactCheck" aria-label="@L["Nucleic Acid Test Report"]" Title="@L["Nucleic Acid Test Report"]" />
+                                    </MudTooltip>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+@code {
+    [EditorRequired]
+    [Parameter]
+    public List<CompanionDto> Companion { get; set; } = new();
+
+    private async Task OnShowPreview(CompanionDto item)
+    {
+        var parameters = new DialogParameters {
+                 { nameof(_PreviewDialog.HealthCode),item.HealthCode },
+                 { nameof(_PreviewDialog.NucleicAcidTestReport),item.NucleicAcidTestReport },
+                 { nameof(_PreviewDialog.TripCode),item.TripCode },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_PreviewDialog>
+        (L["Preview upload attachments"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+        }
+
+    }
+}

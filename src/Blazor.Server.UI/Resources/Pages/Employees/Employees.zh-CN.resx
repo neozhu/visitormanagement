@@ -240,4 +240,10 @@
   <data name="Search for name" xml:space="preserve">
     <value>按姓名查询</value>
   </data>
+  <data name="Select Site" xml:space="preserve">
+    <value>选择站点</value>
+  </data>
+  <data name="Site / Department" xml:space="preserve">
+    <value>站点 / 部门</value>
+  </data>
 </root>

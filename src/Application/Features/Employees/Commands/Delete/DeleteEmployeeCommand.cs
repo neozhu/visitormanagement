@@ -11,7 +11,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Employees.Commands.Delet
     {
       public int[] Id {  get; }
       public string CacheKey => EmployeeCacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => EmployeeCacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => EmployeeCacheKey.SharedExpiryTokenSource();
       public DeleteEmployeeCommand(int[] id)
       {
         Id = id;

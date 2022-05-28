@@ -225,6 +225,12 @@
   <data name="Select Designation" xml:space="preserve">
     <value>Select Designation</value>
   </data>
+  <data name="Select Site" xml:space="preserve">
+    <value>Select Site</value>
+  </data>
+  <data name="Site / Department" xml:space="preserve">
+    <value>Site / Department</value>
+  </data>
   <data name="Sort By" xml:space="preserve">
     <value>Sort By</value>
   </data>

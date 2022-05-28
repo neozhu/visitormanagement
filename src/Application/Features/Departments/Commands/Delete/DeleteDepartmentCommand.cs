@@ -11,7 +11,7 @@ public class DeleteDepartmentCommand : IRequest<Result>, ICacheInvalidator
 {
     public int[] Id { get; }
     public string CacheKey => DepartmentCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => DepartmentCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => DepartmentCacheKey.SharedExpiryTokenSource();
     public DeleteDepartmentCommand(int[] id)
     {
         Id = id;

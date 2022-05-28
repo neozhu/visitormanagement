@@ -1,0 +1,39 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+
+@inject IStringLocalizer<Visitors> L
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="false" Centered="false" PanelClass="mt-4" Color="MudBlazor.Color.Transparent">
+    <MudTabPanel Text="@L["Detail Information"]">
+        <MudExpansionPanels Class="" MultiExpansion="true">
+            <MudExpansionPanel Text="@L["Visitor Information"]" @bind-IsExpanded="@_expanded">
+                <Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitDetailViewComponent Visitor="Visitor"></Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitDetailViewComponent>
+            </MudExpansionPanel>
+            @if (Visitor.CompanionCount > 0)
+            {
+                <MudExpansionPanel Text="@($"{L["Companion Information"]} ({Visitor.CompanionCount})")">
+                    <Blazor.Server.UI.Pages.Visitors.ViewComponent.CompanionTableViewComponent Companion="Visitor.Companions"></Blazor.Server.UI.Pages.Visitors.ViewComponent.CompanionTableViewComponent>
+                </MudExpansionPanel>
+            }
+            @if (Visitor.ApprovalHistories.Count > 0)
+            {
+                <MudExpansionPanel Text="@($"{L["Activity Information"]} ({Visitor.ApprovalHistories.Count})")">
+
+                    <Blazor.Server.UI.Pages.Visitors.ViewComponent.ActivityTableViewComponent ApprovalHistories="Visitor.ApprovalHistories"></Blazor.Server.UI.Pages.Visitors.ViewComponent.ActivityTableViewComponent>
+                </MudExpansionPanel>
+            }
+            @if (Visitor.VisitorHistories.Count > 0)
+            {
+                <MudExpansionPanel Text="@($"{L["Visit Information"]} ({Visitor.VisitorHistories.Count})")">
+
+                    <Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitHistoryTableViewComponent VisitHistories="Visitor.VisitorHistories"></Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitHistoryTableViewComponent>
+                </MudExpansionPanel>
+            }
+        </MudExpansionPanels>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    private bool _expanded=true;
+    [EditorRequired]
+    [Parameter]
+    public VisitorDto Visitor { get; set; } = new();
+}

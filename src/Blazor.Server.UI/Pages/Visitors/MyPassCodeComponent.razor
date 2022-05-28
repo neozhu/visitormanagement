@@ -1,0 +1,107 @@
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Update
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@inject IStringLocalizer<Visitors> L
+@inherits MudComponentBase
+<div class="d-flex flex-column justify-center align-content-center">
+    <MudPaper Class="align-self-center pa-4 mt-4" Elevation="10" Style="width:320px">
+        <MudTextField @bind-Value="Keyword" Label="@L["Search my QRcode"]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="SearchQRcode" />
+    </MudPaper>
+    <MudCard Class="align-self-center mt-4"  Elevation="10" Style="width:320px">
+        @if (_notfound)
+        {
+            <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor's information"]</MudAlert>
+        }
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">@L["Pass Code"]: @_visitorDto.PassCode</MudText>
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardMedia Image="@_visitorDto.QrCode" Height="300" />
+        <MudCardContent>
+            <MudForm>
+                <MudTextField For="@(() => _visitorDto.Name)" Value="@_visitorDto.Name" Label="@L["Visitor's Name"]" ReadOnly="true" />
+                <MudTextField For="@(() => _visitorDto.CompanyName)" Value="@_visitorDto.CompanyName" Label="@L["Company Name"]" ReadOnly="true" />
+                <MudTextField For="@(() => _visitorDto.LicensePlateNumber)" Value="@_visitorDto.LicensePlateNumber" Label="@L["License Plate Number"]" ReadOnly="true" />
+                <MudTextField For="@(() => _visitorDto.Purpose)" Value="@_visitorDto.Purpose" Label="@L["Purpose"]" ReadOnly="true" />
+                <MudTextField For="@(() => _visitorDto.Employee)" Value="@_visitorDto.Employee" Label="@L["Visit Employee"]" ReadOnly="true" />
+                <MudTextField For="@(() => _visitorDto.ExpectedDate)" Value="@_visitorDto.ExpectedDate" Label="@L["Expected Date"]" ReadOnly="true" />
+                <MudTimePicker For="@(() => _visitorDto.ExpectedTime)" AmPm="true"  Time="@_visitorDto.ExpectedTime" Label="@L["Expected Time"]" ReadOnly="true" />
+                @if (_visitorDto.CompanionCount > 0)
+                {
+                    <MudList Clickable="true" Dense="true">
+                        <MudListSubheader Class="px-0">
+                            @L["Companion Count"] (@_visitorDto.CompanionCount)
+                        </MudListSubheader>
+                        @foreach (var companion in _visitorDto.Companions)
+                        {
+                            <MudListItem Class="px-0">
+                                <MudText>@companion.Name</MudText>
+                                <MudText Typo="Typo.body2">@companion.IdentificationNo</MudText>
+                            </MudListItem>
+                        }
+
+                    </MudList>
+                }
+
+                @if (_visitorDto.Apppoved == true)
+                {
+                    <MudTextField Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.CheckCircle" AdornmentColor="Color.Success" Variant="Variant.Outlined" For="@(() => _visitorDto.ApprovalOutcome)" Value="@_visitorDto.ApprovalOutcome" Label="@L["Approval Outcome"]" ReadOnly="true" />
+                }
+                else
+                {
+                    <MudTextField Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.PauseCircle" AdornmentColor="Color.Default" Variant="Variant.Outlined" For="@(() => _visitorDto.ApprovalOutcome)" Value="@_visitorDto.ApprovalOutcome" Label="@L["Approval Outcome"]" ReadOnly="true" />
+                }
+            </MudForm>
+        </MudCardContent>
+        <MudCardActions>
+            <MudText Class="mr-2">@L["Survey feedback"]</MudText>
+            <MudRating Disabled="@(_visitorDto.Id==0 || _visitorDto.Status!=VisitorStatus.PendingFeedback)" SelectedValue="@(_visitorDto.SurveyResponseValue??3)" SelectedValueChanged="updatedRatingValue" />
+        </MudCardActions>
+    </MudCard>
+
+   <Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckinHistoryComponent VisitorHistories="_visitorHistories"></Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckinHistoryComponent>
+</div>
+@code {
+    private bool _notfound { get; set; }
+    private int _rating { get; set; } = 3;
+    private VisitorDto _visitorDto = new();
+    private List<VisitorHistoryDto> _visitorHistories = new();
+    [Parameter]
+    public string? Keyword { get; set; }
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrEmpty(Keyword))
+            await SearchQRcode();
+    }
+
+    public async Task SearchQRcode()
+    {
+        var visitor = await _mediator.Send(new SearchVisitorQuery(Keyword));
+        if (visitor is null)
+        {
+            _notfound = true;
+            _visitorDto = new();
+        }
+        else
+        {
+            _notfound = false;
+            _visitorDto = visitor;
+            _visitorHistories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(_visitorDto.Id))).ToList();
+        }
+        StateHasChanged();
+    }
+    private async Task updatedRatingValue(int value)
+    {
+        _visitorDto.SurveyResponseValue = value;
+        await _mediator.Send(new UpdateVisitorSurveyResponseCommand(_visitorDto.Id, value));
+        Snackbar.Add($"{L["Thank you for your valuable feedback."]}", MudBlazor.Severity.Success);
+    }
+
+
+}

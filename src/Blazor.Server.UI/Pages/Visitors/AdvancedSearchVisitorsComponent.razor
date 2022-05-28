@@ -11,6 +11,13 @@
                           TextChanged="OnSearchStringChanged">
             </MudTextField>
         </MudItem>
+        <MudItem xs="12" sm="6"  md="4">
+           <PicklistAutocomplete Picklist="Picklist.VisitorStatus"
+                                Placeholder="@L["Search for status"]"
+                                TextChanged="OnSearchStringChanged"
+                                ResetValueOnEmptyText="true"
+                                @bind-Value="TRequest.Status"></PicklistAutocomplete>
+        </MudItem>
         <MudItem xs="12" sm="6" md="4">
             <MudTextField @bind-Value="TRequest.Name" 
                           Placeholder="@L["Search for visitor's name"]"

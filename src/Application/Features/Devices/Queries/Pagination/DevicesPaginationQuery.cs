@@ -8,9 +8,9 @@ namespace CleanArchitecture.Blazor.Application.Features.Devices.Queries.Paginati
 
     public class DevicesWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<DeviceDto>>, ICacheable
     {
-        public string CacheKey => DeviceCacheKey.GetPagtionCacheKey("{this}");
-        public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DeviceCacheKey.SharedExpiryTokenSource.Token));
-    }
+        public string CacheKey => DeviceCacheKey.GetPagtionCacheKey($"{this}");
+        public MemoryCacheEntryOptions? Options => DeviceCacheKey.MemoryCacheEntryOptions;
+}
     
     public class DevicesWithPaginationQueryHandler :
          IRequestHandler<DevicesWithPaginationQuery, PaginatedData<DeviceDto>>

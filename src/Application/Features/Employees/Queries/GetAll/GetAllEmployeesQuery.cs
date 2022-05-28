@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Employees.Queries.GetAll
     public class GetAllEmployeesQuery : IRequest<IEnumerable<EmployeeDto>>, ICacheable
     {
        public string CacheKey => EmployeeCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(EmployeeCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => EmployeeCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllEmployeesQueryHandler :

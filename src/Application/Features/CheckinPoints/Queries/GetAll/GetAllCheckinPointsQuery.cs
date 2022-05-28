@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.CheckinPoints.Queries.Ge
     public class GetAllCheckinPointsQuery : IRequest<IEnumerable<CheckinPointDto>>, ICacheable
     {
        public string CacheKey => CheckinPointCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(CheckinPointCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => CheckinPointCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllCheckinPointsQueryHandler :

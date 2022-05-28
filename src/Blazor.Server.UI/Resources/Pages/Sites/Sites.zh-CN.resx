@@ -120,8 +120,14 @@
   <data name="Actions" xml:space="preserve">
     <value>操作</value>
   </data>
+  <data name="Address" xml:space="preserve">
+    <value>详细地址</value>
+  </data>
   <data name="Check-in Points" xml:space="preserve">
     <value>检查点</value>
+  </data>
+  <data name="Company Name" xml:space="preserve">
+    <value>公司名称</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>新建</value>

@@ -1,0 +1,48 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Reports
+@using System.Globalization
+@inject IStringLocalizer<Index> L
+@inherits MudComponentBase
+<MudPaper Class="py-4 px-6 rounded-lg d-flex flex-column flex-grow-1">
+            <div>
+                <div class="d-flex gap-4">
+                    <MudText Class="flex-grow-0" Typo="Typo.h6">@L["Visitors statistics"] @month</MudText>
+                    <MudSelect T="int" Class="flex-grow-0" Value="year" Style="width:120px" Label="@L["Select year"]" ValueChanged="@(s=>filter(s))">
+                        <MudSelectItem Value="2022" />
+                        <MudSelectItem Value="2023" />
+                        <MudSelectItem Value="2024" />
+                    </MudSelect>
+                </div>
+                <MudChart ChartType="ChartType.Bar" ChartSeries="@Series" @bind-SelectedIndex="month" XAxisLabels="@XAxisLabels" Width="100%" Height="300px"></MudChart>
+            </div>
+        </MudPaper>
+
+@code {
+    public int month = DateTime.Now.Month;
+    public List<ChartSeries> Series = new List<ChartSeries>()
+    {
+    };
+    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    private List<VisitorCountedMonth>? _result = new();
+    private int year = DateTime.Now.Year;
+    protected override async Task OnInitializedAsync()
+    {
+        _result = await _mediator.Send(new GetVisitorCountedMonthlyDataQuery());
+        await filter(year);
+    }
+    private Task filter(int year)
+    {
+        this.year = year;
+        var data = _result.Where(x=>x.Year==year).Select(x => Convert.ToDouble(x.Count)).ToArray();
+        Series=new List<ChartSeries>(){ new() { Name = "The number of visitors", Data = data } };
+        XAxisLabels = _result.Where(x=>x.Year==year).Select(x => $"{GetMonthName(x.Month)}").ToArray();
+        return Task.CompletedTask;
+    }
+
+    //Getting a Month Name Using Month Number
+    private string GetMonthName(int month)
+    {
+        return CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(month);
+    }
+}

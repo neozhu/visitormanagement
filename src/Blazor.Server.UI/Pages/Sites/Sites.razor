@@ -132,6 +132,7 @@
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="SiteDto">@L["Site Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Address" T="SiteDto">@L["Address"]</MudTableSortLabel></MudTh>
                 <MudTh>@L["Check-in Points"]</MudTh>
             </HeaderContent>
             <RowTemplate>
@@ -163,7 +164,10 @@
                 </MudTd>
                 <MudTd DataLabel="@L["Site Name"]">
                     <MudText>@context.Name</MudText>
-                    <MudText Typo="Typo.body2">@context.Address</MudText>
+                    <MudText Typo="Typo.body2">@context.CompanyName</MudText>
+                </MudTd>
+                <MudTd DataLabel="@L["Address"]">
+                    <MudText>@context.Address</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Check-in Points"]">
                     @foreach(var str in context.CheckinPoints)

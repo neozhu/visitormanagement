@@ -1,0 +1,78 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Kanban
+@inherits MudComponentBase
+@inject IStringLocalizer<Visitors> L
+
+<div class="d-flex gap-4">
+    <MudPaper Class="flex-grow-1">
+        <MudList Clickable="true" Class="mud-height-full">
+            <MudListSubheader>@L["Pending Visitor"]</MudListSubheader>
+
+            @foreach (var item in _list.Where(x => x.Status == VisitorStatus.PendingVisitor).Take(5))
+            {
+                <MudListItem OnClick="@(()=>navigateTo(item.Id))">
+                    <MudText Typo="Typo.body2">@item.Name - @item.PhoneNumber</MudText>
+                    <MudText Typo="Typo.body2">@item.CompanyName</MudText>
+                </MudListItem>
+            }
+        </MudList>
+    </MudPaper>
+    <MudPaper Class="flex-grow-1">
+        <MudList Clickable="true" Class="mud-height-full">
+            <MudListSubheader>@L["Pending Approval"]</MudListSubheader>
+
+            @foreach (var item in _list.Where(x => x.Status == VisitorStatus.PendingApproval).Take(5))
+            {
+                <MudListItem OnClick="@(()=>navigateTo(item.Id))">
+                    <MudText Typo="Typo.body2">@item.Name - @item.PhoneNumber</MudText>
+                    <MudText Typo="Typo.body2">@item.CompanyName</MudText>
+                </MudListItem>
+            }
+        </MudList>
+    </MudPaper>
+    <MudPaper Class="flex-grow-1">
+        <MudList Clickable="true" Class="mud-height-full">
+            <MudListSubheader>@L["Pending Check-in"]</MudListSubheader>
+
+            @foreach (var item in _list.Where(x => x.Status == VisitorStatus.PendingCheckin).Take(5))
+            {
+                <MudListItem OnClick="@(()=>navigateTo(item.Id))">
+                    <MudText Typo="Typo.body2">@item.Name - @item.PhoneNumber</MudText>
+                    <MudText Typo="Typo.body2">@item.CompanyName</MudText>
+                </MudListItem>
+            }
+        </MudList>
+    </MudPaper>
+    <MudPaper Class="flex-grow-1">
+        <MudList Clickable="true" Class="mud-height-full">
+            <MudListSubheader>@L["Pending Check-out"]</MudListSubheader>
+
+            @foreach (var item in _list.Where(x => x.Status == VisitorStatus.PendingCheckout).Take(5))
+            {
+                <MudListItem OnClick="@(()=>navigateTo(item.Id))">
+                    <MudText Typo="Typo.body2">@item.Name - @item.PhoneNumber</MudText>
+                    <MudText Typo="Typo.body2">@item.CompanyName</MudText>
+                </MudListItem>
+            }
+        </MudList>
+    </MudPaper>
+</div>
+
+
+@code {
+    private List<VisitorStatusSumarryDto> _list = new();
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+    protected override async Task OnInitializedAsync()
+    {
+        _list = await _mediator.Send(new GetKanbanDataQuery());
+
+    }
+    private void navigateTo(int id)
+    {
+        _navigationManager.NavigateTo($"/visitor/detail?id={id}");
+    }
+}

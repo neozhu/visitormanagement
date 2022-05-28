@@ -1,0 +1,153 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.CompleteVisitorInfo
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inherits MudComponentBase
+@inject IStringLocalizer<Visitors> L
+<div class="d-flex flex-column">
+    <MudPaper Elevation="25">
+        <MudToolBar>
+            <MudText Typo="Typo.h6">@L["Companion"]</MudText>
+            <MudIconButton Disabled="@(TRequest.Apppoved==true)" Icon="@Icons.Material.Outlined.Add" Color="MudBlazor.Color.Inherit" OnClick="Add" Class="mr-5" />
+        </MudToolBar>
+    </MudPaper>
+    <MudSimpleTable Class="mt-3" Style="overflow-x: auto;">
+        <thead>
+            <tr>
+                <td>@L["Name / Comment"]</td>
+                <td>@L["Attchments"]</td>
+                <td>@L["Actions"]</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in TRequest.Companions.Where(x=>x.TrackingState!= TrackingState.Deleted))
+            {
+                <tr>
+                    <td>
+                        <MudText Typo="Typo.body1">@item.Name</MudText>
+                        <MudText Typo="Typo.body2">@item.IdentificationNo</MudText>
+                        @if(!string.IsNullOrEmpty(item.Description)){
+                            <MudText Typo="Typo.body2">@item.Description</MudText>
+                        }
+                        
+                    </td>
+                    <td>
+                        @if (item.TripCode is not null)
+                        {
+                            <MudTooltip Text="@L["Trip Code"]">
+                                <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.Route" aria-label="@L["Trip Code"]" Title="@L["Trip Code"]" />
+                            </MudTooltip>
+                        }
+                        @if (item.HealthCode is not null)
+                        {
+                            <MudTooltip Text="@L["Health Code"]">
+                                <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.MonitorHeart" aria-label="@L["Health Code"]" Title="@L["Health Code"]" />
+                            </MudTooltip>
+                        }
+                        @if (item.NucleicAcidTestReport is not null)
+                        {
+                            <MudTooltip Text="@L["Nucleic Acid Test Report"]">
+                                <MudIconButton OnClick="@(()=>OnShowPreview(item))" Icon="@Icons.Material.Filled.FactCheck" aria-label="@L["Nucleic Acid Test Report"]" Title="@L["Nucleic Acid Test Report"]" />
+                            </MudTooltip>
+                        }
+                    </td>
+                    <td>
+                        <MudIconButton Disabled="@(TRequest.Apppoved==true)" Title="@L["Edit"]" Icon="@Icons.Material.Outlined.Edit" Color="MudBlazor.Color.Default" OnClick="@(()=>Edit(item))" Class="mr-5" />
+                        <MudIconButton Disabled="@(TRequest.Apppoved==true)" Title="@L["Delete"]" Icon="@Icons.Material.Outlined.Delete" Color="MudBlazor.Color.Secondary" OnClick="@(()=>Delete(item))" Class="mr-5" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</div>
+
+@code {
+
+    [Parameter]
+    public CompleteVisitorInfoCommand TRequest { get; set; } = new();
+    private async Task Add()
+    {
+        var companionDto = new CompanionDto() { VisitorId = TRequest.Id, TrackingState = TrackingState.Added };
+        var parameters = new DialogParameters {
+                 { nameof(_CompanionDialog.model),companionDto },
+                  { nameof(_CompanionDialog.PassCode),TRequest.PassCode }
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_CompanionDialog>
+        (L["Add a new companion"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            TRequest.Companions.Add(companionDto);
+        }
+    }
+    private async Task Edit(CompanionDto item)
+    {
+        var origin = new CompanionDto()
+        {
+                Description = item.Description,
+                HealthCode = item.HealthCode,
+                Id = item.Id,
+                Name = item.Name,
+                IdentificationNo = item.IdentificationNo,
+                NucleicAcidTestReport = item.NucleicAcidTestReport,
+                QrCode=item.QrCode,
+                TripCode = item.TripCode,
+                VisitorId = item.VisitorId,
+                TrackingState = item.TrackingState
+        };
+        var parameters = new DialogParameters {
+                 { nameof(_CompanionDialog.model),item },
+                 { nameof(_CompanionDialog.PassCode),TRequest.PassCode }
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_CompanionDialog>
+        (L["Edit the companion"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            if(item.TrackingState!= TrackingState.Added)
+               item.TrackingState = TrackingState.Modified;
+        }
+        else
+        {
+            item.Description = origin.Description;
+            item.HealthCode = origin.HealthCode;
+            item.Id = origin.Id;
+            item.Name = origin.Name;
+            item.IdentificationNo = origin.IdentificationNo;
+            item.CheckinDateTime = origin.CheckinDateTime;
+            item.NucleicAcidTestReport = origin.NucleicAcidTestReport;
+            item.QrCode = origin.QrCode;
+            item.TripCode = origin.TripCode;
+            item.VisitorId = origin.VisitorId;
+        }
+    }
+    private Task Delete(CompanionDto item)
+    {
+        if (item.Id > 0 && item.VisitorId > 0)
+        {
+            item.TrackingState = TrackingState.Deleted;
+        }
+        else
+        {
+           TRequest.Companions.Remove(item);
+        }
+        
+        return Task.CompletedTask;
+    }
+    private async Task OnShowPreview(CompanionDto item)
+    {
+        var parameters = new DialogParameters {
+                 { nameof(_PreviewDialog.HealthCode),item.HealthCode },
+                 { nameof(_PreviewDialog.NucleicAcidTestReport),item.NucleicAcidTestReport },
+                 { nameof(_PreviewDialog.TripCode),item.TripCode },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_PreviewDialog>
+        (L["Preview upload attachments"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+        }
+
+    }
+}

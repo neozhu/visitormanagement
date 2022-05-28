@@ -1,0 +1,46 @@
+@page "/visitor/detail"
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.GetById
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Related
+@attribute [Authorize(Policy = Permissions.Visitors.Detail)]
+<ErrorBoundary>
+    <ChildContent>
+        <div class="d-flex flex-column gap-4">
+            <VisitorHeaderComponent Visitor="_visitor"></VisitorHeaderComponent>
+            <StatusFlowComponent CurrentStatus="@_visitor?.Status"></StatusFlowComponent>
+            <MudGrid>
+                <MudItem xs="12" sm="8" md="9">
+                    <DetailInfoComponent Visitor="_visitor"></DetailInfoComponent>
+                </MudItem>
+                <MudItem xs="12" sm="4" md="3">
+                    <RelatedVisitorsComponent RelatedVistors="_relatedVisitors"></RelatedVisitorsComponent>
+                </MudItem>
+            </MudGrid>
+        </div>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "id")]
+    public int Id { get; set; }
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    private VisitorDto? _visitor = new();
+    private List<VisitorDto>? _relatedVisitors = new();
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            _visitor = await _mediator.Send(new GetByIdVisitorQuery(Id));
+            if (_visitor is not null)
+            {
+                _relatedVisitors = await _mediator.Send(new GetRelatedVisitorQuery(_visitor.EmployeeId));
+
+            }
+        }
+    }
+
+}

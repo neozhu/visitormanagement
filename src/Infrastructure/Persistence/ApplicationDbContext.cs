@@ -1,16 +1,6 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using CleanArchitecture.Blazor.Domain.Common;
-using CleanArchitecture.Blazor.Domain.Entities;
-using CleanArchitecture.Blazor.Domain.Entities.Audit;
-using CleanArchitecture.Blazor.Domain.Entities.Log;
-using CleanArchitecture.Blazor.Domain.Enums;
-using CleanArchitecture.Blazor.Infrastructure.Persistence.Extensions;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using System.Reflection;
-
 namespace CleanArchitecture.Blazor.Infrastructure.Persistence;
 
 public class ApplicationDbContext : IdentityDbContext<
@@ -49,6 +39,10 @@ public class ApplicationDbContext : IdentityDbContext<
     public DbSet<Site> Sites { get; set; }
     public DbSet<CheckinPoint> CheckinPoints { get; set; }
     public DbSet<Device> Devices { get; set; }
+    public DbSet<Companion> Companions { get; set; }
+    public DbSet<ApprovalHistory> ApprovalHistories { get; set; }
+    public DbSet<SiteConfiguration> SiteConfigurations { get; set; }
+    public DbSet<MessageTemplate> MessageTemplates { get; set; }
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
     {
         var userId = await _currentUserService.UserId();
@@ -89,6 +83,7 @@ public class ApplicationDbContext : IdentityDbContext<
         return result;
     }
 
+   
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

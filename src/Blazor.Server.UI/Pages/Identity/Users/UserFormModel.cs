@@ -6,6 +6,7 @@ public class UserFormModel
     public string? UserName { get; set; }
     public string? DisplayName { get; set; }
     public string? Site { get; set; }
+    public int? SiteId { get; set; }
     public string? ProfilePictureDataUrl { get; set; }
     public string? Email { get; set; }
     public string? Password { get; set; }
@@ -14,4 +15,6 @@ public class UserFormModel
     public string[]? AssignRoles { get; set; }
     public bool IsActive { get; set; }
     public bool Checked { get; set; }
+    public string? Department { get; set; }
+    public string? Designation { get; set; }
 }

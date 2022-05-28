@@ -1,0 +1,20 @@
+
+@page "/visitor/pendingconfirm"
+@inject IStringLocalizer<Visitors> L
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@attribute [Authorize(Policy = Permissions.Visitors.PendingConfirm)]
+<PageTitle>@L["Pending Confirm"]</PageTitle>
+<MudContainer MaxWidth="MaxWidth.Small">
+<ErrorBoundary>
+    <ChildContent>
+           <PendingConfirmComponent></PendingConfirmComponent>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+</MudContainer>
+@code {
+
+}

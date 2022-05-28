@@ -33,6 +33,17 @@
                                    OnClick="@(()=>OnRefresh())"
                                    StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Primary"
                                    Style="margin-right: 4px; margin-bottom:4px">@L["Refresh"]</MudButton>
+
+                        @if (_canDelete)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Error"
+                                   StartIcon="@Icons.Material.Filled.Delete"
+                                   Disabled="@(!(_selectedItems.Count>0))"
+                                   Size="Size.Small"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   OnClick="OnDeleteChecked"
+                                   IconColor="Color.Surface">@L["Delete"]</MudButton>
+                        }
                        
                     </MudHidden>
                     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
@@ -51,27 +62,15 @@
             </ColGroup>
             <HeaderContent>
                 <MudTh><MudTableSortLabel SortLabel="Id" T="VisitorHistoryDto">@L["ID"]</MudTableSortLabel></MudTh>
-                <MudTh>@L["Visitor's Avatar"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="VisitorId" T="VisitorHistoryDto">@L["Visitor's Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="CheckinPointId" T="VisitorHistoryDto">@L["Check-in Point"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="TransitDateTime" T="VisitorHistoryDto">@L["Check-in Date"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Temperature" T="VisitorHistoryDto">@L["Temperature"]</MudTableSortLabel></MudTh>
+                <MudTh>@L["Attachments"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Comment" T="VisitorHistoryDto">@L["Comment"]</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
                 <MudTd HideSmall="true" DataLabel="@L["ID"]">@context.Id</MudTd>
-                <MudTd HideSmall="false" DataLabel="@L["Visitor's Avatar"]">
-                    @if (string.IsNullOrEmpty(context.Avatar))
-                        {
-                           <MudAvatar Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important">
-                               @context.Visitor.First()
-                           </MudAvatar>
-                        }
-                        else
-                        {
-                           <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
-                        }
-                </MudTd>
                 <MudTd DataLabel="@L["Visitor's Name"]">
                     <MudText>@context.Visitor</MudText>
                     <MudText Typo="Typo.body2">@context.CompanyName</MudText>
@@ -84,6 +83,9 @@
                     <MudText>@context.TransitDateTime</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Temperature"]">@context.Temperature</MudTd>
+                <MudTd DataLabel="@L["Attachments"]">
+                  <Blazor.Server.UI.Pages.Visitors.ViewComponent.AttachmentsComponent Attachments="@context.Attachments"></Blazor.Server.UI.Pages.Visitors.ViewComponent.AttachmentsComponent>
+                </MudTd>
                 <MudTd DataLabel="@L["Comment"]">@context.Comment</MudTd>
             </RowTemplate>
             <NoRecordsContent>
@@ -119,11 +121,13 @@
 
     private bool _canSearch;
     private bool _canCreate;
+    private bool _canDelete;
     protected override async Task OnInitializedAsync()
     {
         Title = L["Visitor Histories"];
         var state = await AuthState;
         _canSearch = (await AuthService.AuthorizeAsync(state.User, Permissions.VisitorHistories.Search)).Succeeded;
+        _canDelete = (await AuthService.AuthorizeAsync(state.User, Permissions.VisitorHistories.Delete)).Succeeded;
     }
     private async Task<TableData<VisitorHistoryDto>> ServerReload(TableState state)
     {
@@ -157,5 +161,24 @@
         _searchString = string.Empty;
         await _table.ReloadServerData();
     }
-     
+     private async Task OnDeleteChecked()
+    {
+        var deleteContent = L["You're sure you want to delete the selected items:{0}?"];
+        var parameters = new DialogParameters
+                        {
+                    { nameof(DeleteConfirmation.ContentText), string.Format(deleteContent,_selectedItems.Count) }
+                        };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true, DisableBackdropClick = true };
+        var dialog = DialogService.Show<DeleteConfirmation>
+        (L["Delete"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+            var command = new DeleteVisitorHistoryCommand(_selectedItems.Select(x => x.Id).ToArray());
+            var result = await _mediator.Send(command);
+            await _table.ReloadServerData();
+            Snackbar.Add($"{L["Deleted successfully"]}", MudBlazor.Severity.Info);
+            _selectedItems = new HashSet<VisitorHistoryDto>();
+        }
+    }
     }

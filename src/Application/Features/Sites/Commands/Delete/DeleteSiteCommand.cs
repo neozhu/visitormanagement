@@ -11,7 +11,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Sites.Commands.Delete;
     {
       public int[] Id {  get; }
       public string CacheKey => SiteCacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => SiteCacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => SiteCacheKey.SharedExpiryTokenSource();
       public DeleteSiteCommand(int[] id)
       {
         Id = id;

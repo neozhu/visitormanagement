@@ -1,0 +1,53 @@
+@using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.Queries.GetByVisitorId
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Approve
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+
+@inject IStringLocalizer<Visitors> L
+@inherits MudComponentBase
+
+
+<MudExpansionPanels Class="mt-4" MultiExpansion="true">
+    <MudExpansionPanel Text="@L["Visitor Information"]" @bind-IsExpanded="@_expanded">
+        <Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitDetailViewComponent Visitor="_visitor"></Blazor.Server.UI.Pages.Visitors.ViewComponent.VisitDetailViewComponent>
+    </MudExpansionPanel>
+    @if (_visitor.CompanionCount > 0)
+    {
+        <MudExpansionPanel Text="@($"{L["Companion Information"]} ({_visitor.CompanionCount})")">
+            <Blazor.Server.UI.Pages.Visitors.ViewComponent.CompanionTableViewComponent Companion="_visitor.Companions"></Blazor.Server.UI.Pages.Visitors.ViewComponent.CompanionTableViewComponent>
+        </MudExpansionPanel>
+    }
+    @if (_visitor.ApprovalHistories.Count > 0)
+    {
+        <MudExpansionPanel Text="@L["Approval Information"]" @bind-IsExpanded="_expandedhistory">
+
+            <Blazor.Server.UI.Pages.Visitors.ViewComponent.ActivityTableViewComponent ApprovalHistories="_visitor.ApprovalHistories"></Blazor.Server.UI.Pages.Visitors.ViewComponent.ActivityTableViewComponent>
+
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
+
+@code {
+    private bool _expanded = true;
+    private bool _expandedhistory = true;
+    [Parameter]
+    public VisitorDto _visitor { get; set; } = new();
+
+    private async Task OnShowPreview(CompanionDto item)
+    {
+        var parameters = new DialogParameters {
+                 { nameof(_PreviewDialog.HealthCode),item.HealthCode },
+                 { nameof(_PreviewDialog.NucleicAcidTestReport),item.NucleicAcidTestReport },
+                 { nameof(_PreviewDialog.TripCode),item.TripCode },
+            };
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
+        var dialog = DialogService.Show<_PreviewDialog>
+        (L["Preview attachments"], parameters, options);
+        var state = await dialog.Result;
+        if (!state.Cancelled)
+        {
+        }
+
+    }
+}

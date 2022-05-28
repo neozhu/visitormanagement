@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Devices.Queries.GetAll;
     public class GetAllDevicesQuery : IRequest<IEnumerable<DeviceDto>>, ICacheable
     {
        public string CacheKey => DeviceCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DeviceCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => DeviceCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllDevicesQueryHandler :

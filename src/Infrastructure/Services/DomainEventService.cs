@@ -20,13 +20,13 @@ public class DomainEventService : IDomainEventService
 
     public async Task Publish(DomainEvent domainEvent)
     {
-        _logger.LogInformation("Publishing domain event. Event - {event}", domainEvent.GetType().Name);
+        _logger.LogInformation("Publishing domain event. Event - {event}", nameof(domainEvent));
         await _mediator.Publish(GetNotificationCorrespondingToDomainEvent(domainEvent));
     }
 
     private INotification GetNotificationCorrespondingToDomainEvent(DomainEvent domainEvent)
     {
         return (INotification)Activator.CreateInstance(
-            typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType()), domainEvent);
+            typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType()), domainEvent)!;
     }
 }

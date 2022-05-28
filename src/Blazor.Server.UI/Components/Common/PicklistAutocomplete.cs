@@ -66,6 +66,7 @@ public enum Picklist
     Brand,
     Gender,
     Purpose,
-    ActiveStatus
+    ActiveStatus,
+    VisitorStatus,
 }
 

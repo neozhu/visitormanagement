@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Employees.Commands.AddEd
 public class AddEditEmployeeCommand : EmployeeDto, IRequest<Result<int>>, IMapFrom<Employee>, ICacheInvalidator
 {
     public string CacheKey => EmployeeCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => EmployeeCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => EmployeeCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditEmployeeCommandHandler : IRequestHandler<AddEditEmployeeCommand, Result<int>>

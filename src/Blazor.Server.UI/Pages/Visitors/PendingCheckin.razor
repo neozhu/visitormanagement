@@ -1,0 +1,55 @@
+@page "/visitor/pendingcheckin"
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@inject IStringLocalizer<Visitors> L
+@attribute [Authorize(Policy = Permissions.Visitors.PendingCheckin)]
+<PageTitle>@L["Pending Checking"]</PageTitle>
+<ErrorBoundary>
+    <ChildContent>
+        <MudGrid>
+            <MudItem xs="12" sm="5" md="3">
+                <PendingCheckinComponent @ref="pending"  SelectChanged="SelectChanged"></PendingCheckinComponent>
+            </MudItem>
+            <MudItem xs="12" sm="7" md="9">
+                <VisitorCheckingViewComponent Visitor="@_visitor" @ref="approval"  ApproveChanged="ApproveChanged" ></VisitorCheckingViewComponent>
+            </MudItem>
+         </MudGrid>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    private VisitorCheckingViewComponent approval;
+    private PendingCheckinComponent pending;    
+    private VisitorDto _visitor=new();
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "code")]
+    public string? Code { get; set; }
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    private  Task SelectChanged(VisitorDto visitor)
+    {
+        _visitor = visitor;
+        return Task.CompletedTask;
+    }
+      public async Task SearchVisitor()
+    {
+        if (string.IsNullOrEmpty(Code)) return;
+        var result = await _mediator.Send(new SearchVisitorQuery(Code));
+        if (result is null)
+        {
+            _visitor = new();
+            Snackbar.Add(string.Format(L["Not found visitor information with code:{0}"],Code), MudBlazor.Severity.Warning);
+        }
+        else
+        {
+            _visitor = result;
+        }
+    }
+    
+    private async Task ApproveChanged()
+    {
+        await pending.SearchPendingVisitor();
+    }
+}

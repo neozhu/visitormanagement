@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Devices.Commands.AddEdit
 public class AddEditDeviceCommand : DeviceDto, IRequest<Result<int>>, IMapFrom<Device>, ICacheInvalidator
 {
     public string CacheKey => DeviceCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => DeviceCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => DeviceCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditDeviceCommandHandler : IRequestHandler<AddEditDeviceCommand, Result<int>>

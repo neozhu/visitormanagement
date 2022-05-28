@@ -1,0 +1,97 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inject IStringLocalizer<Visitors> L
+
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Visitor's Name"]" Value="@Visitor.Name"
+                      ReadOnly="true">
+        </MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="8">
+        <MudTextField Label="@L["Company Name"]"
+                      Value="@Visitor.CompanyName"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["License Plate Number"]"
+                      Value="@Visitor.LicensePlateNumber"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Email"]"
+                      Value="@Visitor.Email"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Phone Number"]"
+                      Value="@Visitor.PhoneNumber"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Identification No."]"
+                      Value="@Visitor.IdentificationNo"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Gender"]"
+                      Value="@Visitor.Gender"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="12">
+        <MudTextField Label="@L["Visit Site - Address"]"
+                      Value="@Visitor.Address"
+                      ReadOnly="true"></MudTextField>
+
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Visit Employee"]"
+                      Value="@Visitor.Employee"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+
+    <MudItem xs="12" sm="6" md="4">
+        <MudDatePicker Label="@L["Expected Date"]"
+                       Date="@Visitor.ExpectedDate"
+                       ReadOnly="true"></MudDatePicker>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTimePicker Label="@L["Expected Time"]"
+                       Time="@Visitor.ExpectedTime"
+                       ReadOnly="true"></MudTimePicker>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudTextField Label="@L["Visit Purpose"]"
+                      Value="@Visitor.Purpose"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    <MudItem xs="12" sm="12">
+        <MudTextField Label="@L["Comment"]"
+                      Value="@Visitor.Comment"
+                      ReadOnly="true"></MudTextField>
+    </MudItem>
+    @if (@Visitor.Id > 0)
+    {
+        <MudItem xs="12" sm="12">
+            <MudText>@L["Attachments"]</MudText>
+            <div class="d-flex flex-nowrap gap-4 overflow-auto pa-4">
+                <MudPaper Class="d-flex flex-column">
+                    <MudImage Src="@Visitor.HealthCode" Width="300"></MudImage>
+                    <MudText Class="align-self-center" Typo="Typo.button">@L["Health Code"]</MudText>
+                </MudPaper>
+                <MudPaper Class="d-flex flex-column">
+                    <MudImage Src="@Visitor.TripCode" Width="300"></MudImage>
+                    <MudText Class="align-self-center" Typo="Typo.button">@L["Trip Code"]</MudText>
+                </MudPaper>
+                <MudPaper Class="d-flex flex-column">
+                    <MudImage Src="@Visitor.NucleicAcidTestReport" Width="300"></MudImage>
+                    <MudText Class="align-self-center" Typo="Typo.button">@L["Nucleic Acid Test Report"]</MudText>
+                </MudPaper>
+            </div>
+        </MudItem>
+    }
+</MudGrid>
+@code {
+    [EditorRequired]
+    [Parameter]
+    public VisitorDto Visitor { get; set; } = new();
+}

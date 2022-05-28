@@ -1,0 +1,62 @@
+@page "/visitor/pendingapproval"
+@inject IStringLocalizer<Visitors> L
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@attribute [Authorize(Policy = Permissions.Visitors.PendingApproval)]
+<PageTitle>@L["Pending Approval"]</PageTitle>
+<ErrorBoundary>
+    <ChildContent>
+        <MudGrid>
+            <MudItem xs="12" sm="5" md="3">
+                <PendingApprovalComponent @ref="pending" SelectChanged="SelectChanged"></PendingApprovalComponent>
+            </MudItem>
+            <MudItem xs="12" sm="7" md="9">
+                <VisitorApprovalViewComponent Visitor="@_visitor" @ref="approval"  ApproveChanged="ApproveChanged" ></VisitorApprovalViewComponent>
+            </MudItem>
+         </MudGrid>
+    </ChildContent>
+    <ErrorContent>
+        <CustomError Exception="context"></CustomError>
+    </ErrorContent>
+</ErrorBoundary>
+@code {
+    private VisitorApprovalViewComponent approval;
+    private PendingApprovalComponent pending;
+    private VisitorDto _visitor = new();
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "code")]
+    public string? Code { get; set; }
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+         await SearchVisitor();
+    }
+    public async Task SearchVisitor()
+    {
+        if (string.IsNullOrEmpty(Code)) return;
+        var result = await _mediator.Send(new SearchVisitorQuery(Code));
+        if (result is null)
+        {
+            _visitor = new();
+            Snackbar.Add(string.Format(L["Not found visitor information with code:{0}"],Code), MudBlazor.Severity.Warning);
+        }
+        else
+        {
+            _visitor = result;
+        }
+    }
+    
+    private Task SelectChanged(VisitorDto visitor)
+    {
+        _visitor = visitor;
+        return Task.CompletedTask;
+
+    }
+    private async Task ApproveChanged()
+    {
+        await pending.SearchPendingVisitor();
+    }
+
+}

@@ -4,26 +4,33 @@
                    Style="border-radius: var(--mud-default-borderradius) !important;"
                    Class="mud-elevation-25 pa-2 mb-3" Text="@L["Advanced Search"]">
     <MudGrid>
-        <MudItem xs="12" sm="6" md="4">
+        <MudItem xs="12" sm="6" md="3">
             <MudTextField @bind-Value="TRequest.Name" 
                           Placeholder="@L["Search for name"]"
                           Clearable="true"
                           TextChanged="OnSearchStringChanged">
             </MudTextField>
         </MudItem>
-        <MudItem xs="12" sm="6"  md="4">
+        <MudItem xs="12" sm="6"  md="3">
           <MudTextField @bind-Value="TRequest.Email" 
                           Placeholder="@L["Search for email"]"
                           Clearable="true"
                           TextChanged="OnSearchStringChanged">
             </MudTextField>
         </MudItem>
-        <MudItem xs="12" sm="6"  md="4">
-          <DepartmentAutocomplete @bind-Value="TRequest.DepartmentId" 
+        <MudItem xs="12" sm="6"  md="3">
+          <Blazor.Server.UI.Pages.Sites.SiteAutocomplete @bind-Value="TRequest.SiteId" 
+                          Placeholder="@L["Search for site"]"
+                          Clearable="true"
+                          TextChanged="OnSearchStringChanged">
+            </Blazor.Server.UI.Pages.Sites.SiteAutocomplete>
+        </MudItem>
+        <MudItem xs="12" sm="6"  md="3">
+          <Blazor.Server.UI.Pages.Departments.DepartmentAutocomplete @bind-Value="TRequest.DepartmentId" 
                           Placeholder="@L["Search for department"]"
                           Clearable="true"
                           TextChanged="OnSearchStringChanged">
-            </DepartmentAutocomplete>
+            </Blazor.Server.UI.Pages.Departments.DepartmentAutocomplete>
         </MudItem>
          
     </MudGrid>

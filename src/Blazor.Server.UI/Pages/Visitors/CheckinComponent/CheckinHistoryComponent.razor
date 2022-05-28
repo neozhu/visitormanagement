@@ -1,0 +1,47 @@
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@inject IStringLocalizer<Visitors> L
+<MudCard Class="align-self-center mt-3" Elevation="10" Style="width:320px">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@L["Check-in Histories"] (@VisitorHistories.Count)</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (VisitorHistories.Count > 0)
+        {
+            <MudTimeline TimelineAlign="TimelineAlign.Start">
+                @foreach (var item in VisitorHistories)
+                {
+                    <MudTimelineItem TimelineAlign="TimelineAlign.End" Color="MudBlazor.Color.Info" Size="MudBlazor.Size.Small">
+                        <ItemOpposite>
+                            <MudText Color="MudBlazor.Color.Info" Typo="Typo.body1">@item.CheckinPoint</MudText>
+                        </ItemOpposite>
+                        <ItemContent>
+                            <MudText Typo="Typo.body1" Class="mud-text-secondary" GutterBottom="true">@item.Stage</MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary"  GutterBottom="true">@item.TransitDateTime?.ToString("MM/dd HH:mm")</MudText>
+                            <MudText Typo="Typo.body2" Class="mud-text-secondary" GutterBottom="true">@item.Comment</MudText>
+                            @if (item.Attachments != null && item.Attachments.Any())
+                            {
+                                <div class="d-flex">
+                                    <MudAvatarGroup MaxColor="MudBlazor.Color.Primary" Spacing="2">
+                                        @foreach (var attachment in item.Attachments)
+                                        {
+                                            <MudAvatar Image="@attachment" Size="Size.Small" />
+                                        }
+                                    </MudAvatarGroup>
+                                </div>
+                            }
+                        </ItemContent>
+                    </MudTimelineItem>
+
+                }
+            </MudTimeline>
+        }
+    </MudCardContent>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public List<VisitorHistoryDto> VisitorHistories { get; set; } = new();
+}

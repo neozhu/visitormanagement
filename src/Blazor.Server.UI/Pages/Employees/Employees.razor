@@ -136,7 +136,7 @@
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Avatar" T="EmployeeDto">@L["Avatar"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="EmployeeDto">@L["Name"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="DepartmentId" T="EmployeeDto">@L["Department"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="DepartmentId" T="EmployeeDto">@L["Site / Department"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Email" T="EmployeeDto">@L["Email"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="EmployeeDto">@L["Phone Number"]</MudTableSortLabel></MudTh>
 
@@ -187,7 +187,10 @@
                     <MudText>@context.Name</MudText>
                     <MudText Typo="Typo.body2">@context.Designation</MudText>
                 </MudTd>
-                <MudTd DataLabel="@L["Department"]">@context.Department</MudTd>
+                <MudTd DataLabel="@L["Site / Department"]">
+                    <MudText>@context.Site</MudText>
+                    <MudText Typo="Typo.body2">@context.Department</MudText>
+                </MudTd>
                 <MudTd DataLabel="@L["Email"]">@context.Email</MudTd>
                 <MudTd DataLabel="@L["Phone Number"]">@context.PhoneNumber</MudTd>
             </RowTemplate>
@@ -217,7 +220,6 @@
     private bool _downloading;
     [Inject]
     private ISender _mediator { get; set; } = default!;
-    private IEnumerable<KeyValueDto> _datasource = default!;
     [CascadingParameter]
     protected Task<AuthenticationState> AuthState { get; set; } = default!;
 
@@ -303,6 +305,7 @@
             {
                 Id = dto.Id,
                 Name = dto.Name,
+                SiteId = dto.SiteId,
                 Email = dto.Email,
                 About = dto.About,
                 Avatar = dto.Avatar,

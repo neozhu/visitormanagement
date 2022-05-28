@@ -15,29 +15,42 @@ public static class ApplicationDbContextSeed
     {
         var administratorRole = new ApplicationRole(RoleConstants.AdministratorRole) { Description = "Admin Group" };
         var userRole = new ApplicationRole(RoleConstants.BasicRole) { Description = "Basic Group" };
-
+        var guestRole = new ApplicationRole(RoleConstants.GuestRole) { Description = "Guest Group" };
+        var guardRole = new ApplicationRole(RoleConstants.GuardRole) { Description = "Guard Group" };
+        var usersRole = new ApplicationRole(RoleConstants.UserRole) { Description = "Guard Group" };        
         if (roleManager.Roles.All(r => r.Name != administratorRole.Name))
         {
             await roleManager.CreateAsync(administratorRole);
             await roleManager.CreateAsync(userRole);
+            await roleManager.CreateAsync(guestRole);
+            await roleManager.CreateAsync(usersRole);
+            await roleManager.CreateAsync(guardRole);
             var Permissions = GetAllPermissions();
             foreach (var permission in Permissions)
             {
-                await roleManager.AddClaimAsync(administratorRole, new System.Security.Claims.Claim(ApplicationClaimTypes.Permission, permission));
+                await roleManager.AddClaimAsync(administratorRole, new Claim(ApplicationClaimTypes.Permission, permission));
                 if(permission.StartsWith("Permissions.Products"))
-                  await roleManager.AddClaimAsync(userRole, new System.Security.Claims.Claim(ApplicationClaimTypes.Permission, permission));
+                  await roleManager.AddClaimAsync(userRole, new Claim(ApplicationClaimTypes.Permission, permission));
             }
         }
 
-        var administrator = new ApplicationUser { UserName = "administrator", IsActive = true, Site = "Razor", DisplayName = "Administrator", Email = "new163@163.com", EmailConfirmed = true, ProfilePictureDataUrl = $"https://s.gravatar.com/avatar/78be68221020124c23c665ac54e07074?s=80" };
-        var demo = new ApplicationUser { UserName = "Demo", IsActive = true, Site = "Razor", DisplayName = "Demo", Email = "neozhu@126.com", EmailConfirmed = true, ProfilePictureDataUrl = $"https://s.gravatar.com/avatar/ea753b0b0f357a41491408307ade445e?s=80" };
-
+        var administrator = new ApplicationUser { UserName = "administrator", IsActive = true, Site = "Blazor", DisplayName = "Administrator", Email = "administrator@163.com", EmailConfirmed = true, ProfilePictureDataUrl = $"https://s.gravatar.com/avatar/78be68221020124c23c665ac54e07074?s=80" };
+        var demo = new ApplicationUser { UserName = "Demo", IsActive = true, Site = "Blazor", DisplayName = "Demo", Email = "demo@163.com", EmailConfirmed = true, ProfilePictureDataUrl = $"https://s.gravatar.com/avatar/ea753b0b0f357a41491408307ade445e?s=80" };
+        var user = new ApplicationUser { UserName = "Test", IsActive = true, Site = "Blazor", DisplayName = "Test", Email = "test@126.com", EmailConfirmed = true};
+        var guest = new ApplicationUser { UserName = "Guest", IsActive = true, Site = "Blazor", DisplayName = "Guest", Email = "guest@126.com", EmailConfirmed = true };
+        var guard = new ApplicationUser { UserName = "Guard", IsActive = true, Site = "Blazor", DisplayName = "Guard", Email = "guard@126.com", EmailConfirmed = true };
         if (userManager.Users.All(u => u.UserName != administrator.UserName))
         {
             await userManager.CreateAsync(administrator, RoleConstants.DefaultPassword);
             await userManager.AddToRolesAsync(administrator, new[] { administratorRole.Name });
             await userManager.CreateAsync(demo, RoleConstants.DefaultPassword);
             await userManager.AddToRolesAsync(demo, new[] { userRole.Name });
+            await userManager.CreateAsync(user, RoleConstants.DefaultPassword);
+            await userManager.AddToRolesAsync(user, new[] { usersRole.Name });
+            await userManager.CreateAsync(guest, RoleConstants.DefaultPassword);
+            await userManager.AddToRolesAsync(guest, new[] { guestRole.Name });
+            await userManager.CreateAsync(guard, RoleConstants.DefaultPassword);
+            await userManager.AddToRolesAsync(guard, new[] { guardRole.Name });
         }
 
     }
@@ -95,10 +108,10 @@ public static class ApplicationDbContextSeed
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Unit", Value = "ST", Text = "ST", Description = "Unit of product" });
 
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Meeting", Text = "Meeting", Description = "Visitor's Purpose" });
-            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Interview ", Text = "Interview", Description = "Visitor's Purpose" });
-            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Conferences ", Text = "Conferences", Description = "Visitor's Purpose" });
-            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Working ", Text = "Working", Description = "Visitor's Purpose" });
-            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Others ", Text = "Others", Description = "Visitor's Purpose" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Interview", Text = "Interview", Description = "Visitor's Purpose" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Conferences", Text = "Conferences", Description = "Visitor's Purpose" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Working", Text = "Working", Description = "Visitor's Purpose" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Purpose", Value = "Others", Text = "Others", Description = "Visitor's Purpose" });
 
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Gender", Value = "Male", Text = "Male", Description = "Visitor's Gender" });
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "Gender", Value = "Female", Text = "Female", Description = "Visitor's Gender" });
@@ -110,6 +123,12 @@ public static class ApplicationDbContextSeed
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "DeviceStatus", Value = "Online", Text = "Online", Description = "Device Status" });
             context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "DeviceStatus", Value = "Offline", Text = "Offline", Description = "Device Status" });
 
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Pending Visitor", Text = "Pending Visitor", Description = "Visitor Status" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Pending Approval", Text = "Pending Approval", Description = "Visitor Status" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Pending Check-in", Text = "Pending Check-in", Description = "Visitor Status" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Pending Check-out", Text = "Pending Check-out", Description = "Visitor Status" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Pending Feedback", Text = "Pending Feedback", Description = "Visitor Status" });
+            context.KeyValues.Add(new Domain.Entities.KeyValue() { Name = "VisitorStatus", Value = "Finished", Text = "Finished", Description = "Visitor Status" });
             await context.SaveChangesAsync();
         }
         if (!context.Products.Any())

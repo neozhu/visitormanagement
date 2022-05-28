@@ -7,4 +7,6 @@ public interface ICurrentUserService
 {
     Task<string> UserId();
     Task<string> UserName();
+    Task<int?> SiteId();
+    Task<string> SiteName();
 }

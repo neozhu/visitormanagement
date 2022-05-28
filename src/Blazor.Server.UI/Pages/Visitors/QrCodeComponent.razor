@@ -1,0 +1,21 @@
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@inject IStringLocalizer<Visitors> L
+<MudCard  Style="width:215px">
+    <MudCardMedia @bind-Image="@ImageUrl" Height="200" />
+    <MudCardActions>
+        <MudButton ButtonType="ButtonType.Button" Variant="Variant.Text">@Label</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public string? ImageUrl { get; set; }
+   
+    [EditorRequired]
+    [Parameter]
+    public string? Label { get; set; }
+ 
+}

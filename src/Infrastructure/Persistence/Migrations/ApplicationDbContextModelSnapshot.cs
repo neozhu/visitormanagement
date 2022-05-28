@@ -17,10 +17,52 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.ApprovalHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ApprovedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Outcome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ProcessingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VisitorId");
+
+                    b.ToTable("ApprovalHistories");
+                });
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Audit.AuditTrail", b =>
                 {
@@ -95,6 +137,63 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.HasIndex("SiteId");
 
                     b.ToTable("CheckinPoints");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Companion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("CheckinDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CheckoutDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HealthCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("IdentificationNo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NucleicAcidTestReport")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QrCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TripCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("VisitorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("VisitorId");
+
+                    b.ToTable("Companions");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Department", b =>
@@ -318,11 +417,19 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RelatedAccountId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.HasIndex("DesignationId");
+
+                    b.HasIndex("SiteId");
 
                     b.ToTable("Employees");
                 });
@@ -408,6 +515,49 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.ToTable("Loggers");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.MessageTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ForStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("MessageTemplates");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -462,6 +612,9 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CompanyName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
@@ -482,6 +635,51 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.ToTable("Sites");
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.SiteConfiguration", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MandatoryHealthQrCode")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MandatoryNucleicAcidTestReport")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("MandatoryTripCode")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Parameters")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SiteId");
+
+                    b.ToTable("SiteConfigurations");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Visitor", b =>
                 {
                     b.Property<int>("Id")
@@ -495,6 +693,9 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
 
                     b.Property<bool?>("Apppoved")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ApprovalComment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ApprovalOutcome")
                         .HasColumnType("nvarchar(max)");
@@ -583,6 +784,9 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("SurveyResponseValue")
+                        .HasColumnType("int");
+
                     b.Property<string>("TripCode")
                         .HasColumnType("nvarchar(max)");
 
@@ -604,6 +808,9 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Attachments")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("CheckinPointId")
                         .HasColumnType("int");
@@ -720,6 +927,12 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Department")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Designation")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
@@ -773,6 +986,9 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Site")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("SiteId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -882,6 +1098,15 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.ApprovalHistory", b =>
+                {
+                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Visitor", "Visitor")
+                        .WithMany("ApprovalHistories")
+                        .HasForeignKey("VisitorId");
+
+                    b.Navigation("Visitor");
+                });
+
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.CheckinPoint", b =>
                 {
                     b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Site", "Site")
@@ -889,6 +1114,15 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                         .HasForeignKey("SiteId");
 
                     b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Companion", b =>
+                {
+                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Visitor", "Visitor")
+                        .WithMany("Companions")
+                        .HasForeignKey("VisitorId");
+
+                    b.Navigation("Visitor");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Device", b =>
@@ -921,9 +1155,33 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("DesignationId");
 
+                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
                     b.Navigation("Department");
 
                     b.Navigation("Designation");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.MessageTemplate", b =>
+                {
+                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
+                    b.Navigation("Site");
+                });
+
+            modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.SiteConfiguration", b =>
+                {
+                    b.HasOne("CleanArchitecture.Blazor.Domain.Entities.Site", "Site")
+                        .WithMany()
+                        .HasForeignKey("SiteId");
+
+                    b.Navigation("Site");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Visitor", b =>
@@ -1037,6 +1295,10 @@ namespace CleanArchitecture.Blazor.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("CleanArchitecture.Blazor.Domain.Entities.Visitor", b =>
                 {
+                    b.Navigation("ApprovalHistories");
+
+                    b.Navigation("Companions");
+
                     b.Navigation("VisitorHistories");
                 });
 

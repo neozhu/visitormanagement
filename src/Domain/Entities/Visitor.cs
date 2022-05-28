@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Blazor.Domain.Entities.Tenant;
 
 namespace CleanArchitecture.Blazor.Domain.Entities;
-public class Visitor : AuditableEntity, IHasDomainEvent, IAuditTrial
+public class Visitor : AuditableEntity, IHasDomainEvent, IAuditTrial, IMustHaveTenant
 {
     public int Id { get; set; }
     public string? PassCode { get; set; }
@@ -37,8 +38,12 @@ public class Visitor : AuditableEntity, IHasDomainEvent, IAuditTrial
     public string? Status { get; set; }
     public bool? Apppoved { get; set; }
     public string? ApprovalOutcome { get; set; }
+    public string? ApprovalComment { get; set; }
     public int? SiteId { get; set; }
-    public virtual Site? Site { get; set; }  
+    public virtual Site? Site { get; set; }
+    public int? SurveyResponseValue { get; set; }
     public virtual ICollection<VisitorHistory> VisitorHistories { get; set; }=new HashSet<VisitorHistory>();
+    public virtual ICollection<Companion> Companions { get; set; } = new HashSet<Companion>();
+    public virtual ICollection<ApprovalHistory> ApprovalHistories { get; set; } = new HashSet<ApprovalHistory>();
     public List<DomainEvent> DomainEvents { get; set; } = new();
 }

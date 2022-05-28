@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 
@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.CheckinPoints.Commands.A
     public class AddEditCheckinPointCommand: CheckinPointDto,IRequest<Result<int>>, IMapFrom<CheckinPoint>, ICacheInvalidator
     {
       public string CacheKey => CheckinPointCacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => CheckinPointCacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => CheckinPointCacheKey.SharedExpiryTokenSource();
     }
 
     public class AddEditCheckinPointCommandHandler : IRequestHandler<AddEditCheckinPointCommand, Result<int>>

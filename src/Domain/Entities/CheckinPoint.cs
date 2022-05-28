@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CleanArchitecture.Blazor.Domain.Entities.Tenant;
 
 namespace CleanArchitecture.Blazor.Domain.Entities;
-public class CheckinPoint : AuditableEntity, IHasDomainEvent, IAuditTrial
+public class CheckinPoint : AuditableEntity, IHasDomainEvent, IAuditTrial, IMustHaveTenant
 {
     public int Id { get; set; }
     public string? Name { get; set; }

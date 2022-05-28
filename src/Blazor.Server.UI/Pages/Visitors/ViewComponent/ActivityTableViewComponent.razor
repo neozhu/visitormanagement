@@ -1,0 +1,38 @@
+@using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inject IStringLocalizer<Visitors> L
+<MudSimpleTable Class="mt-3" Style="overflow-x: auto;">
+                <thead>
+                    <tr>
+                        <td>@L["NO."]</td>
+                        <td>@L["Activity / Comment"]</td>
+                        <td>@L["Processing Date"]</td>
+                        <td>@L["Created By"]</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ApprovalHistories.OrderBy(x => x.Id))
+                    {
+                        <tr>
+                            <td>
+                                @item.Id
+                            </td>
+                            <td>
+                                <MudText Typo="Typo.body1">@item.Outcome</MudText>
+                                <MudText Typo="Typo.body2">@item.Comment</MudText>
+                            </td>
+                            <td>@item.ProcessingDate</td>
+                            <td>
+                                @item.ApprovedBy
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </MudSimpleTable>
+@code {
+    [EditorRequired]
+    [Parameter]
+    public List<ApprovalHistoryDto> ApprovalHistories { get; set; } = new();
+
+    
+}

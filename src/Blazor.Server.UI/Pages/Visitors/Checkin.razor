@@ -8,6 +8,7 @@
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
 @using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit
@@ -40,72 +41,40 @@
                         <MudCardActions Style="height:45px">
                             <MudButton Variant="Variant.Text" OnClick="TakePhoto" Color="MudBlazor.Color.Primary"></MudButton>
                         </MudCardActions>
-
                     </MudCard>
                 </div>
             </MudItem>
 
 
             <MudItem xs="12" sm="5">
-                <div class="d-flex flex-column justify-center align-content-center">
-                    <MudCard Style="width:320px">
-                        @if (_notfound)
-                        {
-                            <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor"]</MudAlert>
-                        }
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@L["Scanning Code"]: @_decodedText</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardMedia Image="@request.Avatar" />
-                        <MudCardContent>
-                            <MudForm Model="request" @ref="form" Validation="@(modelValidator.ValidateValue)">
-                                <MudTextField For="@(() => request.Visitor)" Value="@request.Visitor" Label="@L["Visitor's Name"]" Required="true" RequiredError="visitor's Name is required!" />
-                                <MudTextField For="@(() => request.CompanyName)" Value="@request.CompanyName" Label="@L["Company Name"]" />
-                                <Blazor.Server.UI.Pages.Devices.CheckinPointAutocomplete Label="@L["Select Check-in Point"]"
-                                                                                         For="@(() => request.CheckinPointId)"
-                                                                                         @bind-Value="request.CheckinPointId"
-                                                                                         Required="true"
-                                                                                         RequiredError="@L["check-in point is required!"]"></Blazor.Server.UI.Pages.Devices.CheckinPointAutocomplete>
-                                <MudTextField For="@(() => request.Temperature)" @bind-Value="@request.Temperature"  Label="@L["Visitor's Temperature"]" Required="true" RequiredError="temperature is required!" />
-                                <MudTextField For="@(() => request.Comment)"
-                                              @bind-Value="request.Comment" Lines="3" Label="@L["Comment"]" />
-                            </MudForm>
-                        </MudCardContent>
-                        <MudCardActions Style="height:45px">
-                            <MudSwitch @bind-Checked="@_autoCheckin" Label="@L["Automatic Check-in"]" Color="MudBlazor.Color.Success" />
-                            <MudButton Variant="Variant.Text" Disabled="@_autoCheckin" OnClick="OnCheckin" Color="MudBlazor.Color.Primary">@L["Checkin-in"]</MudButton>
-                        </MudCardActions>
-                    </MudCard>
-
-                    <MudCard Class="mt-3" Style="width:320px">
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@L["Check-in Histories"] (0)</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            @if (_visitorHistories.Count > 0)
+                <div class="d-flex flex-column">
+                    <MudTabs Class="align-self-center" Style="width:320px" Elevation="25" Color="MudBlazor.Color.Transparent" Rounded="true" Centered="true" PanelClass="mt-6">
+                        <MudTabPanel Text="@L["Check-in"]">
+                            @if (_notfound)
                             {
-                                <MudTimeline>
-                                    @foreach (var item in _visitorHistories)
-                                    {
-                                        <MudTimelineItem Color="MudBlazor.Color.Info" Size="MudBlazor.Size.Small">
-                                            <ItemOpposite>
-                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body1">@item.CheckinPoint</MudText>
-                                            </ItemOpposite>
-                                            <ItemContent>
-                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body2" GutterBottom="true">@item.TransitDateTime</MudText>
-                                                <MudText>@item.Comment</MudText>
-                                            </ItemContent>
-                                        </MudTimelineItem>
-
-                                    }
-                                </MudTimeline>
+                                <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor"]</MudAlert>
                             }
-                        </MudCardContent>
-                    </MudCard>
+                            @if (_visitor is not null && _visitor.Status != VisitorStatus.PendingCheckin)
+                            {
+                                <MudAlert Severity="MudBlazor.Severity.Error">@L[string.Format("Visitor current status is {0}",_visitor.Status)]</MudAlert>
+                            }
+                            <Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckinViewComponent TRequest="request"></Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckinViewComponent>
+                        </MudTabPanel>
+                        <MudTabPanel Text="@L["Check-out"]">
+                            @if (_notfound)
+                            {
+                                <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor"]</MudAlert>
+                            }
+                            @if (_visitor is not null && _visitor.Status != VisitorStatus.PendingCheckout)
+                            {
+                                <MudAlert Severity="MudBlazor.Severity.Error">@L[string.Format("Visitor current status is {0}",_visitor.Status)]</MudAlert>
+                            }
+                            <Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckoutViewComponent TRequest="request"></Blazor.Server.UI.Pages.Visitors.CheckinComponent.CheckoutViewComponent>
+                        </MudTabPanel>
+                    </MudTabs>
+
+
+
                 </div>
             </MudItem>
 
@@ -116,9 +85,8 @@
     </ErrorContent>
 </ErrorBoundary>
 @code {
-    MudForm form = default!;
+
     public string? Title { get; private set; }
-    private bool _loading;
     private bool _uploading;
     private bool _autoCheckin;
     private bool _notfound = false;
@@ -126,27 +94,19 @@
     private string _captionText;
     private string _decodedText;
 
-    [Inject] private IUploadService _uploadService { get; set; } = default!;
+    private VisitorDto? _visitor = new();
     [Inject]
     private ISender _mediator { get; set; } = default!;
-    [Inject]
-    private Hashids hashids { get; set; } = default!;
-    [CascadingParameter]
-    protected Task<AuthenticationState> AuthState { get; set; } = default!;
-
     private CreateVisitorHistoryCommand request { get; set; } = new CreateVisitorHistoryCommand();
-    private CreateVisitorHistoryCommandValidator modelValidator = new CreateVisitorHistoryCommandValidator();
-
-    private List<VisitorHistoryDto> _visitorHistories = new();
     FontCollection collection = new FontCollection();
     FontFamily sansFamily;
     Font captionFont;
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         captionFont = SystemFonts.CreateFont("Arial", 23, FontStyle.Bold);
         Title = L["Check-in"];
-        var state = await AuthState;
+        return base.OnInitializedAsync();
     }
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -164,22 +124,33 @@
     public async Task GetResult(string decodedText)
     {
         _decodedText = decodedText;
-        var visitor = await _mediator.Send(new SearchVisitorQuery(decodedText));
-        if (visitor is null)
+        _visitor = await _mediator.Send(new SearchVisitorQuery(decodedText));
+        if (_visitor is null)
         {
             _notfound = true;
         }
         else
         {
+            var visitorHistories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(_visitor.Id))).ToList();
             request = new CreateVisitorHistoryCommand()
                 {
-                    Avatar = visitor.Avatar,
-                    CompanyName = visitor.CompanyName,
-                    VisitorId = visitor.Id,
-                    Visitor = visitor.Name,
+                    CurrentStatus = _visitor.Status,
+                    PassCode = _visitor.PassCode,
+                    QrCode = _visitor.QrCode,
+                    SiteId = _visitor.SiteId,
+                    CompanionCount = _visitor.CompanionCount,
+                    VisitEmployee = _visitor.Employee,
+                    Avatar = _visitor.Avatar,
+                    CompanyName = _visitor.CompanyName,
+                    VisitorId = _visitor.Id,
+                    Visitor = _visitor.Name,
+                    LicensePlateNumber = _visitor.LicensePlateNumber,
+                    Companions = _visitor.Companions,
                     CheckinPointId = null,
+                    Histories = visitorHistories
 
                 };
+
         }
         StateHasChanged();
     }
@@ -234,15 +205,6 @@
         return Task.CompletedTask;
     }
 
-    private async Task OnCheckin()
-    {
-        await form.Validate();
-        if (form.IsValid)
-        {
-            var result = await _mediator.Send(request);
-            Snackbar.Add(string.Format(L["{0} check-in successfully"], request.Visitor), MudBlazor.Severity.Info);
-            _visitorHistories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(request.VisitorId))).ToList();
-        }
-    }
+
 
 }

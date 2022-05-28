@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Designations.Queries.Get
     public class GetAllDesignationsQuery : IRequest<IEnumerable<DesignationDto>>, ICacheable
     {
        public string CacheKey => DesignationCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DesignationCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => DesignationCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllDesignationsQueryHandler :

@@ -9,6 +9,7 @@ public class Site : AuditableEntity, IHasDomainEvent, IAuditTrial
 {
     public int Id { get; set; }
     public string? Name { get; set; }
+    public string? CompanyName { get; set; }
     public string? Address { get; set; }
     public virtual ICollection<CheckinPoint> CheckinPoints { get; set; }=new HashSet<CheckinPoint>();
 

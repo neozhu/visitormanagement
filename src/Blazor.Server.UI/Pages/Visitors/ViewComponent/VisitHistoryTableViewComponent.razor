@@ -1,0 +1,43 @@
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inject IStringLocalizer<Visitors> L
+<MudSimpleTable Class="mt-3" Style="overflow-x: auto;">
+    <thead>
+        <tr>
+            <td>@L["Checkin Point"]</td>
+            <td>@L["State / Comment"]</td>
+            <td>@L["Temperature"]</td>
+            <td>@L["Attchments"]</td>
+            <td>@L["Transit Date Time"]</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in VisitHistories)
+        {
+            <tr>
+                <td>
+                    <MudText Typo="Typo.body2">@item.CheckinPoint</MudText>
+
+                </td>
+                <td>
+                    <MudText Typo="Typo.body2">@item.Stage</MudText>
+                    <MudText Typo="Typo.body2">@item.Comment</MudText>
+                </td>
+                <td>
+                    <MudText Typo="Typo.body2">@item.Temperature</MudText>
+                </td>
+                <td>
+                   <AttachmentsComponent Attachments="@item.Attachments"></AttachmentsComponent>
+                </td>
+                <td>
+                    <MudText Typo="Typo.body2">@item.TransitDateTime</MudText>
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+@code {
+    [EditorRequired]
+    [Parameter]
+    public List<VisitorHistoryDto> VisitHistories { get; set; } = new();
+}

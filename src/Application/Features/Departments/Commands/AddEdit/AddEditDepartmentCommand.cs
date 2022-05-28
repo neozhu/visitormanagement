@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Departments.Commands.Add
 public class AddEditDepartmentCommand : DepartmentDto, IRequest<Result<int>>, IMapFrom<Department>, ICacheInvalidator
 {
     public string CacheKey => DepartmentCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => DepartmentCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => DepartmentCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditDepartmentCommandHandler : IRequestHandler<AddEditDepartmentCommand, Result<int>>

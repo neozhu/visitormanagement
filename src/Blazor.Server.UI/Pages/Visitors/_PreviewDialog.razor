@@ -3,30 +3,30 @@
 @inject IStringLocalizer<Visitors> L
 <MudDialog>
     <DialogContent>
-        <MudContainer Style="max-width: 645px; overflow-x: scroll">
-              <MudPaper Class="d-flex flex-grow-1 gap-5"  Width="725px"  Elevation="0">
-            @if (dto.HealthCode is not null)
+        <MudContainer Style="overflow-x: scroll">
+              <MudPaper Class="d-flex flex-grow-1 gap-5 my-3"  Width="725px"  Elevation="0">
+            @if (HealthCode is not null)
             {
                 <MudCard Style="width:215px">
-                    <MudCardMedia Image="@dto.HealthCode" Height="390" />
+                    <MudCardMedia Image="@HealthCode" Height="390" />
                     <MudCardContent>
                        <MudText Typo="Typo.body2">@L["Health Code"]</MudText>
                     </MudCardContent>
                 </MudCard>
             }
-            @if (dto.TripCode is not null)
+            @if (TripCode is not null)
             {
                 <MudCard Style="width:215px">
-                    <MudCardMedia Image="@dto.TripCode" Height="390" />
+                    <MudCardMedia Image="@TripCode" Height="390" />
                     <MudCardContent>
                        <MudText Typo="Typo.body2">@L["Trip Code"]</MudText>
                     </MudCardContent>
                 </MudCard>
             }
-            @if (dto.NucleicAcidTestReport is not null)
+            @if (NucleicAcidTestReport is not null)
             {
                 <MudCard Style="width:215px">
-                    <MudCardMedia Image="@dto.NucleicAcidTestReport" Height="390" />
+                    <MudCardMedia Image="@NucleicAcidTestReport" Height="390" />
                     <MudCardContent>
                        <MudText Typo="Typo.body2">@L["Nucleic Acid Test Report"]</MudText>
                     </MudCardContent>
@@ -43,9 +43,12 @@
 @code {
     [CascadingParameter]
     MudDialogInstance MudDialog { get; set; } = default!;
-    [EditorRequired]
     [Parameter]
-    public VisitorDto dto { get; set; } = new();
+    public string? TripCode { get; set; }
+    [Parameter]
+    public string? HealthCode { get; set; }
+    [Parameter]
+    public string? NucleicAcidTestReport { get; set; }     
     private void Submit()
     {
         MudDialog.Close();

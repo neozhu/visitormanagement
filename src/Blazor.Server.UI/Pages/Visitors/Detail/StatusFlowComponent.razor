@@ -1,0 +1,69 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
+@inject IStringLocalizer<Visitors> L
+<MudPaper Elevation="5">
+    <MudTimeline TimelineOrientation="TimelineOrientation.Horizontal" TimelinePosition="TimelinePosition.Top">
+        @foreach (var state in Status)
+        {
+            @if (CurrentStatus == VisitorStatus.Canceled)
+            {
+                <MudTimelineItem Color="Color.Default" Class="pb-2">
+                    <ItemContent>
+                        <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.PauseCircleOutline" Color="Color.Default">@L[state]</MudButton>
+                    </ItemContent>
+                </MudTimelineItem>
+
+            }
+            else
+            {
+                @if (isDone == true)
+                {
+                    if (CurrentStatus == state)
+                    {
+                        <MudTimelineItem Color="Color.Info" Size="Size.Medium" Elevation="6" Class="pb-2">
+                            <ItemContent>
+                                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.CheckCircleOutline" Color="Color.Info">@L[state]</MudButton>
+                            </ItemContent>
+                        </MudTimelineItem>
+                    }
+                    else
+                    {
+                        <MudTimelineItem Color="Color.Success" Class="pb-2">
+                            <ItemContent>
+                                <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.CheckCircleOutline" Color="Color.Success">@L[state]</MudButton>
+                            </ItemContent>
+                        </MudTimelineItem>
+                    }
+
+
+                }
+                else
+                {
+                    <MudTimelineItem Color="Color.Default" Class="pb-2">
+                        <ItemContent>
+                            <MudButton Variant="Variant.Text" StartIcon="@Icons.Filled.PauseCircleOutline" Color="Color.Default">@L[state]</MudButton>
+                        </ItemContent>
+                    </MudTimelineItem>
+                }
+            }
+            @if (state == CurrentStatus && isDone == true)
+            {
+                isDone = false;
+            }
+        }
+    </MudTimeline>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public string CurrentStatus { get; set; } = string.Empty;
+    private string[] Status = new string[] {
+        VisitorStatus.PendingVisitor,
+        VisitorStatus.PendingApproval,
+        VisitorStatus.PendingChecking,
+        VisitorStatus.PendingCheckin,
+        VisitorStatus.PendingConfirm,
+        VisitorStatus.PendingCheckout,
+        VisitorStatus.PendingFeedback,
+        VisitorStatus.Finished };
+    private bool isDone { get; set; } = true;
+}

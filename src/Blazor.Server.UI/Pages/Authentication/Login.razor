@@ -6,7 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using System.ComponentModel.DataAnnotations
 @using System.Security.Claims
-
+@inject IJSRuntime JS
 @inherits ComponentBase
 @inject IStringLocalizer<Login> L
 
@@ -36,6 +36,7 @@
                   OnAdornmentClick="TogglePasswordVisibility" />
 
     <div Class="d-flex justify-space-between align-center">
+         
         <MudCheckBox For="@(() => model.RememberMe)" @bind-Checked="model.RememberMe" Label="@L["Remember me?"]" Color="Color.Primary" Class="ml-n1 my-3"></MudCheckBox>
         <MudLink Href="/pages/authentication/forgot-password">@L["Forgot password?"]</MudLink>
     </div>
@@ -47,15 +48,11 @@
                ButtonType="ButtonType.Submit"
                FullWidth="true">@L["Sign In"]</MudButton>
 
-    <div class="d-flex justify-space-around flex-grow-1 my-4">
-        <MudButton Variant="Variant.Filled" StartIcon="@Icons.Custom.Brands.Google" ButtonType="ButtonType.Button"
-                   title="Sign in with Google">
-              Google
-            </MudButton>
-         <MudButton Variant="Variant.Filled" StartIcon="@Icons.Custom.Brands.Microsoft" ButtonType="ButtonType.Button"
+    <div class="d-flex justify-space-around flex-grow-1 my-4 gap-4">
+         <MudButton Class="flex-grow-1" OnClick="@(()=>SignInExternal("Microsoft"))" Variant="Variant.Filled" StartIcon="@Icons.Custom.Brands.Microsoft" ButtonType="ButtonType.Button"
                    title="Sign in with Microsoft">
               Microsoft
-            </MudButton>
+         </MudButton>
     </div>
         
 </EditForm>
@@ -71,7 +68,6 @@
             RememberMe = true
         };
 
-    bool success = false;
     bool PasswordVisibility;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -124,5 +120,23 @@
 
         }
 
+    }
+    private async Task SignInExternal(string provider)
+    {
+        await JS.InvokeVoidAsync("externalLogin", provider, DotNetObjectReference.Create(this));
+    }
+    [JSInvokable]
+    public async Task ConfirmExternal(string provider, string userName, string name, string accesstoken)
+    {
+        var result = await _authenticationService.ExternalLogin(provider, userName, name, accesstoken);
+            if (!result)
+            {
+                _logger.LogWarning("{@UserName} login fail.", userName);
+                Snackbar.Add(L["Please check your username and password. If you are still unable to log in, contact your administrator."], MudBlazor.Severity.Error);
+            }
+            else
+            {
+                _logger.LogInformation("{@UserName} login successfully.", userName);
+            }
     }
 }

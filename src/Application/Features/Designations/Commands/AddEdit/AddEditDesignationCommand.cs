@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Designations.Commands.Ad
 public class AddEditDesignationCommand : DesignationDto, IRequest<Result<int>>, IMapFrom<Designation>, ICacheInvalidator
 {
     public string CacheKey => DesignationCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => DesignationCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => DesignationCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditDesignationCommandHandler : IRequestHandler<AddEditDesignationCommand, Result<int>>

@@ -1,0 +1,186 @@
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Commands.Create
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Constants
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@inject IStringLocalizer<Visitors> L
+@inherits MudComponentBase
+<MudCard Class="align-self-center" Elevation="10">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@L["Scanning Code"]: @TRequest.PassCode</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+    <MudCardMedia Image="@TRequest.QrCode" Height="280" />
+    <MudCardContent>
+        <MudForm Model="TRequest" @ref="form" Validation="@(modelValidator.ValidateValue)" ValidationDelay="0">
+            <MudTextField For="@(() => TRequest.Visitor)" Value="@TRequest.Visitor" Label="@L["Visitor's Name"]" ReadOnly="true" />
+            <MudTextField For="@(() => TRequest.CompanyName)" Value="@TRequest.CompanyName" Label="@L["Company Name"]" ReadOnly="true" />
+            @if (string.IsNullOrEmpty(TRequest.LicensePlateNumber))
+            {
+                <MudTextField For="@(() => TRequest.LicensePlateNumber)" Value="@TRequest.LicensePlateNumber" Label="@L["License Plate Number"]" ReadOnly="true" />
+            }
+            <MudTextField For="@(() => TRequest.VisitEmployee)" Value="@TRequest.VisitEmployee" Label="@L["Visit Employee"]" ReadOnly="true" />
+            @if (TRequest.CompanionCount > 0)
+            {
+                <MudTextField For="@(() => TRequest.CompanionCount)" Value="@TRequest.CompanionCount" Label="@L["Companion Count"]" ReadOnly="true" />
+                @foreach (var companion in TRequest.Companions)
+                {
+                    <div class="d-flex flex-row mt-1">
+                        <div class="checkbox">
+                            @if (companion.CheckinDateTime is null)
+                            {
+                                <MudCheckBox For="@(()=>companion.Checked)" @bind-Checked="companion.Checked"></MudCheckBox>
+                            }
+                            else
+                            {
+                                <MudCheckBox Checked="true" Disabled="true"></MudCheckBox>
+                            }
+                        </div>
+                        <div class="flex-grow-1 align-self-center">
+                            <div class="d-flex flex-column">
+                                <MudText Typo="Typo.body2">@companion.Name</MudText>
+                                <MudText Typo="Typo.body2">@companion.IdentificationNo</MudText>
+                            </div>
+                        </div>
+                    </div>
+
+                }
+            }
+            <Blazor.Server.UI.Pages.CheckinPoints.CheckinPointWithSiteIdAutocomplete Label="@L["Select Check-in Point"]"
+                                                                     For="@(() => TRequest.CheckinPointId)"
+                                                                     @bind-Value="TRequest.CheckinPointId"
+                                                                     SiteId="@TRequest.SiteId"
+                                                                     Required="true"
+                                                                     RequiredError="@L["check-in point is required!"]"></Blazor.Server.UI.Pages.CheckinPoints.CheckinPointWithSiteIdAutocomplete>
+            <MudTextField For="@(() => TRequest.Temperature)" @bind-Value="@TRequest.Temperature" Label="@L["Visitor's Temperature"]" Required="true" RequiredError="temperature is required!" />
+            <div class="d-flex gap-2">
+                <InputFile id="uploadAttachmentsInput1" OnChange="UploadFiles" hidden multiple />
+                <MudIconButton HtmlTag="label"
+                               Color="MudBlazor.Color.Info"
+                               Icon="@Icons.Filled.PhotoCamera"
+                               for="uploadAttachmentsInput1">
+                </MudIconButton>
+                <MudText Typo="Typo.body2" Class="align-self-center">@L["Take photos and upload attachments"]</MudText>
+            </div>
+
+            @if (TRequest.Attachments is not null)
+            {
+                <div class="d-flex">
+                    <MudAvatarGroup MaxColor="MudBlazor.Color.Primary">
+                        @foreach (var attachment in TRequest.Attachments)
+                        {
+                            <MudAvatar Image="@attachment" />
+                        }
+                    </MudAvatarGroup>
+                </div>
+            }
+            <MudTextField For="@(() => TRequest.Comment)"
+                          @bind-Value="TRequest.Comment"
+                          Lines="2" Label="@L["Comment"]" />
+        </MudForm>
+    </MudCardContent>
+    <MudCardActions Style="height:45px">
+        <MudButton Class="ml-auto" Disabled="@(_submiting || TRequest.CurrentStatus!=VisitorStatus.PendingCheckin)" Variant="Variant.Text" OnClick="OnSubmit" Color="MudBlazor.Color.Primary">
+            @if (_submiting)
+            {
+                <MudProgressCircular Class="ms-n1" Size="MudBlazor.Size.Small" Indeterminate="true" />
+                <MudText Class="ms-2">@L["Processing"]</MudText>
+            }
+            else
+            {
+                <MudText>@L["Submit"]</MudText>
+            }
+        </MudButton>
+    </MudCardActions>
+</MudCard>
+
+<CheckinHistoryComponent VisitorHistories="TRequest.Histories"></CheckinHistoryComponent>
+@code {
+    [Parameter]
+    public CreateVisitorHistoryCommand TRequest { get; set; } = new();
+    private CreateVisitorHistoryCommandValidator modelValidator = new();
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Inject] private IUploadService _uploadService { get; set; } = default!;
+    private bool _submiting;
+    MudForm form = default!;
+
+    protected override Task OnInitializedAsync()
+    {
+        return Task.CompletedTask;
+    }
+    private async void UploadFiles(InputFileChangeEventArgs e)
+    {
+        var list = new List<string>();
+        foreach (var file in e.GetMultipleFiles())
+        {
+            var filestream = file.OpenReadStream();
+            var imgstream = new MemoryStream();
+            await filestream.CopyToAsync(imgstream);
+            imgstream.Position = 0;
+            using (var outStream = new MemoryStream())
+            {
+                using (var image = Image.Load(imgstream, out IImageFormat format))
+                {
+                    var scale = 0m;
+                    if (image.Width > 1200)
+                    {
+                        scale = 0.3m;
+                    }
+                    else if (image.Width <= 1200 && image.Width > 300)
+                    {
+                        scale = 0.5m;
+                    }
+                    else
+                    {
+                        scale = 1m;
+                    }
+                    image.Mutate(
+                       i => i.AutoOrient().Resize(Convert.ToInt32((image.Width * scale)), 0));
+                    image.Save(outStream, format);
+                    var filename = file.Name;
+                    var fi = new FileInfo(filename);
+                    var ext = fi.Extension;
+                    var result = await _uploadService.UploadAsync(new UploadRequest()
+                        {
+                            Data = outStream.ToArray(),
+                            FileName =  "in_" + Guid.NewGuid().ToString() + ext,
+                            Extension = ext,
+                            Folder = TRequest.PassCode,
+                            UploadType = UploadType.VisitHistoryPricture
+                        });
+                    var uri = result.Replace("\\", "/");
+                    list.Add(uri);
+                }
+            }
+        }
+        TRequest.Attachments = list.ToArray();
+        StateHasChanged();
+        Snackbar.Add(L["Upload photo successfully"], MudBlazor.Severity.Info);
+    }
+    private async Task OnSubmit()
+    {
+        _submiting = true;
+        TRequest.Stage = CheckStage.Checkin;
+        try
+        {
+            await form.Validate();
+            if (form.IsValid)
+            {
+                var result = await _mediator.Send(TRequest);
+                Snackbar.Add(string.Format(L["{0} check-in successfully"], TRequest.Visitor), MudBlazor.Severity.Info);
+                TRequest.Histories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(TRequest.VisitorId))).ToList();
+            }
+        }
+        finally
+        {
+            _submiting = false;
+        }
+
+    }
+}

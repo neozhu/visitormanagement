@@ -3,7 +3,7 @@
 
 using System.ComponentModel;
 
-namespace CleanArchitecture.Blazor.Domain.Enums;
+namespace CleanArchitecture.Blazor.Domain;
 
 public enum UploadType : byte
 {
@@ -11,6 +11,8 @@ public enum UploadType : byte
     Product,
     [Description(@"VisitorPrictures")]
     VisitorPricture,
+    [Description(@"VisitHistoryPrictures")]
+    VisitHistoryPricture,
     [Description(@"ProfilePictures")]
     ProfilePicture,
     [Description(@"EmployeePictures")]

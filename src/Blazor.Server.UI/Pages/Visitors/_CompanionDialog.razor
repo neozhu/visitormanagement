@@ -1,0 +1,103 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inherits MudComponentBase
+@inject IStringLocalizer<Visitors> L
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
+            <MudGrid>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="@L["Companion's Name"]" @bind-Value="model.Name"
+                                  For="@(() => model.Name)"
+                                  Required="true"
+                                  RequiredError="@L["name is required!"]">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudTextField Label="@L["Identification No."]" @bind-Value="model.IdentificationNo"
+                                  For="@(() => model.IdentificationNo)"
+                                  Required="true"
+                                  RequiredError="@L["Identification No. is required!"]">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                     <MudTextField Label="@L["Comment"]" @bind-Value="model.Description"
+                                  For="@(() => model.Description)">
+                    </MudTextField>                    
+                </MudItem>
+                <MudItem xs="12">
+                    <MudText>@L["Upload attachments"]</MudText>
+                    <MudContainer Class="my-2" Style="overflow-x: scroll">
+                        <MudPaper Class="my-2 d-flex flex-grow-1 gap-5" Width="725px" Elevation="0">
+                            <UploadPhotoComponent
+                               Desciption="@L["Only green codes are allowed"]"
+                               Disabled="false"
+                               ImageUrl="@model.HealthCode"
+                               Label="@L["Upload a health code"]"
+                               PassCode="@PassCode"
+                               OnUploaded="@(s=> model.HealthCode=s)"
+                               Tag="H"
+                            ></UploadPhotoComponent>
+                            <UploadPhotoComponent
+                               Desciption="@L["Make sure you haven't been to a medium-high risk area for 14 days"]"
+                               Disabled="false"
+                               ImageUrl="@model.TripCode"
+                               Label="@L["Upload a trip code"]"
+                               PassCode="@PassCode"
+                              OnUploaded="@(s=> model.TripCode=s)"
+                               Tag="T"
+                            ></UploadPhotoComponent>
+                            <UploadPhotoComponent
+                               Desciption="@L["Valid nucleic acid test report within 48 hours"]"
+                               Disabled="false"
+                               ImageUrl="@model.NucleicAcidTestReport"
+                               Label="@L["Upload a nucleic acid test report"]"
+                               PassCode="@PassCode"
+                               OnUploaded="@(s=> model.NucleicAcidTestReport=s)"
+                               Tag="R"
+                            ></UploadPhotoComponent>
+                        </MudPaper>
+                    </MudContainer>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="@(()=>MudDialog.Cancel())">@L["Cancel"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@L["OK"]</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+    MudForm form;
+    [EditorRequired]
+    [Parameter]
+    public CompanionDto model { get; set; } = new();
+    [Parameter]
+    public string? PassCode { get; set; }
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    private CreateVisitorCompanionDtoValidator modelValidator = new CreateVisitorCompanionDtoValidator();
+
+
+    private async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            
+            if (string.IsNullOrEmpty(model.HealthCode))
+            {
+                Snackbar.Add(L["You must upload health code"], MudBlazor.Severity.Error);
+                return;
+            }
+            if (string.IsNullOrEmpty(model.TripCode))
+            {
+                Snackbar.Add(L["You must upload trip code"], MudBlazor.Severity.Error);
+                return;
+            }
+            MudDialog.Close(DialogResult.Ok(true));
+            
+        }
+        
+    }
+}

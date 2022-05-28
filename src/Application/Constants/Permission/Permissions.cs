@@ -30,21 +30,32 @@ public static class Permissions
     public static class VisitorHistories
     {
         public const string View = "Permissions.VisitorHistories.View";
+        public const string Delete = "Permissions.VisitorHistories.Delete";
         public const string Search = "Permissions.VisitorHistories.Search";
     }
     [DisplayName("Visitors")]
     [Description("Visitors Permissions")]
     public static class Visitors
     {
+        public const string Detail = "Permissions.Visitors.Detail";
+        public const string VisitorRequest = "Permissions.Visitors.VisitorRequest";
+        public const string CompleteVisitorInfo = "Permissions.Visitors.CompleteVisitorInfo";
+        public const string MyCodeView = "Permissions.Visitors.MyCodeView";
         public const string View = "Permissions.Visitors.View";
         public const string Create = "Permissions.Visitors.Create";
         public const string Edit = "Permissions.Visitors.Edit";
         public const string Delete = "Permissions.Visitors.Delete";
         public const string Search = "Permissions.Visitors.Search";
         public const string Approve = "Permissions.Visitors.Approve";
+        public const string QuickApprove = "Permissions.Visitors.QuickApprove";
+        public const string PendingApproval = "Permissions.Visitors.PendingApproval";
+        public const string PendingCheckin = "Permissions.Visitors.PendingCheckin";
         public const string Checkin = "Permissions.Visitors.Checkin";
         public const string Checkout = "Permissions.Visitors.Checkout";
         public const string PreRegisters= "Permissions.Visitors.PreRegisters";
+        public const string PendingConfirm = "Permissions.Visitors.PendingConfirm";
+
+
     }
     [DisplayName("Devices")]
     [Description("Devices Permissions")]
@@ -66,6 +77,28 @@ public static class Permissions
         public const string Edit = "Permissions.CheckinPoints.Edit";
         public const string Delete = "Permissions.CheckinPoints.Delete";
         public const string Search = "Permissions.CheckinPoints.Search";
+
+    }
+    [DisplayName("MessageTemplates")]
+    [Description("MessageTemplates Permissions")]
+    public static class MessageTemplates
+    {
+        public const string View = "Permissions.MessageTemplates.View";
+        public const string Create = "Permissions.MessageTemplates.Create";
+        public const string Edit = "Permissions.MessageTemplates.Edit";
+        public const string Delete = "Permissions.MessageTemplates.Delete";
+        public const string Search = "Permissions.MessageTemplates.Search";
+
+    }
+    [DisplayName("SiteConfigurations")]
+    [Description("SiteConfigurations Permissions")]
+    public static class SiteConfigurations
+    {
+        public const string View = "Permissions.SiteConfigurations.View";
+        public const string Create = "Permissions.SiteConfigurations.Create";
+        public const string Edit = "Permissions.SiteConfigurations.Edit";
+        public const string Delete = "Permissions.SiteConfigurations.Delete";
+        public const string Search = "Permissions.SiteConfigurations.Search";
 
     }
     [DisplayName("Sites")]

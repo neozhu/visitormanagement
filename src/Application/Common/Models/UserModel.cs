@@ -9,8 +9,12 @@ public class UserModel
     public string? Email { get; set; }
     public string? PhoneNumber { get; set; }
     public string? Role { get; set; }
+    public string[]? Roles { get; set; }
     public string? UserId { get; set; }
+    public int? SiteId { get; set; }
     public bool IsActive { get; set; }
     public bool IsLive { get; set; }
+    public string? Department { get; set; }
+    public string? Designation { get; set; }
     public DateTimeOffset? LockoutEnd { get; set; }
 }

@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Sites.Commands.AddEdit;
 public class AddEditSiteCommand : SiteDto, IRequest<Result<int>>, IMapFrom<Site>, ICacheInvalidator
 {
     public string CacheKey => SiteCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => SiteCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => SiteCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditSiteCommandHandler : IRequestHandler<AddEditSiteCommand, Result<int>>

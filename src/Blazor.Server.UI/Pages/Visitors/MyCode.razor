@@ -1,0 +1,11 @@
+@page "/visitor/mycode"
+@inject IStringLocalizer<Visitors> L
+@attribute [Authorize(Policy = Permissions.Visitors.MyCodeView)]
+<PageTitle>@L["My QRCode"]</PageTitle>
+<MyPassCodeComponent  Keyword="@Code"></MyPassCodeComponent>
+@code {
+[Parameter]
+[SupplyParameterFromQuery(Name = "code")]
+public string? Code { get; set; }
+
+}

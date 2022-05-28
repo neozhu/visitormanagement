@@ -40,15 +40,24 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <DepartmentAutocomplete @bind-Value="model.DepartmentId"
+                    <Blazor.Server.UI.Pages.Sites.SiteAutocomplete @bind-Value="model.SiteId"
+                                            For="@(() => model.SiteId)"
+                                            Label="@L["Select Site"]"
+                                            Required="true"
+                                            RequiredError="@L["site is required!"]"
+                                            Clearable="true"
+                                            >
+                    </Blazor.Server.UI.Pages.Sites.SiteAutocomplete>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <Blazor.Server.UI.Pages.Departments.DepartmentAutocomplete @bind-Value="model.DepartmentId"
                                             For="@(() => model.DepartmentId)"
                                             Label="@L["Select Department"]"
-                                            Placeholder="@L["Select Department"]"
                                             Required="true"
                                             RequiredError="@L["department is required!"]"
                                             Clearable="true"
                                             >
-                    </DepartmentAutocomplete>
+                    </Blazor.Server.UI.Pages.Departments.DepartmentAutocomplete>
                 </MudItem>
                 <MudItem xs="12" sm="6">
                     <MudTextField Label="@L["Phone Number"]"
@@ -64,21 +73,20 @@
                                   For="@(() => model.Email)"
                                   @bind-Value="model.Email"></MudTextField>
                 </MudItem>
-                <MudItem xs="12" sm="6">
+             @* <MudItem xs="12" sm="6">
                     <PicklistAutocomplete Picklist="Picklist.Gender"
                                           Label="@L["Gender"]"
                                           For="@(() => model.Gender)"
                                           ResetValueOnEmptyText="true"
                                           @bind-Value="model.Gender"></PicklistAutocomplete>
-                </MudItem>
+                </MudItem>*@
                 <MudItem xs="12" sm="6">
-                    <DesignationAutocomplete @bind-Value="model.DesignationId"
+                    <Blazor.Server.UI.Pages.Designations.DesignationAutocomplete @bind-Value="model.DesignationId"
                                             For="@(() => model.DesignationId)"
                                             Label="@L["Select Designation"]"
-                                            Placeholder="@L["Designation"]"
                                             Clearable="true"
                                             >
-                    </DesignationAutocomplete>
+                    </Blazor.Server.UI.Pages.Designations.DesignationAutocomplete>
                 </MudItem>
                  <MudItem xs="12">
                     <MudTextField Label="@L["About"]"
@@ -103,8 +111,6 @@
     AddEditEmployeeCommandValidator modelValidator = new AddEditEmployeeCommandValidator();
     [EditorRequired][Parameter] public AddEditEmployeeCommand model { get; set; } = default!;
 
-
-    private IList<string>? _prictures = null;
 
     private async Task UploadPhoto(InputFileChangeEventArgs e)
     {

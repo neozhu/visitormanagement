@@ -32,14 +32,56 @@ public class MenuService : IMenuService
                     Href = "/visitor/visitors",
                     PageStatus = PageStatus.Completed
                 },
-                 new()
+                new()
+                {
+                    Title = "Visitor Request",
+                    Icon = Icons.Material.Filled.PostAdd,
+                    Href = "/visitor/visitorrequest",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Complete Visit Info",
+                    Icon = Icons.Material.Filled.EditNote,
+                    Href = "/visitor/completevisitinfo",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
                 {
                     Title = "Pre-registers",
                     Icon = Icons.Material.Filled.Bookmarks,
                     Href = "/visitor/preregisters",
                     PageStatus = PageStatus.Completed
                 },
-                  new()
+                new()
+                {
+                    Title = "My Visit Code",
+                    Icon = Icons.Material.Filled.QrCode,
+                    Href = "/visitor/mycode",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pending Approval",
+                    Icon = Icons.Material.Filled.AppRegistration,
+                    Href = "/visitor/pendingapproval",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pending Confirm",
+                    Icon = Icons.Material.Filled.FactCheck,
+                    Href = "/visitor/pendingconfirm",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pending Checking",
+                    Icon = Icons.Material.Filled.FollowTheSigns,
+                    Href = "/visitor/pendingcheckin",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
                 {
                     Title = "Check-in",
                     Icon = Icons.Material.Filled.Camera,
@@ -83,6 +125,18 @@ public class MenuService : IMenuService
                         {
                             Title = "Sites",
                             Href = "/visitor/sites",
+                            PageStatus = PageStatus.Completed
+                        },
+                        new()
+                        {
+                            Title = "Message Templates",
+                            Href = "/visitor/messagetemplates",
+                            PageStatus = PageStatus.Completed
+                        },
+                        new()
+                        {
+                            Title = "Site Configuration",
+                            Href = "/visitor/siteconfigurations",
                             PageStatus = PageStatus.Completed
                         },
                         new()
@@ -171,5 +225,155 @@ public class MenuService : IMenuService
         }
     };
 
-    public IEnumerable<MenuSectionModel> Features => _features;
+
+    private readonly List<MenuSectionModel> _guestfeatures = new List<MenuSectionModel>()
+    {
+        new MenuSectionModel
+        {
+            Title = "Application",
+            SectionItems = new List<MenuSectionItemModel>
+            {
+                new()
+                {
+                    Title = "Deshbord",
+                    Icon = Icons.Material.Filled.Dashboard,
+                    Href = "/"
+                },
+                new()
+                {
+                    Title = "Complete Visit Info",
+                    Icon = Icons.Material.Filled.EditNote,
+                    Href = "/visitor/completevisitinfo",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "My Visit Code",
+                    Icon = Icons.Material.Filled.QrCode,
+                    Href = "/visitor/mycode",
+                    PageStatus = PageStatus.Completed
+                },
+            }
+        },
+
+         
+    };
+
+    private readonly List<MenuSectionModel> _guardfeatures = new List<MenuSectionModel>()
+    {
+        new MenuSectionModel
+        {
+            Title = "Application",
+            SectionItems = new List<MenuSectionItemModel>
+            {
+                new()
+                {
+                    Title = "Deshbord",
+                    Icon = Icons.Material.Filled.Dashboard,
+                    Href = "/"
+                },
+                new()
+                {
+                    Title = "Pending Checking",
+                    Icon = Icons.Material.Filled.FollowTheSigns,
+                    Href = "/visitor/pendingcheckin",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Check-in",
+                    Icon = Icons.Material.Filled.Camera,
+                    Href = "/visitor/checkin",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Reports",
+                    Icon = Icons.Material.Filled.LineAxis,
+                    Href = "/visitor/reports",
+                    PageStatus = PageStatus.ComingSoon
+                },
+            }
+        },
+
+
+    };
+
+    private readonly List<MenuSectionModel> _userfeatures = new List<MenuSectionModel>()
+    {
+        new MenuSectionModel
+        {
+            Title = "Application",
+            SectionItems = new List<MenuSectionItemModel>
+            {
+                new()
+                {
+                    Title = "Deshbord",
+                    Icon = Icons.Material.Filled.Dashboard,
+                    Href = "/"
+                },
+                new()
+                {
+                    Title = "Employees",
+                    Icon = Icons.Material.Filled.AssignmentInd,
+                    Href = "/visitor/employees",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Visitors",
+                    Icon = Icons.Material.Filled.DirectionsRun,
+                    Href = "/visitor/visitors",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Visitor Request",
+                    Icon = Icons.Material.Filled.PostAdd,
+                    Href = "/visitor/visitorrequest",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pre-registers",
+                    Icon = Icons.Material.Filled.Bookmarks,
+                    Href = "/visitor/preregisters",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pending Approval",
+                    Icon = Icons.Material.Filled.AppRegistration,
+                    Href = "/visitor/pendingapproval",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Pending Confirm",
+                    Icon = Icons.Material.Filled.FactCheck,
+                    Href = "/visitor/pendingconfirm",
+                    PageStatus = PageStatus.Completed
+                },
+                new()
+                {
+                    Title = "Reports",
+                    Icon = Icons.Material.Filled.LineAxis,
+                    Href = "/visitor/histories",
+                    PageStatus = PageStatus.ComingSoon
+                },
+                new()
+                {
+                    Title = "Histories",
+                    Icon = Icons.Material.Filled.History,
+                    Href = "/visitor/visitorhistories",
+                    PageStatus = PageStatus.Completed
+                }
+                
+            }
+        },
+    };
+    public IEnumerable<MenuSectionModel> AllFeatures => _features;
+    public IEnumerable<MenuSectionModel> GuestFeatures => _guestfeatures;
+    public IEnumerable<MenuSectionModel> GuardFeatures => _guardfeatures;
+    public IEnumerable<MenuSectionModel> UserFeatures => _userfeatures;
 }

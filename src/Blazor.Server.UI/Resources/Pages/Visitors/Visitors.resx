@@ -120,17 +120,38 @@
   <data name="Actions" xml:space="preserve">
     <value>Actions</value>
   </data>
+  <data name="Activity / Comment" xml:space="preserve">
+    <value>Activity / Comment</value>
+  </data>
+  <data name="Activity Information" xml:space="preserve">
+    <value>Activity Information</value>
+  </data>
+  <data name="Add a new companion" xml:space="preserve">
+    <value>Add a new companion</value>
+  </data>
   <data name="Address" xml:space="preserve">
     <value>Address</value>
   </data>
   <data name="Advanced Search" xml:space="preserve">
     <value>Advanced Search</value>
   </data>
+  <data name="After submitting the application, visitors will receive SMS messages and fill in visitor information and upload necessary attachments or photos as prompted" xml:space="preserve">
+    <value>After submitting the application, visitors will receive SMS messages and fill in visitor information and upload necessary attachments or photos as prompted</value>
+  </data>
+  <data name="Agree" xml:space="preserve">
+    <value>Agree</value>
+  </data>
   <data name="Agree Privacy Policy" xml:space="preserve">
     <value>Agree Privacy Policy</value>
   </data>
   <data name="Apppoved" xml:space="preserve">
     <value>Apppoved</value>
+  </data>
+  <data name="Approval Histories" xml:space="preserve">
+    <value>Approval Histories</value>
+  </data>
+  <data name="Approval Information" xml:space="preserve">
+    <value>Approval Information</value>
   </data>
   <data name="Approval Outcome" xml:space="preserve">
     <value>Approval Outcome</value>
@@ -144,20 +165,68 @@
   <data name="Approved" xml:space="preserve">
     <value>Approved</value>
   </data>
+  <data name="Approved By" xml:space="preserve">
+    <value>Approved By</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>Attachments</value>
+  </data>
+  <data name="Attchments" xml:space="preserve">
+    <value>Attchments</value>
+  </data>
+  <data name="Automatic Check-in" xml:space="preserve">
+    <value>Automatic Check-in</value>
+  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="Check-in" xml:space="preserve">
+    <value>Check-in</value>
   </data>
   <data name="Check-in Date" xml:space="preserve">
     <value>Check-in Date</value>
   </data>
+  <data name="Check-in Histories" xml:space="preserve">
+    <value>Check-in Histories</value>
+  </data>
+  <data name="Check-in/Check-out Time" xml:space="preserve">
+    <value>Check-in/Check-out Time</value>
+  </data>
   <data name="Check-in/out Time" xml:space="preserve">
     <value>Check-in/out Time</value>
+  </data>
+  <data name="Check-out" xml:space="preserve">
+    <value>Check-out</value>
+  </data>
+  <data name="Checkin Point" xml:space="preserve">
+    <value>Checkin Point</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>Comment</value>
   </data>
+  <data name="comment is required!" xml:space="preserve">
+    <value>comment is required!</value>
+  </data>
+  <data name="Companion" xml:space="preserve">
+    <value>Companion</value>
+  </data>
+  <data name="Companion Count" xml:space="preserve">
+    <value>Companion Count</value>
+  </data>
+  <data name="Companion Information" xml:space="preserve">
+    <value>Companion Information</value>
+  </data>
+  <data name="Companion's Name" xml:space="preserve">
+    <value>Companion's Name</value>
+  </data>
   <data name="Company Name" xml:space="preserve">
     <value>Company Name</value>
+  </data>
+  <data name="complete visit information" xml:space="preserve">
+    <value>complete visit information</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
   </data>
   <data name="Create" xml:space="preserve">
     <value>Create</value>
@@ -168,11 +237,17 @@
   <data name="Create successfully" xml:space="preserve">
     <value>Create successfully</value>
   </data>
+  <data name="Created By" xml:space="preserve">
+    <value>Created By</value>
+  </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="Deleted successfully" xml:space="preserve">
     <value>Deleted successfully</value>
+  </data>
+  <data name="Detail Information" xml:space="preserve">
+    <value>Detail Information</value>
   </data>
   <data name="Downloading..." xml:space="preserve">
     <value>Downloading...</value>
@@ -210,6 +285,9 @@
   <data name="Export Data" xml:space="preserve">
     <value>Export Data</value>
   </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
   <data name="Gender" xml:space="preserve">
     <value>Gender</value>
   </data>
@@ -240,6 +318,12 @@
   <data name="Make sure you haven't been to a medium-high risk area for 14 days" xml:space="preserve">
     <value>Make sure you haven't been to a medium-high risk area for 14 days</value>
   </data>
+  <data name="My QRCode" xml:space="preserve">
+    <value>My QRCode</value>
+  </data>
+  <data name="Name / Comment" xml:space="preserve">
+    <value>Name / Comment</value>
+  </data>
   <data name="No Allowed" xml:space="preserve">
     <value>No Allowed</value>
   </data>
@@ -258,8 +342,32 @@
   <data name="Only green codes are allowed" xml:space="preserve">
     <value>Only green codes are allowed</value>
   </data>
+  <data name="Outcome / Comment" xml:space="preserve">
+    <value>Outcome / Comment</value>
+  </data>
   <data name="Pass Code" xml:space="preserve">
     <value>Pass Code</value>
+  </data>
+  <data name="Pending Approval" xml:space="preserve">
+    <value>Pending Approval</value>
+  </data>
+  <data name="Pending Check-in" xml:space="preserve">
+    <value>Pending Check-in</value>
+  </data>
+  <data name="Pending Check-out" xml:space="preserve">
+    <value>Pending Check-out</value>
+  </data>
+  <data name="Pending Checking" xml:space="preserve">
+    <value>Pending Checking</value>
+  </data>
+  <data name="Pending Confirm" xml:space="preserve">
+    <value>Pending Confirm</value>
+  </data>
+  <data name="Pending Feedback" xml:space="preserve">
+    <value>Pending Feedback</value>
+  </data>
+  <data name="Pending Visitor" xml:space="preserve">
+    <value>Pending Visitor</value>
   </data>
   <data name="Phone Number" xml:space="preserve">
     <value>Phone Number</value>
@@ -267,8 +375,20 @@
   <data name="Phone Number is required!" xml:space="preserve">
     <value>Phone Number is required!</value>
   </data>
+  <data name="Preview attachments" xml:space="preserve">
+    <value>Preview attachments</value>
+  </data>
+  <data name="Preview upload attachments" xml:space="preserve">
+    <value>Preview upload attachments</value>
+  </data>
   <data name="Preview upload pictures" xml:space="preserve">
     <value>Preview upload pictures</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Processing Date" xml:space="preserve">
+    <value>Processing Date</value>
   </data>
   <data name="Purpose" xml:space="preserve">
     <value>Purpose</value>
@@ -276,20 +396,35 @@
   <data name="purpose is required!" xml:space="preserve">
     <value>purpose is required!</value>
   </data>
+  <data name="Quick Approve" xml:space="preserve">
+    <value>Quick Approve</value>
+  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="Reject" xml:space="preserve">
     <value>Reject</value>
   </data>
+  <data name="Reject Confirmation" xml:space="preserve">
+    <value>Reject Confirmation</value>
+  </data>
+  <data name="Related Visitors" xml:space="preserve">
+    <value>Related Visitors</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
   <data name="Save successfully" xml:space="preserve">
     <value>Save successfully</value>
   </data>
+  <data name="Scanning Code" xml:space="preserve">
+    <value>Scanning Code</value>
+  </data>
+  <data name="Scanning Code:" xml:space="preserve">
+    <value>Scanning Code:</value>
+  </data>
   <data name="Search for approve outcome" xml:space="preserve">
     <value>Search for approve outcome</value>
-  </data>
-  <data name="Search for approve outome" xml:space="preserve">
-    <value />
   </data>
   <data name="Search for approved" xml:space="preserve">
     <value>Search for approved</value>
@@ -321,8 +456,14 @@
   <data name="Search my QRcode" xml:space="preserve">
     <value>Search my QRcode</value>
   </data>
+  <data name="Select Check-in Point" xml:space="preserve">
+    <value>Select Check-in Point</value>
+  </data>
   <data name="Select Employee" xml:space="preserve">
     <value>Select Employee</value>
+  </data>
+  <data name="Select Site" xml:space="preserve">
+    <value>Select Site</value>
   </data>
   <data name="Select Site - Address" xml:space="preserve">
     <value>Select Site - Address</value>
@@ -333,11 +474,38 @@
   <data name="Sort By" xml:space="preserve">
     <value>Sort By</value>
   </data>
+  <data name="State / Comment" xml:space="preserve">
+    <value>State / Comment</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="Submit successfully" xml:space="preserve">
+    <value>Submit successfully</value>
+  </data>
+  <data name="Survey feedback" xml:space="preserve">
+    <value>Survey feedback</value>
+  </data>
+  <data name="Take photos and upload attachments" xml:space="preserve">
+    <value>Take photos and upload attachments</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="Thank you for your valuable feedback." xml:space="preserve">
+    <value>Thank you for your valuable feedback.</value>
+  </data>
   <data name="The photo is used for intelligent face recognition" xml:space="preserve">
     <value>The photo is used for intelligent face recognition</value>
   </data>
   <data name="This QR code for your pass card" xml:space="preserve">
     <value>This QR code for your pass card</value>
+  </data>
+  <data name="Transit Date Time" xml:space="preserve">
+    <value>Transit Date Time</value>
   </data>
   <data name="Trip Code" xml:space="preserve">
     <value>Trip Code</value>
@@ -354,6 +522,12 @@
   <data name="Upload a trip code" xml:space="preserve">
     <value>Upload a trip code</value>
   </data>
+  <data name="Upload attachment successfully" xml:space="preserve">
+    <value>Upload attachment successfully</value>
+  </data>
+  <data name="Upload attachments" xml:space="preserve">
+    <value>Upload attachments</value>
+  </data>
   <data name="Upload health code successfully" xml:space="preserve">
     <value>Upload health code successfully</value>
   </data>
@@ -369,6 +543,27 @@
   <data name="Uploading..." xml:space="preserve">
     <value>Uploading...</value>
   </data>
+  <data name="Valid nucleic acid test report within 48 hours" xml:space="preserve">
+    <value>Valid nucleic acid test report within 48 hours</value>
+  </data>
+  <data name="Visit Employee" xml:space="preserve">
+    <value>Visit Employee</value>
+  </data>
+  <data name="Visit Information" xml:space="preserve">
+    <value>Visit Information</value>
+  </data>
+  <data name="Visit Purpose" xml:space="preserve">
+    <value>Visit Purpose</value>
+  </data>
+  <data name="Visit Site - Address" xml:space="preserve">
+    <value>Visit Site - Address</value>
+  </data>
+  <data name="Visitor Information" xml:space="preserve">
+    <value>Visitor Information</value>
+  </data>
+  <data name="Visitor Request" xml:space="preserve">
+    <value>Visitor Request</value>
+  </data>
   <data name="Visitor's Avatar" xml:space="preserve">
     <value>Visitor's Avatar</value>
   </data>
@@ -381,6 +576,9 @@
   <data name="Visitor's Phone Number" xml:space="preserve">
     <value>Visitor's Phone Number</value>
   </data>
+  <data name="Visitor's Temperature" xml:space="preserve">
+    <value>Visitor's Temperature</value>
+  </data>
   <data name="Visitors" xml:space="preserve">
     <value>Visitors</value>
   </data>
@@ -392,6 +590,9 @@
   </data>
   <data name="You must upload health code" xml:space="preserve">
     <value>You must upload health code</value>
+  </data>
+  <data name="You must upload nucleic acid test report" xml:space="preserve">
+    <value>You must upload nucleic acid test report</value>
   </data>
   <data name="You must upload photo" xml:space="preserve">
     <value>You must upload photo</value>

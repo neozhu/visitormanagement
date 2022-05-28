@@ -7,28 +7,22 @@
 		<InvariantGlobalization>false</InvariantGlobalization>
         <UserSecretsId>53DD81A6-A283-48B1-854B-734630970E69</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Compile Remove="Services\Picklist\**" />
-      <Content Remove="Services\Picklist\**" />
-      <EmbeddedResource Remove="Services\Picklist\**" />
-      <None Remove="Services\Picklist\**" />
-    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Blazor-Analytics" Version="3.11.0" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3">
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-       <PackageReference Include="MudBlazor" Version="6.0.9" />
+       <PackageReference Include="MudBlazor" Version="6.0.10" />
         <PackageReference Include="MediatR" Version="10.0.1" />
-       <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
+       <PackageReference Include="SixLabors.ImageSharp" Version="2.1.1" />
         <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta14" />
-        <PackageReference Include="Toolbelt.Blazor.HotKeys" Version="12.1.0" />
+        <PackageReference Include="Toolbelt.Blazor.HotKeys" Version="12.1.1" />
 
 
 
@@ -66,10 +60,15 @@
 
 
     <ItemGroup>
-      <Folder Include="Files\" />
-      <Folder Include="Files\" />
       <Folder Include="Files\ProfilePictures\" />
       <Folder Include="Files\" />
+    </ItemGroup>
+
+
+
+    <ItemGroup>
+      <None Include="wwwroot\js\gapi\auth2config.js" />
+      <None Include="wwwroot\js\msal\authConfig.js" />
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@
 
 @using Blazor.Server.UI.Services
 @using Blazor.Server.UI.Pages.CheckinPoints
+@using CleanArchitecture.Blazor.Application.Features.SiteConfigurations.Queries.GetAll
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
@@ -59,8 +60,6 @@
                                 <MudTextField Label="@L["Email"]"
                                               For="@(() => model.Email)"
                                               Disabled="@(model.Apppoved==true)"
-                                              Required="true"
-                                              RequiredError="@L["email is required!"]"
                                               @bind-Value="model.Email"></MudTextField>
                             </MudItem>
                             <MudItem xs="12" sm="6" md="4">
@@ -125,11 +124,12 @@
                                                @bind-Time="model.ExpectedTime"></MudTimePicker>
                             </MudItem>
                             <MudItem xs="12" sm="12">
-                                <SiteAutocomplete Label="@L["Select Site - Address"]"
+                                <Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete Label="@L["Select Site - Address"]"
                                                   Disabled="@(model.Apppoved==true)"
                                                   For="@(() => model.SiteId)"
                                                   Required="true" RequiredError="@L["site - address is required!"]"
-                                                  @bind-Value="model.SiteId"></SiteAutocomplete>
+                                                  @bind-Value="model.SiteId">
+                                </Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete>
                             </MudItem>
                             <MudItem xs="12" sm="12">
                                 <MudTextField Label="@L["Comment"]"
@@ -140,61 +140,48 @@
                             </MudItem>
 
 
-                            <MudItem xs="12" sm="6" md="4">
+                            @* <MudItem xs="12" sm="6" md="4">
                                 <MudCheckBox Label="@L["Has apppoved"]"
-                                             Disabled="@(model.Apppoved==true)"
-                                             For="@(() => model.Apppoved)" ReadOnly="true"
-                                             @bind-Checked="model.Apppoved"></MudCheckBox>
-                            </MudItem>
-                            <MudItem xs="12" sm="6" md="8">
+                                Disabled="@(model.Apppoved==true)"
+                                For="@(() => model.Apppoved)" ReadOnly="true"
+                                @bind-Checked="model.Apppoved"></MudCheckBox>
+                                </MudItem>
+                                <MudItem xs="12" sm="6" md="8">
                                 <MudTextField Label="@L["Approval Outcome"]"
-                                              Disabled="@(model.Apppoved==true)"
-                                              For="@(() => model.ApprovalOutcome)"
-                                              @bind-Value="model.ApprovalOutcome"></MudTextField>
-                            </MudItem>
-                            <MudItem>
-                                <div class="d-flex gap-3 flex-wrap">
-                                    <MudCard Style="width:200px">
-                                        <MudCardMedia Image="@model.Avatar" Height="200" />
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.body2">@L["The photo is used for intelligent face recognition"]</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <InputFile id="photoInput" OnChange="UploadAvatarPhoto" hidden accept=".jpg, .jpeg, .png" />
-                                            <MudButton HtmlTag="label" for="photoInput" Disabled="@(model.Apppoved==true)" Variant="Variant.Text" Color="MudBlazor.Color.Primary">@L["Upload a Photo"]</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                    <MudCard Style="width:200px">
-                                        <MudCardMedia Image="@model.HealthCode" Height="200" />
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.body2">@L["Only green codes are allowed"]</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <InputFile id="healthcodeInput" OnChange="UploadHealthCodePhoto" hidden accept=".jpg, .jpeg, .png" />
-                                            <MudButton HtmlTag="label" for="healthcodeInput" Disabled="@(model.Apppoved==true)" Variant="Variant.Text" Color="MudBlazor.Color.Primary">@L["Upload a health code"]</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                    <MudCard Style="width:200px">
-                                        <MudCardMedia Image="@model.TripCode" Height="200" />
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.body2">@L["Make sure you haven't been to a medium-high risk area for 14 days"]</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <InputFile id="tripcodeInput" OnChange="UploadTripCodePhoto" hidden accept=".jpg, .jpeg, .png" />
-                                            <MudButton HtmlTag="label" for="tripcodeInput" Disabled="@(model.Apppoved==true)" Variant="Variant.Text" Color="MudBlazor.Color.Primary">@L["Upload a trip code"]</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
-                                    <MudCard Style="width:200px">
-                                        <MudCardMedia Image="@model.NucleicAcidTestReport" Height="200" />
-                                        <MudCardContent>
-                                            <MudText Typo="Typo.body2">@L["Upload a nucleic acid test report"]</MudText>
-                                        </MudCardContent>
-                                        <MudCardActions>
-                                            <InputFile id="testreportInput" OnChange="UploadTestReportPhoto" hidden accept=".jpg, .jpeg, .png" />
-                                            <MudButton HtmlTag="label" for="testreportInput" Disabled="@(model.Apppoved==true)" Variant="Variant.Text" Color="MudBlazor.Color.Primary">@L["Upload a nucleic acid test report"]</MudButton>
-                                        </MudCardActions>
-                                    </MudCard>
+                                Disabled="@(model.Apppoved==true)"
+                                For="@(() => model.ApprovalOutcome)"
+                                @bind-Value="model.ApprovalOutcome"></MudTextField>
+                                </MudItem>*@
+                            <MudItem xs="12" sm="12" md="12">
+                                <div class="d-flex flex-nowrap  overflow-auto pa-4">
+                                    <div class="d-flex flex-nowrap gap-4" style="max-width:680px">
+                                        <UploadPhotoComponent Desciption="@L["Only green codes are allowed"]"
+                                                              Disabled="@(model.Apppoved==true)"
+                                                              ImageUrl="@model.HealthCode"
+                                                              Label="@L["Upload a health code"]"
+                                                              PassCode="@model.PassCode"
+                                                              OnUploaded="@(s=> model.HealthCode=s)"
+                                                              Tag="H"></UploadPhotoComponent>
+                                        <UploadPhotoComponent Desciption="@L["Make sure you haven't been to a medium-high risk area for 14 days"]"
+                                                              Disabled="@(model.Apppoved==true)"
+                                                              ImageUrl="@model.TripCode"
+                                                              Label="@L["Upload a trip code"]"
+                                                              PassCode="@model.PassCode"
+                                                              OnUploaded="@(s=> model.TripCode=s)"
+                                                              Tag="T"></UploadPhotoComponent>
+                                        <UploadPhotoComponent Desciption="@L["Valid nucleic acid test report within 48 hours"]"
+                                                              Disabled="@(model.Apppoved==true)"
+                                                              ImageUrl="@model.NucleicAcidTestReport"
+                                                              Label="@L["Upload a nucleic acid test report"]"
+                                                              PassCode="@model.PassCode"
+                                                              OnUploaded="@(s=> model.NucleicAcidTestReport=s)"
+                                                              Tag="R"></UploadPhotoComponent>
+                                    </div>
+
                                 </div>
+                            </MudItem>
+                            <MudItem xs="12">
+                                <CompanionComponent TRequest="model"></CompanionComponent>
                             </MudItem>
                             <MudItem xs="12" sm="6">
                                 <MudCheckBox Label="@L["Agree Privacy Policy"]"
@@ -214,73 +201,28 @@
                     </MudForm>
                 </MudPaper>
                 <MudPaper Class="d-flex pa-4 mt-4">
-                    <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Secondary" DisableElevation="true" OnClick="@(()=>form.Reset())" Class="ml-auto mx-2">@L["Reset"]</MudButton>
-                    <MudButton Variant="Variant.Filled" Disabled="@(model.Id>0)" DisableElevation="true" OnClick="Submit">@L["Submit"]</MudButton>
+                    <MudButton Variant="Variant.Filled"
+                    Color="MudBlazor.Color.Secondary"
+                    DisableElevation="true"
+                    OnClick="Reset" Class="ml-auto mx-2">@L["Reset"]</MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               Disabled="@(model.Id>0 || _submiting)"
+                               DisableElevation="true"
+                               OnClick="Submit">
+                        @if (_submiting)
+                        {
+                            <MudProgressCircular Class="ms-n1" Size="MudBlazor.Size.Small" Indeterminate="true" />
+                            <MudText Class="ms-2">@L["Processing"]</MudText>
+                        }
+                        else
+                        {
+                            <MudText>@L["Submit"]</MudText>
+                        }
+                    </MudButton>
                 </MudPaper>
             </MudItem>
             <MudItem xs="12" sm="5">
-
-                <div class="d-flex flex-column justify-center align-content-center">
-                    <MudPaper Class="pa-4 mt-4" Style="width:320px">
-                        <MudTextField @bind-Value="_searchQRcode" Label="@L["Search my QRcode"]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearchQRcode" />
-                    </MudPaper>
-                    <MudCard Class="pa-4 mt-4" Style="width:320px">
-                        @if (_notfound)
-                        {
-                            <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor's information"]</MudAlert>
-                        }
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@L["Pass Code"]: @_visitorWithQRCode.PassCode</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardMedia Image="@_visitorWithQRCode.QrCode" Height="288" />
-                        <MudCardContent>
-                            <MudForm>
-                                <MudTextField For="@(() => _visitorWithQRCode.Name)" Value="@_visitorWithQRCode.Name" Label="@L["Visitor's Name"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.CompanyName)" Value="@_visitorWithQRCode.CompanyName" Label="@L["Company Name"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.LicensePlateNumber)" Value="@_visitorWithQRCode.LicensePlateNumber" Label="@L["License Plate Number"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.Purpose)" Value="@_visitorWithQRCode.Purpose" Label="@L["Purpose"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.Employee)" Value="@_visitorWithQRCode.Employee" Label="@L["Employee"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.ExpectedDate)" Value="@_visitorWithQRCode.ExpectedDate" Label="@L["Expected Date"]" ReadOnly="true" />
-                                <MudTextField For="@(() => _visitorWithQRCode.ExpectedTime)" Value="@_visitorWithQRCode.ExpectedTime" Label="@L["Expected Time"]" ReadOnly="true" />
-                            </MudForm>
-                        </MudCardContent>
-                        <MudCardActions>
-                            <MudText Class="mr-2">@L["Survey feedback"]</MudText>
-                            <MudRating SelectedValue="3" />
-                        </MudCardActions>
-                    </MudCard>
-
-                    <MudCard Class="pa-4 mt-4" Style="width:320px">
-                        <MudCardHeader>
-                            <CardHeaderContent>
-                                <MudText Typo="Typo.h6">@L["Check-in Histories"] (0)</MudText>
-                            </CardHeaderContent>
-                        </MudCardHeader>
-                        <MudCardContent>
-                            @if (_visitorHistories.Count > 0)
-                            {
-                                <MudTimeline>
-                                    @foreach (var item in _visitorHistories)
-                                    {
-                                        <MudTimelineItem Color="MudBlazor.Color.Info" Size="MudBlazor.Size.Small">
-                                            <ItemOpposite>
-                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body1">@item.CheckinPoint</MudText>
-                                            </ItemOpposite>
-                                            <ItemContent>
-                                                <MudText Color="MudBlazor.Color.Info" Typo="Typo.body2" GutterBottom="true">@item.TransitDateTime</MudText>
-                                                <MudText>@item.Comment</MudText>
-                                            </ItemContent>
-                                        </MudTimelineItem>
-
-                                    }
-                                </MudTimeline>
-                            }
-                        </MudCardContent>
-                    </MudCard>
-                </div>
-
+                <MyPassCodeComponent @ref="myqrcode" Keyword="@_searchQRcode"></MyPassCodeComponent>
             </MudItem>
         </MudGrid>
     </ChildContent>
@@ -289,19 +231,21 @@
     </ErrorContent>
 </ErrorBoundary>
 @code {
+    private MyPassCodeComponent myqrcode;
     public string? Title { get; private set; }
     private MudForm form = default!;
-    private string _searchString = string.Empty;
-    private string _searchQRcode = string.Empty;
-    private VisitorDto? _visitorDto = null;
+    private string? _searchString = string.Empty;
+    private string? _searchQRcode = string.Empty;
+    private VisitorDto? _visitorDto = new();
     private VisitorDto? _visitorWithQRCode = new();
     private List<VisitorHistoryDto> _visitorHistories = new();
+    public List<CompanionDto> _companionDtoList = new();
     private CreateVisitorCommandValidator modelValidator = new CreateVisitorCommandValidator();
     private CreateVisitorCommand model { get; set; } = new CreateVisitorCommand();
     private bool _notfound;
     private bool _loading;
     private bool _uploading;
-    private bool _submited;
+    private bool _submiting;
     [Inject] private IUploadService _uploadService { get; set; } = default!;
     [Inject]
     private ISender _mediator { get; set; } = default!;
@@ -322,218 +266,138 @@
         _visitorDto = await _mediator.Send(new SearchVisitorQuery(_searchString));
         if (_visitorDto != null)
         {
-            model = new CreateVisitorCommand()
-                {
-                    PassCode = hashids.EncodeLong(DateTime.Now.Ticks),
-                    Name = _visitorDto.Name,
-                    IdentificationNo = _visitorDto.IdentificationNo,
-                    CompanyName = _visitorDto.CompanyName,
-                    Address = _visitorDto.Address,
-                    Avatar = _visitorDto.Avatar,
-                    Email = _visitorDto.Email,
-                    DesignationId = _visitorDto.DesignationId,
-                    EmployeeId = _visitorDto.EmployeeId,
-                    Gender = _visitorDto.Gender,
-                    LicensePlateNumber = _visitorDto.LicensePlateNumber,
-                    PhoneNumber = _visitorDto.PhoneNumber,
-                    Purpose = _visitorDto.Purpose,
-                    Promise = true,
-                    PrivacyPolicy = true
-
-                };
-        }
-
-    }
-    private async Task OnSearchQRcode()
-    {
-        var visitor = await _mediator.Send(new SearchVisitorQuery(_searchQRcode));
-        if (visitor is null)
-        {
-            _notfound = true;
-            _visitorWithQRCode = new();
-        }
-        else
-        {
-            _notfound = false;
-            _visitorWithQRCode = visitor;
-            _visitorHistories = (await _mediator.Send(new GetByVisitorIdVisitorHistoriesQuery(_visitorWithQRCode.Id))).ToList();
-        }
-
-    }
-
-    private async Task UploadAvatarPhoto(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        var filestream = file.OpenReadStream();
-        var imgstream = new MemoryStream();
-        await filestream.CopyToAsync(imgstream);
-        imgstream.Position = 0;
-        using (var outStream = new MemoryStream())
-        {
-            using (var image = Image.Load(imgstream, out IImageFormat format))
+            if (_visitorDto.Apppoved != true && _visitorDto.CheckinDate is null)
             {
-                image.Mutate(
-                   i => i.Resize(new ResizeOptions() { Mode = ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(350, 350) }));
-                image.Save(outStream, format);
-                var filename = file.Name;
-                var fi = new FileInfo(filename);
-                var ext = fi.Extension;
-                var result = await _uploadService.UploadAsync(new UploadRequest()
+                model = new CreateVisitorCommand()
                     {
-                        Data = outStream.ToArray(),
-                        FileName = "A_" + Guid.NewGuid().ToString() + ext,
-                        Extension = ext,
-                        Folder = model.PassCode,
-                        UploadType = UploadType.VisitorPricture
-                    });
-                model.Avatar = result.Replace("\\", "/");
+                        Id = _visitorDto.Id,
+                        PassCode = _visitorDto.PassCode,
+                        Name = _visitorDto.Name,
+                        IdentificationNo = _visitorDto.IdentificationNo,
+                        CompanyName = _visitorDto.CompanyName,
+                        Address = _visitorDto.Address,
+                        Avatar = _visitorDto.Avatar,
+                        Email = _visitorDto.Email,
+                        DesignationId = _visitorDto.DesignationId,
+                        EmployeeId = _visitorDto.EmployeeId,
+                        Gender = _visitorDto.Gender,
+                        LicensePlateNumber = _visitorDto.LicensePlateNumber,
+                        PhoneNumber = _visitorDto.PhoneNumber,
+                        Purpose = _visitorDto.Purpose,
+                        Apppoved = _visitorDto.Apppoved,
+                        ApprovalOutcome = _visitorDto.ApprovalOutcome,
+                        CheckinDate = _visitorDto.CheckinDate,
+                        CheckoutDate = _visitorDto.CheckoutDate,
+                        Comment = _visitorDto.Comment,
+                        Designation = _visitorDto.Designation,
+                        Companions = _visitorDto.Companions,
+                        Employee = _visitorDto.Employee,
+                        EmployeeDesignation = _visitorDto.EmployeeDesignation,
+                        ExpectedDate = _visitorDto.ExpectedDate,
+                        ExpectedTime = _visitorDto.ExpectedTime,
+                        HealthCode = _visitorDto.HealthCode,
+                        QrCode = _visitorDto.QrCode,
+                        NucleicAcidTestReport = _visitorDto.NucleicAcidTestReport,
+                        SiteId = _visitorDto.SiteId,
+                        Status = _visitorDto.Status,
+                        TripCode = _visitorDto.TripCode,
+                        Promise = true,
+                        PrivacyPolicy = true
+                    };
+            }
+            else
+            {
+                model = new CreateVisitorCommand()
+                    {
+                        PassCode = hashids.EncodeLong(DateTime.Now.Ticks),
+                        Name = _visitorDto.Name,
+                        IdentificationNo = _visitorDto.IdentificationNo,
+                        CompanyName = _visitorDto.CompanyName,
+                        Address = _visitorDto.Address,
+                        Avatar = _visitorDto.Avatar,
+                        Email = _visitorDto.Email,
+                        DesignationId = _visitorDto.DesignationId,
+                        EmployeeId = _visitorDto.EmployeeId,
+                        Gender = _visitorDto.Gender,
+                        LicensePlateNumber = _visitorDto.LicensePlateNumber,
+                        PhoneNumber = _visitorDto.PhoneNumber,
+                        Purpose = _visitorDto.Purpose,
+                        Promise = true,
+                        PrivacyPolicy = true
+
+                    };
             }
         }
 
-        Snackbar.Add(L["Upload photo successfully"], MudBlazor.Severity.Info);
-
     }
-    private async Task UploadHealthCodePhoto(InputFileChangeEventArgs e)
+    private Task Reset()
     {
-        var file = e.File;
-        var filestream = file.OpenReadStream();
-        var imgstream = new MemoryStream();
-        await filestream.CopyToAsync(imgstream);
-        imgstream.Position = 0;
-        using (var outStream = new MemoryStream())
-        {
-            using (var image = Image.Load(imgstream, out IImageFormat format))
-            {
-                image.Mutate(
-                   i => i.Resize(new ResizeOptions() { Mode = ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(430, 780) }));
-                image.Save(outStream, format);
-                var filename = file.Name;
-                var fi = new FileInfo(filename);
-                var ext = fi.Extension;
-                var result = await _uploadService.UploadAsync(new UploadRequest()
-                    {
-                        Data = outStream.ToArray(),
-                        FileName = "H_" + Guid.NewGuid().ToString() + ext,
-                        Extension = ext,
-                        Folder = model.PassCode,
-                        UploadType = UploadType.VisitorPricture
-                    });
-                model.HealthCode = result.Replace("\\", "/");
-            }
-        }
 
-        Snackbar.Add(L["Upload health code successfully"], MudBlazor.Severity.Info);
 
-    }
-    private async Task UploadTripCodePhoto(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        var filestream = file.OpenReadStream();
-        var imgstream = new MemoryStream();
-        await filestream.CopyToAsync(imgstream);
-        imgstream.Position = 0;
-        using (var outStream = new MemoryStream())
-        {
-            using (var image = Image.Load(imgstream, out IImageFormat format))
-            {
-                image.Mutate(
-                   i => i.Resize(new ResizeOptions() { Mode = ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(430, 780) }));
-                image.Save(outStream, format);
-                var filename = file.Name;
-                var fi = new FileInfo(filename);
-                var ext = fi.Extension;
-                var result = await _uploadService.UploadAsync(new UploadRequest()
-                    {
-                        Data = outStream.ToArray(),
-                        FileName = "T_" + Guid.NewGuid().ToString() + ext,
-                        Extension = ext,
-                        Folder = model.PassCode,
-                        UploadType = UploadType.VisitorPricture
-                    });
-                model.TripCode = result.Replace("\\", "/");
-            }
-        }
+        model = new CreateVisitorCommand();
+        model.PassCode = hashids.EncodeLong(DateTime.Now.Ticks);
 
-        Snackbar.Add(L["Upload trip code successfully"], MudBlazor.Severity.Info);
-
-    }
-    private async Task UploadTestReportPhoto(InputFileChangeEventArgs e)
-    {
-        var file = e.File;
-        var filestream = file.OpenReadStream();
-        var imgstream = new MemoryStream();
-        await filestream.CopyToAsync(imgstream);
-        imgstream.Position = 0;
-        using (var outStream = new MemoryStream())
-        {
-            using (var image = Image.Load(imgstream, out IImageFormat format))
-            {
-                image.Mutate(
-                   i => i.Resize(new ResizeOptions() { Mode = ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(430, 780) }));
-                image.Save(outStream, format);
-                var filename = file.Name;
-                var fi = new FileInfo(filename);
-                var ext = fi.Extension;
-                var result = await _uploadService.UploadAsync(new UploadRequest()
-                    {
-                        Data = outStream.ToArray(),
-                        FileName = "R_" + Guid.NewGuid().ToString() + ext,
-                        Extension = ext,
-                        Folder = model.PassCode,
-                        UploadType = UploadType.VisitorPricture
-                    });
-                model.NucleicAcidTestReport = result.Replace("\\", "/");
-            }
-        }
-
-        Snackbar.Add(L["Upload test report successfully"], MudBlazor.Severity.Info);
-
+        return Task.CompletedTask;
     }
 
     private async Task Submit()
     {
-        await form.Validate();
-        if (form.IsValid)
+        _submiting = true;
+        try
         {
-            if (model.Promise != true)
+            await form.Validate();
+            if (form.IsValid)
             {
-                Snackbar.Add(L["You must promise"], MudBlazor.Severity.Error);
-                return;
-            }
-            if (model.PrivacyPolicy != true)
-            {
-                Snackbar.Add(L["You must agree"], MudBlazor.Severity.Error);
-                return;
-            }
-            if (string.IsNullOrEmpty(model.Avatar))
-            {
-                Snackbar.Add(L["You must upload photo"], MudBlazor.Severity.Error);
-                return;
-            }
-            if (string.IsNullOrEmpty(model.HealthCode))
-            {
-                Snackbar.Add(L["You must upload health code"], MudBlazor.Severity.Error);
-                return;
-            }
-            if (string.IsNullOrEmpty(model.TripCode))
-            {
-                Snackbar.Add(L["You must upload trip code"], MudBlazor.Severity.Error);
-                return;
-            }
-            await this.generateQrCode();
-            var result = await _mediator.Send(model);
-            model.Id = result.Data;
-            _submited = true;
-            _searchQRcode = model.PassCode;
-            await  OnSearchQRcode();
-            Snackbar.Add(L["Submit successfully"], MudBlazor.Severity.Info);            
-        }
+                var siteConfig = await _mediator.Send(new GetBySiteIdConfigurationsQuery(model.SiteId));
+                if (model.Promise != true)
+                {
+                    Snackbar.Add(L["You must promise"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (model.PrivacyPolicy != true)
+                {
+                    Snackbar.Add(L["You must agree"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.HealthCode) && (siteConfig is not null && siteConfig.MandatoryHealthQrCode))
+                {
+                    Snackbar.Add(L["You must upload health code"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.TripCode) && (siteConfig is not null && siteConfig.MandatoryTripCode))
+                {
+                    Snackbar.Add(L["You must upload trip code"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.NucleicAcidTestReport) && (siteConfig is not null && siteConfig.MandatoryNucleicAcidTestReport))
+                {
+                    Snackbar.Add(L["You must upload nucleic acid test report"], MudBlazor.Severity.Error);
+                    return;
+                }
 
+                await this.generateQrCode();
+                var result = await _mediator.Send(model);
+                model.Id = result.Data;
+                _submiting = true;
+                _searchQRcode = model.PassCode;
+                Snackbar.Add(L["Submit successfully"], MudBlazor.Severity.Info);
+                await Reset();
+                await Task.Delay(1000);
+                StateHasChanged();
+                await myqrcode.SearchQRcode();
+
+
+            }
+        }
+        finally
+        {
+            _submiting = false;
+        }
     }
     private async Task generateQrCode()
     {
         var qr = QrCode.EncodeText(model.PassCode, QrCode.Ecc.Medium);
-        var qrcode = qr.ToPng(15, 5);
+        var qrcode = qr.ToPng(12, 4);
         var result = await _uploadService.UploadAsync(new UploadRequest()
             {
                 Data = qrcode,

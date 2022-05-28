@@ -10,6 +10,7 @@ public class VisitorsWithPaginationQuery : PaginationFilter, IRequest<PaginatedD
 {
     public string? PassCode { get; set; }
     public string? Name { get; set; }
+    public string? Status { get; set; }
     public string? LicensePlateNumber { get; set; }
     public string? CompanyName { get; set; }
     public string? Purpose { get; set; }
@@ -20,10 +21,10 @@ public class VisitorsWithPaginationQuery : PaginationFilter, IRequest<PaginatedD
 
     public override string ToString()
     {
-        return $"{base.ToString()},Name:{Name},LicensePlateNumber:{LicensePlateNumber},CompanyName:{CompanyName},Purpose:{Purpose},Employee:{Employee},ExpectedDate1:{ExpectedDate1?.ToString()},ExpectedDate2:{ExpectedDate2?.ToString()},Outcome:{Outcome}";
+        return $"{base.ToString()},Name:{Name},LicensePlateNumber:{LicensePlateNumber},CompanyName:{CompanyName},Purpose:{Purpose},Employee:{Employee},ExpectedDate1:{ExpectedDate1?.ToString()},ExpectedDate2:{ExpectedDate2?.ToString()},Outcome:{Outcome},Status:{Status}";
     }
     public string CacheKey => VisitorCacheKey.GetPagtionCacheKey($"{this}");
-    public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(VisitorCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => VisitorCacheKey.MemoryCacheEntryOptions;
 }
 
 public class VisitorsWithPaginationQueryHandler :
@@ -61,6 +62,7 @@ public class SearchVisitorSpecification : Specification<Visitor>
     {
         AddInclude(x => x.Employee);
         AddInclude(x => x.Designation);
+        AddInclude(x => x.Companions);
         Criteria = q => q.Name != null;
         if (!string.IsNullOrEmpty(query.PassCode))
         {
@@ -69,6 +71,10 @@ public class SearchVisitorSpecification : Specification<Visitor>
         if (!string.IsNullOrEmpty(query.Keyword))
         {
             And(x => x.Name.Contains(query.Keyword) || x.Comment.Contains(query.Keyword) || x.CompanyName.Contains(query.Keyword));
+        }
+        if (!string.IsNullOrEmpty(query.Status))
+        {
+            And(x => x.Status == query.Status);
         }
         if (!string.IsNullOrEmpty(query.Name))
         {

@@ -1,11 +1,14 @@
 @page "/visitor/visitors"
 
 
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Approve
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit
+@using FluentEmail.Core
+@using FluentEmail.Razor
 @using HashidsNet
 @using System.Globalization
 
@@ -25,7 +28,7 @@
                   FixedHeader="true"
                   FixedFooter="true"
                   Virtualize="true"
-                  Height="calc(100vh - 265px)"
+                  Height="calc(100vh - 315px)"
                   Loading="@_loading"
                   SortLabel="@L["Sort By"]"
                   MultiSelection="true" @bind-SelectedItems="_selectedItems"
@@ -40,6 +43,16 @@
                                    OnClick="@(()=>OnRefresh())"
                                    StartIcon="@Icons.Material.Filled.Refresh" IconColor="Color.Surface" Color="Color.Primary"
                                    Style="margin-right: 4px; margin-bottom:4px">@L["Refresh"]</MudButton>
+                        @if (_canRequest)
+                        {
+                            <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
+                                   StartIcon="@Icons.Material.Filled.PostAdd"
+                                   Disabled="_loading"
+                                   Size="Size.Small"
+                                   OnClick="OnRequest"
+                                   Style="margin-right: 4px; margin-bottom:4px"
+                                   IconColor="Color.Surface">@L["Visitor Request"]</MudButton>
+                        }
                         @if (_canApprove)
                         {
                             <MudButton DisableElevation Variant="Variant.Outlined" Color="Color.Primary"
@@ -48,7 +61,7 @@
                                    Size="Size.Small"
                                    OnClick="OnApproval"
                                    Style="margin-right: 4px; margin-bottom:4px"
-                                   IconColor="Color.Surface">@L["Approve"]</MudButton>
+                                   IconColor="Color.Surface">@L["Quick Approve"]</MudButton>
                         }
                         @if (_canCreate)
                         {
@@ -115,6 +128,10 @@
                     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
                         <MudMenu AnchorOrigin="Origin.BottomLeft" StartIcon="@Icons.Filled.KeyboardCommandKey" EndIcon="@Icons.Filled.KeyboardArrowDown" Label="@L["Action"]" Color="Color.Primary" Variant="Variant.Filled">
                             <MudMenuItem Disabled="@_loading" OnClick="@(()=>OnRefresh())">@L["Refresh"]</MudMenuItem>
+                            @if (_canRequest)
+                            {
+                                <MudMenuItem Disabled="@_loading" OnClick="OnRequest">@L["Visitor Request"]</MudMenuItem>
+                            }
                             @if (_canApprove)
                             {
                                 <MudMenuItem Disabled="@(!(_selectedItems.Count>0))" OnClick="OnApproval">@L["Approve"]</MudMenuItem>
@@ -145,18 +162,20 @@
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <ColGroup>
-                <col style="width:50px;" />
-                <col style="width:120px;" />
+                <col style="width:30px;" />
+                <col style="width:105px;" />
+                <col style="width:90px;" />
+                <col style="width:90px;" />
             </ColGroup>
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
-                <MudTh><MudTableSortLabel SortLabel="Avatar" T="VisitorDto">@L["Visitor's Avatar"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Status" T="VisitorDto">@L["Status"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PassCode" T="VisitorDto">@L["Pass Code"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Name" T="VisitorDto">@L["Visitor's Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="PhoneNumber" T="VisitorDto">@L["Phone Number"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="IdentificationNo" T="VisitorDto">@L["Identification No."]</MudTableSortLabel></MudTh>
+                <MudTh>@L["Companion Count"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Purpose" T="VisitorDto">@L["Purpose"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortLabel="Employee" T="VisitorDto">@L["Employee"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortLabel="Employee" T="VisitorDto">@L["Visit Employee"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="ExpectedDate" T="VisitorDto">@L["Expected Date"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="CheckinDate" T="VisitorDto">@L["Check-in/out Time"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="TripCode" T="VisitorDto">@L["Trip Code"]</MudTableSortLabel></MudTh>
@@ -189,17 +208,17 @@
                         </MudButton>
                     }
                 </MudTd>
-                <MudTd HideSmall="true" DataLabel="@L["Visitor's Avatar"]">
-                    @if (string.IsNullOrEmpty(context.Avatar))
-                    {
-                        <MudAvatar Image="@context.QrCode" Style="height:48px; width:48px; font-size:2rem; border-radius: --mud-default-borderradius !important" />
-                    }
-                    else
-                    {
-                        <MudAvatar Image="@context.Avatar" Style="height:48px; width:48px; font-size:2rem;" />
-                    }
+                <MudTd DataLabel="@L["Status"]">@context.Status</MudTd>
+                <MudTd HideSmall="true" DataLabel="@L["Pass Code"]">
+                    <MudTooltip Color="Color.Transparent">
+                        <ChildContent>
+                            <MudLink Href="@($"/visitor/detail?id={context.Id}")">@context.PassCode</MudLink>
+                        </ChildContent>
+                        <TooltipContent>
+                            <MudImage Src="@context.QrCode" Width="200" Height="200" Elevation="12"></MudImage>
+                        </TooltipContent>
+                    </MudTooltip>
                 </MudTd>
-                <MudTd HideSmall="true" DataLabel="@L["Pass Code"]">@context.PassCode</MudTd>
                 <MudTd DataLabel="@L["Visitor's Name"]">
                     <MudText>@context.Name</MudText>
                     <MudText Typo="Typo.body2">@context.CompanyName</MudText>
@@ -209,11 +228,11 @@
                     <MudText Typo="Typo.body2">@context.Email</MudText>
                 </MudTd>
 
-                <MudTd DataLabel="@L["Identification No."]">
-                    <MudText>@context.IdentificationNo</MudText>
+                <MudTd DataLabel="@L["Companion Count"]">
+                    <MudText>@context.Companions.Count</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Purpose"]">@context.Purpose</MudTd>
-                <MudTd DataLabel="@L["Employee"]">
+                <MudTd DataLabel="@L["Visit Employee"]">
                     <MudText>@context.Employee</MudText>
                     <MudText Typo="Typo.body2">@context.EmployeeDesignation</MudText>
                 </MudTd>
@@ -225,8 +244,8 @@
                     }
                 </MudTd>
                 <MudTd DataLabel="@L["Check-in/out Time"]">
-                    <MudText Typo="Typo.body2">@context.CheckinDate</MudText>
-                    <MudText Typo="Typo.body2">@context.CheckoutDate</MudText>
+                    <MudText Typo="Typo.body2">@context.CheckinDate?.ToString("MM/dd HH:mm")</MudText>
+                    <MudText Typo="Typo.body2">@context.CheckoutDate?.ToString("MM/dd HH:mm")</MudText>
                 </MudTd>
                 <MudTd DataLabel="@L["Trip Code"]">
                     @if (context.TripCode is not null)
@@ -248,9 +267,9 @@
                         </MudTooltip>
                     }
                 </MudTd>
-                <MudTd DataLabel="@L["Apppoved"]">
-                    <MudCheckBox Disabled="true" Checked="@context.Apppoved"></MudCheckBox>
-                    <MudText Typo="Typo.body2">@context.ApprovalOutcome</MudText>
+                <MudTd DataLabel="@L["Outcome / Comment"]">
+                    <MudText Typo="Typo.body1">@context.ApprovalOutcome</MudText>
+                    <MudText Typo="Typo.body2">@context.ApprovalComment</MudText>
                 </MudTd>
             </RowTemplate>
             <NoRecordsContent>
@@ -281,6 +300,10 @@
     private ISender _mediator { get; set; } = default!;
     [Inject]
     private Hashids hashids { get; set; } = default!;
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+    [Inject]
+    private IFluentEmail _fluentEmail { get; set; }
     [CascadingParameter]
     protected Task<AuthenticationState> AuthState { get; set; } = default!;
 
@@ -293,6 +316,7 @@
     private bool _canApprove;
     private bool _canImport;
     private bool _canExport;
+    private bool _canRequest;
     protected override async Task OnInitializedAsync()
     {
         Title = L["Visitors"];
@@ -302,6 +326,7 @@
         _canEdit = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Edit)).Succeeded;
         _canDelete = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Delete)).Succeeded;
         _canApprove = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.Approve)).Succeeded;
+        _canRequest = (await AuthService.AuthorizeAsync(state.User, Permissions.Visitors.VisitorRequest)).Succeeded;
         _canImport = false;
         _canExport = false;
 
@@ -333,6 +358,11 @@
             await _table.ReloadServerData();
         });
     }
+    private Task OnRequest()
+    {
+        _navigationManager.NavigateTo("/visitor/visitorrequest");
+        return Task.CompletedTask;
+    }
     private async Task OnSearch(string text)
     {
         _selectedItems = new();
@@ -348,11 +378,12 @@
     private async Task OnShowPreview(VisitorDto dto)
     {
         var parameters = new DialogParameters {
-                 { nameof(_PreviewDialog.dto),dto }
+                 { nameof(_PreviewDialog.HealthCode),dto.HealthCode },
+                 { nameof(_PreviewDialog.NucleicAcidTestReport),dto.NucleicAcidTestReport },
+                 { nameof(_PreviewDialog.TripCode),dto.TripCode },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
-        var dialog = DialogService.Show<_PreviewDialog>
-        (L["Preview upload pictures"], parameters, options);
+        var dialog = DialogService.Show<_PreviewDialog>(L["Preview attachments"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -366,8 +397,7 @@
         { nameof(_ApprovalDialog.Selected),_selectedItems.ToList() },
             };
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small, FullWidth = true };
-        var dialog = DialogService.Show<_ApprovalDialog>
-        (L["Approval visitor request"], parameters, options);
+        var dialog = DialogService.Show<_ApprovalDialog>(L["Approval visitor request"], parameters, options);
         var state = await dialog.Result;
         if (!state.Cancelled)
         {
@@ -432,8 +462,13 @@
                 Apppoved = dto.Apppoved,
                 ApprovalOutcome = dto.ApprovalOutcome,
                 PrivacyPolicy = dto.PrivacyPolicy,
-                Promise = dto.Promise
-
+                Promise = dto.Promise,
+                SiteId = dto.SiteId,
+                Companions = dto.Companions,
+                Employee = dto.Employee,
+                Designation = dto.Designation,
+                ApprovalHistories = dto.ApprovalHistories,
+                ApprovalComment = dto.ApprovalComment,
             };
         var parameters = new DialogParameters
                 {

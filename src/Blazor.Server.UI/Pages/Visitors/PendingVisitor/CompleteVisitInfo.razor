@@ -1,0 +1,354 @@
+@page "/visitor/completevisitinfo"
+@using Blazor.Server.UI.Services
+@using Blazor.Server.UI.Pages.CheckinPoints
+@using CleanArchitecture.Blazor.Application.Features.SiteConfigurations.Queries.GetAll
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.GetAll
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.CompleteVisitorInfo
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Pagination
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+@using HashidsNet
+@using Net.Codecrete.QrCodeGenerator
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+
+@inject IJSRuntime JS
+@inject IStringLocalizer<Visitors> L
+@attribute [Authorize(Policy = Permissions.Visitors.CompleteVisitorInfo)]
+<PageTitle>@Title</PageTitle>
+<style>
+    .mud-table-toolbar {
+        height: 84px !important;
+    }
+</style>
+<MudContainer MaxWidth="MaxWidth.Large">
+    <ErrorBoundary>
+        <ChildContent>
+            <MudPaper Class="pa-4 mt-4">
+                <MudTextField @bind-Value="_searchString" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearch" />
+            </MudPaper>
+            <MudPaper Class="pa-4 mt-4">
+                @if (_notfound)
+                {
+                    <MudAlert Severity="MudBlazor.Severity.Error">@L["Not found visitor's information"]</MudAlert>
+                }
+                <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
+                    <MudGrid>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["Visitor's Name"]" @bind-Value="model.Name"
+                                          For="@(() => model.Name)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          Required="true"
+                                          RequiredError="@L["product name is required!"]">
+                            </MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="8">
+                            <MudTextField Label="@L["Company Name"]"
+                                          For="@(() => model.CompanyName)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          @bind-Value="model.CompanyName"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["License Plate Number"]"
+                                          For="@(() => model.LicensePlateNumber)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          @bind-Value="model.LicensePlateNumber"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["Email"]"
+                                          For="@(() => model.Email)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          @bind-Value="model.Email"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["Phone Number"]"
+                                          For="@(() => model.PhoneNumber)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          Required="true"
+                                          RequiredError="@L["Phone Number is required!"]"
+                                          @bind-Value="model.PhoneNumber"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["Identification No."]"
+                                          For="@(() => model.IdentificationNo)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          Required="true"
+                                          RequiredError="@L["Identification No. is required!"]"
+                                          @bind-Value="model.IdentificationNo"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <PicklistAutocomplete Picklist="Picklist.Gender"
+                                                  Disabled="@(model.Apppoved==true)"
+                                                  Label="@L["Gender"]"
+                                                  For="@(() => model.Gender)"
+                                                  ResetValueOnEmptyText="true"
+                                                  @bind-Value="model.Gender"></PicklistAutocomplete>
+                        </MudItem>
+
+                        <MudItem xs="12" sm="6" md="4">
+                            <PicklistAutocomplete Picklist="Picklist.Purpose"
+                                                  Label="@L["Purpose"]"
+                                                  Disabled="@(model.Apppoved==true)"
+                                                  Required="true"
+                                                  RequiredError="@L["purpose is required!"]"
+                                                  For="@(() => model.Purpose)"
+                                                  ResetValueOnEmptyText="true"
+                                                  @bind-Value="model.Purpose"></PicklistAutocomplete>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTextField Label="@L["Visit Employee"]"
+                                          For="@(() => model.Employee)"
+                                          Disabled="@(model.Apppoved==true)"
+                                          ReadOnly="true"
+                                          Required="true"
+                                          RequiredError="@L["Visit employee is required!"]"
+                                          @bind-Value="model.Employee"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudDatePicker Label="@L["Expected Date"]"
+                                           Disabled="@(model.Apppoved==true)"
+                                           Required="true"
+                                           ReadOnly="true"
+                                           RequiredError="@L["expected date is required!"]"
+                                           For="@(() => model.ExpectedDate)"
+                                           @bind-Date="model.ExpectedDate"></MudDatePicker>
+                        </MudItem>
+                        <MudItem xs="12" sm="6" md="4">
+                            <MudTimePicker Label="@L["Expected Time"]"
+                                           Required="true"
+                                           ReadOnly="true"
+                                           Disabled="@(model.Apppoved==true)"
+                                           RequiredError="@L["expected time is required!"]"
+                                           AmPm="true" TimeFormat="h:mm tt"
+                                           For="@(() => model.ExpectedTime)"
+                                           @bind-Time="model.ExpectedTime"></MudTimePicker>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete Label="@L["Select Site - Address"]"
+                                              Disabled="@(model.Apppoved==true)"
+                                              For="@(() => model.SiteId)"
+                                              ReadOnly="true"
+                                              Required="true"
+                                              RequiredError="@L["site - address is required!"]"
+                                              @bind-Value="model.SiteId">
+                            </Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete>
+                        </MudItem>
+                        <MudItem xs="12" sm="12">
+                            <MudTextField Label="@L["Comment"]"
+                                          For="@(() => model.Comment)"
+                                          Lines="2"
+                                          Disabled="@(model.Apppoved==true)"
+                                          @bind-Value="model.Comment"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="12" md="12">
+                            <div class="d-flex flex-nowrap  overflow-auto pa-4">
+                                <div class="d-flex flex-nowrap gap-4" style="max-width:680px">
+                                    <UploadPhotoComponent Desciption="@L["Only green codes are allowed"]"
+                                                          Disabled="@(model.Apppoved==true)"
+                                                          ImageUrl="@model.HealthCode"
+                                                          Label="@L["Upload a health code"]"
+                                                          PassCode="@model.PassCode"
+                                                          OnUploaded="@(s=> model.HealthCode=s)"
+                                                          Tag="H"></UploadPhotoComponent>
+                                    <UploadPhotoComponent Desciption="@L["Make sure you haven't been to a medium-high risk area for 14 days"]"
+                                                          Disabled="@(model.Apppoved==true)"
+                                                          ImageUrl="@model.TripCode"
+                                                          Label="@L["Upload a trip code"]"
+                                                          PassCode="@model.PassCode"
+                                                          OnUploaded="@(s=> model.TripCode=s)"
+                                                          Tag="T"></UploadPhotoComponent>
+                                    <UploadPhotoComponent Desciption="@L["Valid nucleic acid test report within 48 hours"]"
+                                                          Disabled="@(model.Apppoved==true)"
+                                                          ImageUrl="@model.NucleicAcidTestReport"
+                                                          Label="@L["Upload a nucleic acid test report"]"
+                                                          PassCode="@model.PassCode"
+                                                          OnUploaded="@(s=> model.NucleicAcidTestReport=s)"
+                                                          Tag="R"></UploadPhotoComponent>
+                                </div>
+
+                            </div>
+                        </MudItem>
+                        <MudItem xs="12">
+                            <CompanionInfoComponent TRequest="model"></CompanionInfoComponent>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudCheckBox Label="@L["Agree Privacy Policy"]"
+                                         For="@(() => model.PrivacyPolicy)"
+                                         Disabled="@(model.Apppoved==true)"
+                                         Required="true" RequiredError="You must agree"
+                                         @bind-Checked="model.PrivacyPolicy"></MudCheckBox>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudCheckBox Label="@L["I promise the truth"]"
+                                         For="@(() => model.Promise)"
+                                         Disabled="@(model.Apppoved==true)"
+                                         Required="true" RequiredError="You must promise"
+                                         @bind-Checked="model.Promise"></MudCheckBox>
+                        </MudItem>
+                    </MudGrid>
+                </MudForm>
+            </MudPaper>
+            <MudPaper Class="d-flex pa-4 mt-4">
+                 <MudButton Class="ml-auto mx-2" Variant="Variant.Filled" Disabled="@(model.Id==0 || _submiting)" DisableElevation="true" OnClick="Submit">
+                    @if (_submiting)
+                    {
+                        <MudProgressCircular Class="ms-n1" Size="MudBlazor.Size.Small" Indeterminate="true" />
+                        <MudText Class="ms-2">@L["Processing"]</MudText>
+                    }
+                    else
+                    {
+                        <MudText>@L["Submit"]</MudText>
+                    }
+                </MudButton>
+                
+            </MudPaper>
+        </ChildContent>
+        <ErrorContent>
+            <CustomError Exception="context"></CustomError>
+        </ErrorContent>
+    </ErrorBoundary>
+</MudContainer>
+
+@code {
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "code")]
+    public string? Code { get; set; }
+    public string? Title { get; private set; }
+    private string? _searchString { get; set; }
+    private MudForm form = default!;
+    private CompleteVisitorInfoCommandValidator modelValidator = new();
+    private CompleteVisitorInfoCommand model { get; set; } = new();
+    private bool _notfound;
+    private bool _loading;
+    private bool _uploading;
+    private bool _submiting;
+    [Inject] private IUploadService _uploadService { get; set; } = default!;
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Inject]
+    private Hashids hashids { get; set; } = default!;
+    [Inject]
+    private NavigationManager _navigationManager { get; set; } = default!;
+    [CascadingParameter]
+    protected Task<AuthenticationState> AuthState { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Title = L["complete visit information"];
+        if (!string.IsNullOrEmpty(Code))
+        {
+            await FindVisitor();
+        }
+    }
+    private async Task OnSearch()
+    {
+        Code = _searchString;
+        await FindVisitor();
+    }
+    private async Task FindVisitor()
+    {
+        if (string.IsNullOrEmpty(Code))
+        {
+            _notfound = true;
+            return;
+        }
+        var dto = await _mediator.Send(new SearchVisitorQuery(Code));
+        if (dto is null)
+        {
+            _notfound = true;
+            return;
+        }
+        model = new CompleteVisitorInfoCommand()
+            {
+                Id = dto.Id,
+                PassCode = dto.PassCode,
+                Name = dto.Name,
+                IdentificationNo = dto.IdentificationNo,
+                CompanyName = dto.CompanyName,
+                Address = dto.Address,
+                Avatar = dto.Avatar,
+                Email = dto.Email,
+                DesignationId = dto.DesignationId,
+                EmployeeId = dto.EmployeeId,
+                Gender = dto.Gender,
+                LicensePlateNumber = dto.LicensePlateNumber,
+                PhoneNumber = dto.PhoneNumber,
+                Purpose = dto.Purpose,
+                Apppoved = dto.Apppoved,
+                ApprovalOutcome = dto.ApprovalOutcome,
+                CheckinDate = dto.CheckinDate,
+                CheckoutDate = dto.CheckoutDate,
+                Comment = dto.Comment,
+                Designation = dto.Designation,
+                Companions = dto.Companions,
+                Employee = dto.Employee,
+                EmployeeDesignation = dto.EmployeeDesignation,
+                ExpectedDate = dto.ExpectedDate,
+                ExpectedTime = dto.ExpectedTime,
+                HealthCode = dto.HealthCode,
+                QrCode = dto.QrCode,
+                NucleicAcidTestReport = dto.NucleicAcidTestReport,
+                SiteId = dto.SiteId,
+                Status = dto.Status,
+                TripCode = dto.TripCode,
+                Promise = true,
+                PrivacyPolicy = true,
+            };
+        _notfound = false;
+
+    }
+
+
+    private async Task Submit()
+    {
+        _submiting = true;
+        try
+        {
+            await form.Validate();
+            if (form.IsValid)
+            {
+                var siteConfig = await _mediator.Send(new GetBySiteIdConfigurationsQuery(model.SiteId));
+                if (model.Promise != true)
+                {
+                    Snackbar.Add(L["You must promise"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (model.PrivacyPolicy != true)
+                {
+                    Snackbar.Add(L["You must agree"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.HealthCode) && (siteConfig is not null && siteConfig.MandatoryHealthQrCode))
+                {
+                    Snackbar.Add(L["You must upload health code"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.TripCode) && (siteConfig is not null && siteConfig.MandatoryTripCode))
+                {
+                    Snackbar.Add(L["You must upload trip code"], MudBlazor.Severity.Error);
+                    return;
+                }
+                if (string.IsNullOrEmpty(model.NucleicAcidTestReport) && (siteConfig is not null && siteConfig.MandatoryNucleicAcidTestReport))
+                {
+                    Snackbar.Add(L["You must upload nucleic acid test report"], MudBlazor.Severity.Error);
+                    return;
+                }
+                var result = await _mediator.Send(model);
+                Snackbar.Add(L["Submit successfully"], MudBlazor.Severity.Info);
+                _navigationManager.NavigateTo("/visitor/mycode?code=" + model.PassCode);
+
+            }
+        }
+        finally
+        {
+            _submiting = false;
+        }
+    }
+
+    }

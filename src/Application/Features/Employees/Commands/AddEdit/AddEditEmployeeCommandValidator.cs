@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Text.RegularExpressions;
+
 namespace CleanArchitecture.Blazor.Application.Features.Employees.Commands.AddEdit;
 
 public class AddEditEmployeeCommandValidator : AbstractValidator<AddEditEmployeeCommand>
@@ -18,6 +20,12 @@ public class AddEditEmployeeCommandValidator : AbstractValidator<AddEditEmployee
                 .MaximumLength(256)
                 .EmailAddress()
                 .NotEmpty();
+        RuleFor(v => v.PhoneNumber)
+                      .NotEmpty()
+                      .NotNull()
+                      .MinimumLength(8)
+                      .MaximumLength(20)
+                      .Matches(new Regex(@"^1(3\d|4[5-9]|5[0-35-9]|6[2567]|7[0-8]|8\d|9[0-35-9])\d{8}$"));
         RuleFor(v=>v.DepartmentId)
               .NotNull();
 

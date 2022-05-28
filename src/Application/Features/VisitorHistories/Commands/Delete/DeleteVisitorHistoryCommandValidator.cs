@@ -7,9 +7,7 @@ public class DeleteVisitorHistoryCommandValidator : AbstractValidator<DeleteVisi
 {
         public DeleteVisitorHistoryCommandValidator()
         {
-     
            RuleFor(v => v.Id).NotNull().ForEach(v=>v.GreaterThan(0));
-           throw new System.NotImplementedException();
         }
 }
     

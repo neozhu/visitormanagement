@@ -1,0 +1,19 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@inject IStringLocalizer<Visitors> L
+<MudPaper>
+    <div class="d-flex flex-row flex-grow-1 gap-4 pa-4">
+        <div class="icon">
+            <MudImage Src="@Visitor.QrCode" Width="50"></MudImage>
+        </div>
+        <div class="d-flex flex-column flex-grow-1 gap-2">
+            <MudText Typo="Typo.caption">@L["Visitor information"]</MudText>
+            <MudText Typo="Typo.subtitle1">@Visitor.Name - @Visitor.CompanyName</MudText>
+        </div>
+    </div>
+</MudPaper>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public VisitorDto Visitor { get; set; } = new();
+}

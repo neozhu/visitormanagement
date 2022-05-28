@@ -24,11 +24,11 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
-                    <SiteAutocomplete Label="@L["Select Site"]"
+                    <Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete Label="@L["Select Site"]"
                                   Required="true"
                                   RequiredError="@L["site is required!"]"
                                   For="@(() => model.SiteId)"
-                                  @bind-Value="model.SiteId"></SiteAutocomplete>
+                                  @bind-Value="model.SiteId"></Blazor.Server.UI.Pages.Sites.SiteWithAddressAutocomplete>
                 </MudItem>
                 
             </MudGrid>

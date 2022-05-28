@@ -1,0 +1,35 @@
+@inject IStringLocalizer<Visitors> L
+<MudForm @ref="form" @bind-IsValid="@success" >
+<MudDialog>
+    
+    <TitleContent>
+        <MudText Typo="Typo.h6">
+            @L["Reject Confirmation"]
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudTextField T="string" Label="@L["Comment"]"
+        Lines="3"
+        @bind-Text="ContentText"
+        Required="true"
+        RequiredError="@L["comment is required!"]" ></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton StartIcon="@Icons.Filled.Cancel" OnClick="Cancel">@L["Cancel"]</MudButton>
+        <MudButton Disabled="@(!success)" StartIcon="@Icons.Filled.Delete" Color="Color.Primary" Variant="Variant.Filled" OnClick="Submit">@L["Confirm"]</MudButton>
+    </DialogActions>
+
+</MudDialog>
+   </MudForm>
+@code{
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    public string? ContentText { get; set; }
+    private MudForm form;
+    private bool success;
+    void Submit()
+    {
+        MudDialog.Close(DialogResult.Ok(ContentText));
+    }
+    void Cancel() => MudDialog.Cancel();
+}

@@ -1,0 +1,43 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.GetAll
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Related
+@inject IStringLocalizer<Visitors> L
+<MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="false" Centered="false" PanelClass="mt-4" Color="MudBlazor.Color.Transparent">
+    <MudTabPanel Text="@L["Related Visitors"]">
+        <MudSimpleTable Style="overflow-x: auto;" >
+            <thead>
+                <tr>
+                  <th>@L["NO."]</th>
+                  <th>@L["Visitor's Name"]</th>
+                  <th>@L["Status"]</th>
+                  <th>@L["Purpose"]</th>
+                  <th>@L["Expected Date"]</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (RelatedVistors is not null)
+                {
+                    @foreach (var row in RelatedVistors)
+                    {
+                        <tr>
+                            <td>@row.Id</td>
+                            <td>
+                               <MudLink Href="@($"/visitor/detail?id={row.Id}")" Target="_blank" > <MudText Typo="Typo.body2">@row.Name</MudText></MudLink>
+                                <MudText Typo="Typo.body2">@row.CompanyName</MudText>
+                            </td>
+                            <td><MudText>@row.Status</MudText></td>
+                            <td><MudText>@row.Purpose</MudText></td>
+                            <td><MudText>@row.ExpectedDate?.ToShortDateString()</MudText>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudTabPanel>
+</MudTabs>
+@code {
+    [Parameter]
+    public List<VisitorDto>? RelatedVistors { get; set; } = new();
+     
+}

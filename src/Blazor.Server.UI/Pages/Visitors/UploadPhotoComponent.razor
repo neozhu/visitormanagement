@@ -1,0 +1,84 @@
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@inject IStringLocalizer<Visitors> L
+<MudCard  Style="width:215px">
+    <MudCardMedia @bind-Image="@ImageUrl" />
+    <MudCardActions>
+        <InputFile id="@id" OnChange="UploadPhoto" hidden accept=".jpg, .jpeg, .png" />
+        <MudButton HtmlTag="label" for="@id" Disabled="@Disabled" Variant="Variant.Text" Color="MudBlazor.Color.Primary">@Label</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [EditorRequired]
+    [Parameter]
+    public string? ImageUrl { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public EventCallback<string?> OnUploaded { get; set; }    
+    [EditorRequired]
+    [Parameter]
+    public string? Label { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public string? Desciption { get; set; }
+    [EditorRequired]
+    [Parameter]    
+    public string? Tag { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public string? PassCode { get; set; }
+    [EditorRequired]
+    [Parameter]
+    public bool Disabled { get; set; }
+    private string id = Guid.NewGuid().ToString();
+    [Inject] private IUploadService _uploadService { get; set; } = default!;
+
+    private async Task UploadPhoto(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        var filestream = file.OpenReadStream();
+        var imgstream = new MemoryStream();
+        await filestream.CopyToAsync(imgstream);
+        imgstream.Position = 0;
+        using (var outStream = new MemoryStream())
+        {
+            using (var image = Image.Load(imgstream, out IImageFormat format))
+            {
+                var scale = 0m;
+                if (image.Width > 900)
+                {
+                    scale = 0.3m;
+                }
+                else if(image.Width <=900 && image.Width>300)
+                {
+                    scale = 0.5m;
+                }
+                else
+                {
+                    scale = 1m;
+                }
+                image.Mutate(
+                   i => i.AutoOrient().Resize(Convert.ToInt32((image.Width*scale)), 0));
+                image.Save(outStream, format);
+                var filename = file.Name;
+                var fi = new FileInfo(filename);
+                var ext = fi.Extension;
+                var result = await _uploadService.UploadAsync(new UploadRequest()
+                    {
+                        Data = outStream.ToArray(),
+                        FileName = Tag + "_" + Guid.NewGuid().ToString() + ext,
+                        Extension = ext,
+                        Folder = PassCode,
+                        UploadType = UploadType.VisitorPricture
+                    });
+                ImageUrl = result.Replace("\\", "/");
+                await OnUploaded.InvokeAsync(ImageUrl);
+            }
+        }
+
+        Snackbar.Add(L["Upload attachment successfully"], MudBlazor.Severity.Info);
+
+    }
+}

@@ -30,11 +30,11 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
-                    <CheckinPointAutocomplete Label="@L["Select Check-in Point"]"
+                    <Blazor.Server.UI.Pages.CheckinPoints.CheckinPointAutocomplete Label="@L["Select Check-in Point"]"
                                   Required="true"
                                   RequiredError="@L["check-in point is required!"]"
                                   For="@(() => model.CheckinPointId)"
-                                  @bind-Value="model.CheckinPointId"></CheckinPointAutocomplete>
+                                  @bind-Value="model.CheckinPointId"></Blazor.Server.UI.Pages.CheckinPoints.CheckinPointAutocomplete>
                 </MudItem>
                 
             </MudGrid>

@@ -9,8 +9,8 @@ namespace CleanArchitecture.Blazor.Application.Features.CheckinPoints.Queries.Pa
     public class CheckinPointsWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<CheckinPointDto>>, ICacheable
     {
         public string CacheKey => CheckinPointCacheKey.GetPagtionCacheKey($"{this}");
-        public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(CheckinPointCacheKey.SharedExpiryTokenSource.Token));
-    }
+        public MemoryCacheEntryOptions? Options => CheckinPointCacheKey.MemoryCacheEntryOptions;
+}
     
     public class CheckinPointsWithPaginationQueryHandler :
          IRequestHandler<CheckinPointsWithPaginationQuery, PaginatedData<CheckinPointDto>>

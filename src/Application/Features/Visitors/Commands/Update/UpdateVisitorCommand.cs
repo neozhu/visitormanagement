@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Update
     public class UpdateVisitorCommand: VisitorDto,IRequest<Result>, IMapFrom<Visitor>, ICacheInvalidator
     {
         public string CacheKey => VisitorCacheKey.GetAllCacheKey;
-        public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource;
+        public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource();
     }
 
     public class UpdateVisitorCommandHandler : IRequestHandler<UpdateVisitorCommand, Result>
@@ -34,7 +34,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Update
            if (item != null)
            {
                 item = _mapper.Map(request, item);
-            var updateevent=new VisitorUpdatedEvent(item);
+            var updateevent=new UpdatedEvent<Visitor>(item);
             item.DomainEvents.Add(updateevent);
                 await _context.SaveChangesAsync(cancellationToken);
            }

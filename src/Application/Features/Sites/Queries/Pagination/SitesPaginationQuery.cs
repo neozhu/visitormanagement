@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.Sites.Queries.Pagination
 public class SitesWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<SiteDto>>, ICacheable
 {
     public string CacheKey => SiteCacheKey.GetPagtionCacheKey($"{this}");
-    public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(SiteCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => SiteCacheKey.MemoryCacheEntryOptions;
 }
 
 public class SitesWithPaginationQueryHandler :

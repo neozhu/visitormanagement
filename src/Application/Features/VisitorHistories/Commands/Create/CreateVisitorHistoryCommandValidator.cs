@@ -1,6 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Constants;
+
 namespace CleanArchitecture.Blazor.Application.Features.VisitorHistories.Commands.Create;
 
 public class CreateVisitorHistoryCommandValidator : AbstractValidator<CreateVisitorHistoryCommand>
@@ -10,7 +12,7 @@ public class CreateVisitorHistoryCommandValidator : AbstractValidator<CreateVisi
         RuleFor(v => v.VisitorId).NotNull();
         RuleFor(v => v.Visitor).NotEmpty().NotNull();
         RuleFor(v => v.CheckinPointId).NotNull();
-        RuleFor(v => v.Temperature).NotNull();
+        RuleFor(v => v.Temperature).NotNull().When(x => x.Stage == CheckStage.Checkin);
     }
     public Func<object, string, Task<IEnumerable<string>>> ValidateValue => async (model, propertyName) =>
  {

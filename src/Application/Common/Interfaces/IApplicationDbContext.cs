@@ -24,7 +24,12 @@ public interface IApplicationDbContext
     DbSet<Site> Sites { get; set; }
     DbSet<CheckinPoint> CheckinPoints { get; set; }
     DbSet<Device> Devices { get; set; }
+    DbSet<Companion> Companions { get; set; }
+    DbSet<ApprovalHistory> ApprovalHistories { get; set; }
+    DbSet<SiteConfiguration> SiteConfigurations { get; set; }
 
+    DbSet<MessageTemplate> MessageTemplates { get; set; }
     ChangeTracker ChangeTracker { get; }
+    
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

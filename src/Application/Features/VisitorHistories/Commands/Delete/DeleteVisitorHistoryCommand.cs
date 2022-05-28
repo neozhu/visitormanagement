@@ -11,7 +11,7 @@ namespace CleanArchitecture.Blazor.Application.Features.VisitorHistories.Command
     {
       public int[] Id {  get; }
       public string CacheKey => VisitorHistoryCacheKey.GetAllCacheKey;
-      public CancellationTokenSource? SharedExpiryTokenSource => VisitorHistoryCacheKey.SharedExpiryTokenSource;
+      public CancellationTokenSource? SharedExpiryTokenSource => VisitorHistoryCacheKey.SharedExpiryTokenSource();
       public DeleteVisitorHistoryCommand(int[] id)
       {
         Id = id;

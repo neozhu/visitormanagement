@@ -1,0 +1,90 @@
+@using CleanArchitecture.Blazor.Application.Features.MessageTemplates.Commands.AddEdit
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Constant;
+@using SixLabors.ImageSharp
+@using SixLabors.ImageSharp.Formats
+@using SixLabors.ImageSharp.Processing
+@using System.Reflection
+@inherits MudComponentBase
+@inject IStringLocalizer<MessageTemplates> L
+<MudDialog>
+    <DialogContent>
+        <MudForm Model="model" @ref="form" Validation="@(modelValidator.ValidateValue)">
+            <MudGrid>
+                <MudItem xs="12">
+                    <Blazor.Server.UI.Components.AutoComplete.AssignSiteIdAutocomplete Label="@L["Select Site"]" @bind-Value="model.SiteId"
+                                                                                       For="@(() => model.SiteId)"
+                                                                                       Required="true"
+                                                                                       RequiredError="@L["site is required!"]">
+                    </Blazor.Server.UI.Components.AutoComplete.AssignSiteIdAutocomplete>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect Label="@L["Select Message Type"]" @bind-Value="model.MessageType"
+                               AnchorOrigin="Origin.BottomCenter"
+                               Required="true"
+                               RequiredError="@L["message type is required!"]"
+                               For="@(() => model.MessageType)">
+                        @foreach (var messageType in Enum.GetValues<MessageType>())
+                        {
+                            <MudSelectItem  Value="@(messageType)"></MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="6">
+                    <MudSelect Label="@L["For Status"]"
+                               Required="true"
+                               RequiredError="@L["status is required!"]"
+                               @bind-Value="model.ForStatus"
+                               AnchorOrigin="Origin.BottomCenter"
+                               For="@(() => model.ForStatus)">
+                        @foreach (var status in typeof(VisitorStatus)
+                                .GetProperties(BindingFlags.Public | BindingFlags.Static)
+                                .Where(f => f.CanRead)
+                                .Select(x=>Convert.ToString(x.GetValue(x))).ToList())
+                        {
+                            <MudSelectItem  Value="@status">@status</MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" >
+                    <MudTextField Label="@L["Description"]" @bind-Value="model.Description"
+                                  For="@(() => model.Description)">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Subject"]" @bind-Value="model.Subject"
+                                  For="@(() => model.Subject)">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField Label="@L["Body"]" @bind-Value="model.Body"
+                                  Lines="5"
+                                  For="@(() => model.Body)">
+                    </MudTextField>
+                </MudItem>
+            </MudGrid>
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
+        <MudButton Color="MudBlazor.Color.Primary" OnClick="Submit">@L["Ok"]</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    MudForm form = default!;
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; } = default!;
+    AddEditMessageTemplateCommandValidator modelValidator = new();
+    [EditorRequired][Parameter] public AddEditMessageTemplateCommand model { get; set; } = default!;
+
+    async Task Submit()
+    {
+        await form.Validate();
+        if (form.IsValid)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+    }
+    void Cancel() => MudDialog.Cancel();
+}

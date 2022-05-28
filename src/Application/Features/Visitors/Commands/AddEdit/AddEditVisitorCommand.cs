@@ -4,11 +4,13 @@
 
 using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs;
 using CleanArchitecture.Blazor.Application.Features.Visitors.Caching;
+using CleanArchitecture.Blazor.Application.Features.Visitors.Constant;
+
 namespace CleanArchitecture.Blazor.Application.Features.Visitors.Commands.AddEdit;
 
-public class AddEditVisitorCommand : VisitorDto, IRequest<Result<int>>, IMapFrom<Visitor>, ICacheInvalidator
+public class AddEditVisitorCommand : VisitorDto, IRequest<Result<int>>,  ICacheInvalidator
 {
-    public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource();
 }
 
 public class AddEditVisitorCommandHandler : IRequestHandler<AddEditVisitorCommand, Result<int>>
@@ -34,16 +36,43 @@ public class AddEditVisitorCommandHandler : IRequestHandler<AddEditVisitorComman
             var item = await _context.Visitors.FindAsync(new object[] { request.Id }, cancellationToken);
             _ = item ?? throw new NotFoundException("Visitor {request.Id} Not Found.");
             item = _mapper.Map(request, item);
-            var updateevent = new VisitorUpdatedEvent(item);
-            item.DomainEvents.Add(updateevent);
+            foreach(var companiondto in request.Companions)
+            {
+                switch(companiondto.TrackingState)
+                {
+                    case TrackingState.Added:
+                        var companionToAdd = _mapper.Map<Companion>(companiondto);
+                        companionToAdd.VisitorId = item.Id;
+                        _context.Companions.Add(companionToAdd);
+                        break;
+                    case TrackingState.Modified:
+                        var companionToUpdate = await _context.Companions.FindAsync(new object[] { companiondto.Id }, cancellationToken);
+                        if (companionToUpdate is null) continue;
+                        companionToUpdate = _mapper.Map(companiondto, companionToUpdate);
+                        break;
+                    case TrackingState.Deleted:
+                        var companionToDelete = await _context.Companions.FindAsync(new object[] { companiondto.Id }, cancellationToken);
+                        if (companionToDelete is null) continue;
+                        _context.Companions.Remove(companionToDelete);
+                        break;
+                }
+            }
+            item.DomainEvents.Add(new UpdatedEvent<Visitor>(item));
             await _context.SaveChangesAsync(cancellationToken);
             return Result<int>.Success(item.Id);
         }
         else
         {
             var item = _mapper.Map<Visitor>(request);
-            var createevent=new VisitorCreatedEvent(item);
-            item.DomainEvents.Add(createevent);
+            item.Status = VisitorStatus.PendingApproval;
+            foreach (var companiondto in request.Companions)
+            {
+                var companion = _mapper.Map<Companion>(companiondto);
+                companion.Visitor = item;
+                companion.VisitorId = item.Id;
+                item.Companions.Add(companion);
+            }
+            item.DomainEvents.Add(new CreatedEvent<Visitor>(item));
             _context.Visitors.Add(item);
             await _context.SaveChangesAsync(cancellationToken);
             return Result<int>.Success(item.Id);

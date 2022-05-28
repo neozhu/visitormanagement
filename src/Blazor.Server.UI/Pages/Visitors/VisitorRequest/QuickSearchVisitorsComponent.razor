@@ -1,0 +1,74 @@
+@using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Queries.Search
+
+@inject IStringLocalizer<Visitors> L
+@inherits MudComponentBase
+<MudTable Items="@_list"
+          T="VisitorDto"
+          OnRowClick="RowClickEvent"
+          FixedHeader="true" FixedFooter="true" Height="400px"
+          Hover="true"
+          Filter="new Func<VisitorDto,bool>(FilterFunc)" >
+    <ToolBarContent>
+        <MudSpacer />
+        <MudTextField @bind-Value="@keyword" Placeholder="@L["Search"]" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>@L["Visitor's Name"]</MudTh>
+        <MudTh>@L["Identification No."]</MudTh>
+        <MudTh>@L["Phone Number"]</MudTh>
+        <MudTh>@L["License Plate Number"]</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="@L["Visitor's Name"]">
+            <MudText>@context.Name</MudText>
+            <MudText Typo="Typo.body2">@context.CompanyName</MudText>
+        </MudTd>
+        <MudTd DataLabel="@L["Identification No."]">
+            <MudText>@context.IdentificationNo</MudText>
+            <MudText Typo="Typo.body2">@context.Gender</MudText>
+        </MudTd>
+        <MudTd DataLabel="Phone Number">
+            <MudText>@context.PhoneNumber</MudText>
+            <MudText Typo="Typo.body2">@context.Email</MudText>
+        </MudTd>
+        <MudTd DataLabel="License Plate Number">@context.LicensePlateNumber</MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+
+@code {
+    private List<VisitorDto> _list = new();
+    [Parameter]
+    public string InputKeyword { get; set; } = string.Empty;
+    private string keyword { get; set; }= string.Empty;
+    [Inject]
+    private ISender _mediator { get; set; } = default!;
+    [Parameter]
+    [EditorRequired]
+    public EventCallback<VisitorDto> Selected { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        keyword = InputKeyword;
+        var result = await _mediator.Send(new SearchVisitorFuzzyQuery(keyword));
+        _list = result;
+    }
+
+    private bool FilterFunc(VisitorDto element) 
+    {
+        if (string.IsNullOrWhiteSpace(keyword))
+            return true;
+        if (element.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+            return true;
+        if ($"{element.PhoneNumber} {element.Email} {element.IdentificationNo} {element.LicensePlateNumber}".Contains(keyword))
+            return true;
+        return false;
+    }
+    private void RowClickEvent(TableRowClickEventArgs<VisitorDto> tableRowClickEventArgs)
+    {
+        Selected.InvokeAsync(tableRowClickEventArgs.Item);
+    }
+}

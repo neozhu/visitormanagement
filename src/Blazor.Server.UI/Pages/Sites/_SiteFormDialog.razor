@@ -17,6 +17,14 @@
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
+                    <MudTextField Label="@L["Company Name"]" @bind-Value="model.CompanyName"
+                                  For="@(() => model.CompanyName)"
+                                  Required="true"
+                                  RequiredError="@L["company name is required!"]"
+                                  >
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
                    <MudTextField Label="@L["Address"]" @bind-Value="model.Address"
                                   For="@(() => model.Address)"
                                   >

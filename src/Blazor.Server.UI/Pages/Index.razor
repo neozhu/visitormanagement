@@ -13,53 +13,13 @@
 <MudContainer MaxWidth="MaxWidth.Large">
     <Blazor.Server.UI.Components.Index.SummaryDashboard></Blazor.Server.UI.Components.Index.SummaryDashboard>
     <div class="my-6 d-flex gap-6 flex-wrap">
-        <MudPaper Class="py-4 px-6 rounded-lg d-flex flex-column flex-grow-1">
-            <div>
-                <MudText Typo="Typo.h6">@L["Visitor History(days)"] @day</MudText>
-                <MudChart ChartType="ChartType.Line" ChartSeries="@Series" @bind-SelectedIndex="day" XAxisLabels="@XAxisLabels" Width="100%" Height="350px"></MudChart>
-                <MudButton @onclick="RandomizeData">Randomize Data</MudButton>
-
-            </div>
-        </MudPaper>
-        <MudPaper Class="pa-4 px-6 rounded-lg d-flex flex-column flex-grow-0">
-            <div>
-                <MudText Typo="Typo.h6">@L["Visitor's Purpose"]</MudText>
-                <MudChart ChartType="ChartType.Pie" InputData="@data" InputLabels="@labels" Width="200px" Height="200px" />
-            </div>
-        </MudPaper>
+        <Blazor.Server.UI.Components.Index.CountedMonthly></Blazor.Server.UI.Components.Index.CountedMonthly>
+       <Blazor.Server.UI.Components.Index.CountedPurpose></Blazor.Server.UI.Components.Index.CountedPurpose>
     </div>
+    <Blazor.Server.UI.Pages.Visitors.Kanban.KanbanComponent></Blazor.Server.UI.Pages.Visitors.Kanban.KanbanComponent>
     <OnlineUsersComponent></OnlineUsersComponent>
 </MudContainer>
 
 @code {
-     
- 
-    private int day = -1; //default value cannot be 0 -> first selectedindex is 0.
-    double[] data = { 77, 25, 20, 5, 15 };
-    string[] labels = { "Meeting", "Interview", "Conferences", "Working", "Others" };
-
-    public List<ChartSeries> Series = new List<ChartSeries>()
-    {
-        new ChartSeries() { Name = "Series 1", Data = new double[] { 90, 79, 72, 69, 62, 62, 55, 65, 70 } },
-        new ChartSeries() { Name = "Series 2", Data = new double[] { 10, 41, 35, 51, 49, 62, 69, 91, 148 } },
-    };
-    public string[] XAxisLabels = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep" };
-
-    Random random = new Random();
-    public void RandomizeData()
-    {
-        var new_series = new List<ChartSeries>()
-        {
-            new ChartSeries() { Name = "Series 1", Data = new double[9] },
-            new ChartSeries() { Name = "Series 2", Data = new double[9] },
-        };
-        for (int i = 0; i < 9; i++)
-        {
-            new_series[0].Data[i] = random.NextDouble() * 100;
-            new_series[1].Data[i] = random.NextDouble() * 100;
-        }
-        Series = new_series;
-        StateHasChanged();
-    }
      
 }

@@ -8,8 +8,8 @@ namespace CleanArchitecture.Blazor.Application.Features.Departments.Queries.Pagi
 
 public class DepartmentsWithPaginationQuery : PaginationFilter, IRequest<PaginatedData<DepartmentDto>>, ICacheable
 {
-    public string CacheKey => DepartmentCacheKey.GetPagtionCacheKey("{this}");
-    public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(DepartmentCacheKey.SharedExpiryTokenSource.Token));
+    public string CacheKey => DepartmentCacheKey.GetPagtionCacheKey($"{this}");
+    public MemoryCacheEntryOptions? Options => DepartmentCacheKey.MemoryCacheEntryOptions;
 }
 
 public class DepartmentsWithPaginationQueryHandler :

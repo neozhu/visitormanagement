@@ -3,13 +3,14 @@
 
 using CleanArchitecture.Blazor.Application.Features.Visitors.DTOs;
 using CleanArchitecture.Blazor.Application.Features.Visitors.Caching;
+using CleanArchitecture.Blazor.Application.Features.Visitors.Constant;
 
 namespace CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create;
 
 public class CreateVisitorCommand : VisitorDto, IRequest<Result<int>>, IMapFrom<Visitor>, ICacheInvalidator
 {
     public string CacheKey => VisitorCacheKey.GetAllCacheKey;
-    public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource;
+    public CancellationTokenSource? SharedExpiryTokenSource => VisitorCacheKey.SharedExpiryTokenSource();
 }
 
 public class CreateVisitorCommandHandler : IRequestHandler<CreateVisitorCommand, Result<int>>
@@ -30,7 +31,15 @@ public class CreateVisitorCommandHandler : IRequestHandler<CreateVisitorCommand,
     public async Task<Result<int>> Handle(CreateVisitorCommand request, CancellationToken cancellationToken)
     {
         var item = _mapper.Map<Visitor>(request);
-        var createevent = new VisitorCreatedEvent(item);
+        item.Status = VisitorStatus.PendingCheckin;
+        foreach (var companionDto in request.Companions)
+        {
+            var companion = _mapper.Map<Companion>(companionDto);
+            companion.VisitorId = item.Id;
+            companion.Visitor = item;
+            item.Companions.Add(companion);
+        }
+        var createevent = new CreatedEvent<Visitor>(item);
         item.DomainEvents.Add(createevent);
         _context.Visitors.Add(item);
         await _context.SaveChangesAsync(cancellationToken);

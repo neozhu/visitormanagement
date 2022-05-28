@@ -25,7 +25,7 @@ public partial class MainLayout: IDisposable
     private bool _themingDrawerOpen;
     [Inject] private IDialogService _dialogService { get; set; } = default!;
     [Inject] private HotKeys _hotKeys { get; set; } = default!;
-     [CascadingParameter]
+    [CascadingParameter]
     protected Task<AuthenticationState> _authState { get; set; } = default!;
     [Inject]
     private ProfileService _profileService { get; set; } = default!;
@@ -56,9 +56,9 @@ public partial class MainLayout: IDisposable
     }
     protected override async Task OnInitializedAsync()
     {
+        LayoutService.SetBaseTheme(Theme.ApplicationTheme());
         LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
         _profileService.OnChange += _profileService_OnChange;
-        LayoutService.SetBaseTheme(Theme.ApplicationTheme());
         _hotKeysContext = _hotKeys.CreateContext()
             .Add(ModKeys.Meta, Keys.K, OpenCommandPalette, "Open command palette.");
         _authenticationStateProvider.AuthenticationStateChanged += _authenticationStateProvider_AuthenticationStateChanged;

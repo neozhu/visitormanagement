@@ -139,7 +139,7 @@
     <value>取消</value>
   </data>
   <data name="Check-in Date" xml:space="preserve">
-    <value>检查时间</value>
+    <value>进场时间</value>
   </data>
   <data name="Comment" xml:space="preserve">
     <value>备注</value>
@@ -241,7 +241,7 @@
     <value>只允许绿码通行</value>
   </data>
   <data name="Pass Code" xml:space="preserve">
-    <value>通行代码</value>
+    <value>通行码</value>
   </data>
   <data name="Phone Number" xml:space="preserve">
     <value>联系电话</value>
@@ -298,7 +298,7 @@
     <value>行程码</value>
   </data>
   <data name="Upload a nucleic acid test report" xml:space="preserve">
-    <value>上传24内核酸报告</value>
+    <value>上传核酸检查报告</value>
   </data>
   <data name="Upload health code successfully" xml:space="preserve">
     <value>上传健康码</value>
@@ -382,7 +382,7 @@
     <value>审批</value>
   </data>
   <data name="Approved" xml:space="preserve">
-    <value>通过</value>
+    <value>批准</value>
   </data>
   <data name="Check-in/out Time" xml:space="preserve">
     <value>进出时间</value>
@@ -401,5 +401,206 @@
   </data>
   <data name="Search my QRcode" xml:space="preserve">
     <value>查询我的二维码</value>
+  </data>
+  <data name="Attchments" xml:space="preserve">
+    <value>附件</value>
+  </data>
+  <data name="Companion" xml:space="preserve">
+    <value>随访人员</value>
+  </data>
+  <data name="Companion Count" xml:space="preserve">
+    <value>随访人数</value>
+  </data>
+  <data name="Companion's Name" xml:space="preserve">
+    <value>随访人员姓名</value>
+  </data>
+  <data name="Name / Comment" xml:space="preserve">
+    <value>姓名 / 备注</value>
+  </data>
+  <data name="Preview upload attachments" xml:space="preserve">
+    <value>预览上传的附件</value>
+  </data>
+  <data name="Select Check-in Point" xml:space="preserve">
+    <value>选择检查点</value>
+  </data>
+  <data name="Upload attachments" xml:space="preserve">
+    <value>上传附件</value>
+  </data>
+  <data name="Valid nucleic acid test report within 48 hours" xml:space="preserve">
+    <value>上传48小时内有效核酸报告</value>
+  </data>
+  <data name="Visit Employee" xml:space="preserve">
+    <value>受访人名称</value>
+  </data>
+  <data name="Visitor's Temperature" xml:space="preserve">
+    <value>体温</value>
+  </data>
+  <data name="Check-in Histories" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="My QRCode" xml:space="preserve">
+    <value>我的二维码</value>
+  </data>
+  <data name="Survey feedback" xml:space="preserve">
+    <value>满意度调查</value>
+  </data>
+  <data name="Agree" xml:space="preserve">
+    <value>批准</value>
+  </data>
+  <data name="Approval Histories" xml:space="preserve">
+    <value>审批历史记录</value>
+  </data>
+  <data name="Automatic Check-in" xml:space="preserve">
+    <value>自动签到</value>
+  </data>
+  <data name="Companion Information" xml:space="preserve">
+    <value>随访人员</value>
+  </data>
+  <data name="Scanning Code:" xml:space="preserve">
+    <value>扫描</value>
+  </data>
+  <data name="Visit Site - Address" xml:space="preserve">
+    <value>访问地址</value>
+  </data>
+  <data name="Visitor information" xml:space="preserve">
+    <value>访客信息</value>
+  </data>
+  <data name="Pending Approval" xml:space="preserve">
+    <value>一级审批</value>
+  </data>
+  <data name="Attachments" xml:space="preserve">
+    <value>附件</value>
+  </data>
+  <data name="Check-in" xml:space="preserve">
+    <value>签到</value>
+  </data>
+  <data name="Pending Check-in" xml:space="preserve">
+    <value>等待入场</value>
+  </data>
+  <data name="Scanning Code" xml:space="preserve">
+    <value>二维码</value>
+  </data>
+  <data name="Visit Purpose" xml:space="preserve">
+    <value>目的</value>
+  </data>
+  <data name="After submitting the application, visitors will receive SMS messages and fill in visitor information and upload necessary attachments or photos as prompted" xml:space="preserve">
+    <value>提交申请后访客会收到短信并根据提示完成填写访客信息和上传必要的附件或照片</value>
+  </data>
+  <data name="Check-out" xml:space="preserve">
+    <value>签出</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>提交</value>
+  </data>
+  <data name="Take photos and upload attachments" xml:space="preserve">
+    <value>照片上传附件</value>
+  </data>
+  <data name="Visitor Request" xml:space="preserve">
+    <value>访客申请</value>
+  </data>
+  <data name="Check-in/Check-out Time" xml:space="preserve">
+    <value>进出时间</value>
+  </data>
+  <data name="Quick Approve" xml:space="preserve">
+    <value>快速审批</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="Add a new companion" xml:space="preserve">
+    <value>新增随访人员</value>
+  </data>
+  <data name="Approval Information" xml:space="preserve">
+    <value>变更记录</value>
+  </data>
+  <data name="Approved By" xml:space="preserve">
+    <value>处理人</value>
+  </data>
+  <data name="Outcome / Comment" xml:space="preserve">
+    <value>审批结果 / 备注</value>
+  </data>
+  <data name="Pending Confirm" xml:space="preserve">
+    <value>等待确认</value>
+  </data>
+  <data name="Processing Date" xml:space="preserve">
+    <value>处理时间</value>
+  </data>
+  <data name="Thank you for your valuable feedback." xml:space="preserve">
+    <value>感谢您宝贵的反馈。</value>
+  </data>
+  <data name="Activity / Comment" xml:space="preserve">
+    <value>活动 / 备注</value>
+  </data>
+  <data name="Activity Information" xml:space="preserve">
+    <value>流程信息</value>
+  </data>
+  <data name="Checkin Point" xml:space="preserve">
+    <value>检查点</value>
+  </data>
+  <data name="Created By" xml:space="preserve">
+    <value>创建人</value>
+  </data>
+  <data name="Related Visitors" xml:space="preserve">
+    <value>相关的访客</value>
+  </data>
+  <data name="State / Comment" xml:space="preserve">
+    <value>操作 / 备注</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>体温</value>
+  </data>
+  <data name="Transit Date Time" xml:space="preserve">
+    <value>提交时间</value>
+  </data>
+  <data name="Detail Information" xml:space="preserve">
+    <value>详细信息</value>
+  </data>
+  <data name="Pending Checking" xml:space="preserve">
+    <value>二级审批</value>
+  </data>
+  <data name="Visit Information" xml:space="preserve">
+    <value>历史记录</value>
+  </data>
+  <data name="comment is required!" xml:space="preserve">
+    <value>备注必填!</value>
+  </data>
+  <data name="complete visit information" xml:space="preserve">
+    <value>完成访客信息</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>完成</value>
+  </data>
+  <data name="Pending Check-out" xml:space="preserve">
+    <value>等待出场</value>
+  </data>
+  <data name="Pending Feedback" xml:space="preserve">
+    <value>等待反馈</value>
+  </data>
+  <data name="Pending Visitor" xml:space="preserve">
+    <value>等待访客确认</value>
+  </data>
+  <data name="Preview attachments" xml:space="preserve">
+    <value>预览附件</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>处理中</value>
+  </data>
+  <data name="Reject Confirmation" xml:space="preserve">
+    <value>拒绝确认</value>
+  </data>
+  <data name="Submit successfully" xml:space="preserve">
+    <value>提交成功</value>
+  </data>
+  <data name="Upload attachment successfully" xml:space="preserve">
+    <value>上传附件成功</value>
+  </data>
+  <data name="You must upload nucleic acid test report" xml:space="preserve">
+    <value>你必须上传有效的核酸报告</value>
   </data>
 </root>

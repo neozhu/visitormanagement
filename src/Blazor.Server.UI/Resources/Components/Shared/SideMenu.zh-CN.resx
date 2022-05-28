@@ -216,4 +216,31 @@
   <data name="Check-in" xml:space="preserve">
     <value>签到</value>
   </data>
+  <data name="Pending Approval" xml:space="preserve">
+    <value>一级审批</value>
+  </data>
+  <data name="Pending Check-in" xml:space="preserve">
+    <value>二级审批</value>
+  </data>
+  <data name="Complete Visit Info" xml:space="preserve">
+    <value>填写访客信息</value>
+  </data>
+  <data name="My Visit Code" xml:space="preserve">
+    <value>我的二维码</value>
+  </data>
+  <data name="Visitor Request" xml:space="preserve">
+    <value>访客申请</value>
+  </data>
+  <data name="Pending Confirm" xml:space="preserve">
+    <value>待确认</value>
+  </data>
+  <data name="Pending Checking" xml:space="preserve">
+    <value>二级审批</value>
+  </data>
+  <data name="Site Configuration" xml:space="preserve">
+    <value>站点配置</value>
+  </data>
+  <data name="Message Templates" xml:space="preserve">
+    <value>消息模板</value>
+  </data>
 </root>

@@ -113,13 +113,14 @@
             </ToolBarContent>
             <ColGroup>
                 <col style="width:50px;" />
+                <col style="width:120px;" />
 
             </ColGroup>
             <HeaderContent>
                 <MudTh Style="width:80px">@L["Actions"]</MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.Site)">@L["Site"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.UserName)">@L["User Name"]</MudTableSortLabel></MudTh>
-                <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.DisplayName)">@L["Dispaly Name"]</MudTableSortLabel></MudTh>
+                <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.DisplayName)">@L["Display Name"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.Email)">@L["Email"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.PhoneNumber)">@L["Phone Number"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortBy="new Func<ApplicationUser, object>(x=>x.IsActive)">@L["Is Active"]</MudTableSortLabel></MudTh>
@@ -222,7 +223,6 @@
     private bool _canImport;
     private bool _canExport;
     private bool _loading;
-    private MudTable<UserModel> _table = default!;
     protected override async Task OnInitializedAsync()
     {
         _userManager = ScopedServices.GetRequiredService<UserManager<ApplicationUser>>();
@@ -291,7 +291,10 @@
                     IsActive = x.IsActive,
                     IsLive = x.IsLive,
                     PhoneNumber = x.PhoneNumber,
+                    Department = x.Department,
+                    Designation = x.Designation,
                     Site = x.Site,
+                    SiteId= x.SiteId,
                     UserId = x.Id,
                     UserName = x.UserName,
                     LockoutEnd = x.LockoutEnd,
@@ -315,6 +318,9 @@
             var applicationUser = new ApplicationUser()
                 {
                     Site = model.Site,
+                    SiteId = model.SiteId,
+                    Department = model.Department,
+                    Designation = model.Designation,
                     DisplayName = model.DisplayName,
                     UserName = model.UserName,
                     Email = model.Email,
@@ -342,8 +348,11 @@
                         Email = applicationUser.Email,
                         IsActive = applicationUser.IsActive,
                         Site = applicationUser.Site,
+                        SiteId = applicationUser.SiteId,
                         UserId = applicationUser.Id,
                         UserName = applicationUser.UserName,
+                        Department = applicationUser.Department,
+                        Designation = applicationUser.Designation,
                         PhoneNumber = applicationUser.PhoneNumber
 
                     });
@@ -359,17 +368,21 @@
     private async Task OnEdit(UserModel item)
     {
         var user = await _userManager.FindByIdAsync(item.UserId);
+        var userName = user.UserName;
         var roles = await _userManager.GetRolesAsync(user);
         var model = new UserFormModel()
             {
                 Id = item.UserId,
                 Site = item.Site,
+                SiteId=item.SiteId,
                 DisplayName = item.DisplayName,
                 UserName = item.UserName,
                 Email = item.Email,
                 PhoneNumber = item.PhoneNumber,
                 ProfilePictureDataUrl = item.Avatar,
                 IsActive = item.IsActive,
+                Department = item.Department,
+                Designation = item.Designation,
                 AssignRoles = roles.ToArray()
             };
         var parameters = new DialogParameters { ["model"] = model };
@@ -378,16 +391,22 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+            if(userName.ToLower()=="administrator" || userName.ToLower()=="demo")
+            {
+                Snackbar.Add($"Can't edit administrator", MudBlazor.Severity.Error);
+                return;
+            }
             var state = await AuthState;
-
             item.Email = model.Email;
             item.PhoneNumber = model.PhoneNumber;
             item.Avatar = model.ProfilePictureDataUrl;
             item.DisplayName = model.DisplayName;
             item.Site = model.Site;
+            item.SiteId = model.SiteId;
             item.UserName = model.UserName;
             item.IsActive = model.IsActive;
+            item.Department = model.Department;
+            item.Designation = model.Designation;
             if(state.User.GetUserId()==item.UserId){
                 await _profileService.Update(item);
             }
@@ -398,8 +417,11 @@
             user.ProfilePictureDataUrl = model.ProfilePictureDataUrl;
             user.DisplayName = model.DisplayName;
             user.Site = model.Site;
+            user.SiteId = model.SiteId;
             user.UserName = model.UserName;
             user.IsActive = model.IsActive;
+            user.Department = model.Department;
+            user.Designation = model.Designation;
             var identityResult = await _userManager.UpdateAsync(user);
             if (identityResult.Succeeded)
             {
@@ -426,9 +448,14 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+            
             var deleteId = SelectItems.Select(x => x.UserId).ToArray();
             var deleteusers = await _userManager.Users.Where(x => deleteId.Contains(x.Id)).ToListAsync();
+            if(deleteusers.Any(x=>x.UserName.ToLower()=="administrator" || x.UserName.ToLower()=="demo"))
+            {
+                Snackbar.Add($"Can't delete administrator", MudBlazor.Severity.Error);
+                return;
+            }
             foreach (var deleteuser in deleteusers)
             {
                 await _userManager.DeleteAsync(deleteuser);
@@ -437,6 +464,7 @@
             {
                 UserList.Remove(item);
             }
+            Snackbar.Add($"{L["Delete successfully"]}", MudBlazor.Severity.Info);
         }
     }
 
@@ -467,7 +495,11 @@
         var result = await dialog.Result;
         if (!result.Cancelled)
         {
-            return;
+            if(item.UserName.ToLower()=="administrator" || item.UserName.ToLower()=="demo")
+            {
+                Snackbar.Add($"Can't reset password", MudBlazor.Severity.Error);
+                return;
+            }
             var user = await _userManager.FindByIdAsync(item.UserId);
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var state = await _userManager.ResetPasswordAsync(user, token, model.Password);

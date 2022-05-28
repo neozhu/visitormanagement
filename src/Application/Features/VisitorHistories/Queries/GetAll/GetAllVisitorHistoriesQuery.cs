@@ -9,7 +9,7 @@ namespace CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries
     public class GetAllVisitorHistoriesQuery : IRequest<IEnumerable<VisitorHistoryDto>>, ICacheable
     {
        public string CacheKey => VisitorHistoryCacheKey.GetAllCacheKey;
-       public MemoryCacheEntryOptions? Options => new MemoryCacheEntryOptions().AddExpirationToken(new CancellationChangeToken(VisitorHistoryCacheKey.SharedExpiryTokenSource.Token));
+    public MemoryCacheEntryOptions? Options => VisitorHistoryCacheKey.MemoryCacheEntryOptions;
     }
     
     public class GetAllVisitorHistoriesQueryHandler :

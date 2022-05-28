@@ -177,4 +177,7 @@
   <data name="Search..." xml:space="preserve">
     <value>搜索</value>
   </data>
+  <data name="Site Configuration" xml:space="preserve">
+    <value>站点配置</value>
+  </data>
 </root>
