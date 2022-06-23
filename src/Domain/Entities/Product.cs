@@ -13,4 +13,6 @@ public class Product : AuditableEntity
     public decimal Price { get; set; }
     public IList<string>? Pictures { get; set; }
 
+    //public string Tag { get; set; }
+
 }
