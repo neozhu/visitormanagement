@@ -64,7 +64,7 @@
                 }
                 image.Mutate(i => i.AutoOrient()
                                    .Resize(Convert.ToInt32((image.Width*scale)), 0)
-                                   .Resize(new ResizeOptions() { Mode = ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(350, 350) }));
+                                   .Resize(new ResizeOptions() { Mode = SixLabors.ImageSharp.Processing.ResizeMode.Crop, Size = new SixLabors.ImageSharp.Size(350, 350) }));
                 image.Save(outStream, format);
                 var filename = file.Name;
                 var fi = new FileInfo(filename);

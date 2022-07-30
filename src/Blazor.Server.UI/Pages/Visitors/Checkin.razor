@@ -188,7 +188,7 @@
             var height = image.Height + 50;
             var resizeOptions = new ResizeOptions()
                 {
-                    Mode = ResizeMode.Pad,
+                    Mode = SixLabors.ImageSharp.Processing.ResizeMode.Pad,
                     PadColor = SixLabors.ImageSharp.Color.Black,
                     Size = new SixLabors.ImageSharp.Size(width, height),
                     Position = AnchorPositionMode.TopLeft
