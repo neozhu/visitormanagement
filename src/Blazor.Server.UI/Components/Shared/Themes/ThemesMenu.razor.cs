@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using Blazor.Server.UI.Models;
 using Blazor.Server.UI.Services;
 
 namespace Blazor.Server.UI.Components.Shared.Themes;
@@ -15,19 +12,21 @@ public partial class ThemesMenu
     
     private readonly List<string> _primaryColors = new()
     {
-        "#283593",
+        "#2d4275",
         Colors.Green.Default,
-        Colors.Blue.Default,
+        "#0576b9",
         Colors.BlueGrey.Default,
-        Colors.Purple.Default,
+        "#6f42c1",
         Colors.Orange.Default,
         Colors.Red.Default
     };
 
     [EditorRequired] [Parameter] public bool ThemingDrawerOpen { get; set; }
     [EditorRequired] [Parameter] public EventCallback<bool> ThemingDrawerOpenChanged { get; set; }
-    [EditorRequired] [Parameter] public UserPreferences UserPreferences { get; set; }
+    [EditorRequired] [Parameter] public UserPreferences UserPreferences { get; set; }=new();
     [EditorRequired] [Parameter] public EventCallback<UserPreferences> UserPreferencesChanged { get; set; }
+    
+    [Inject] private LayoutService LayoutService { get; set; } = default!;
 
     [Parameter]
     public double Radius { get; set; }
