@@ -1,5 +1,7 @@
 @page "/system/logs"
+@using Blazor.Server.UI.Pages.SystemManagement.Components
 @using CleanArchitecture.Blazor.Application.Features.Logs.DTOs
+@using CleanArchitecture.Blazor.Application.Features.Logs.Queries.ChatData
 @using CleanArchitecture.Blazor.Application.Logs.Queries.PaginationQuery
 
 @attribute [Authorize(Policy = Permissions.Logs.View)]
@@ -12,15 +14,15 @@
 </style>
 <ErrorBoundary>
     <ChildContent>
+        <Blazor.Server.UI.Pages.SystemManagement.Components.LogsLineCharts @ref="chartcomponent" Data="_data"></Blazor.Server.UI.Pages.SystemManagement.Components.LogsLineCharts>
         <MudTable ServerData="@(new Func<TableState, Task<TableData<LogDto>>>(ServerReload))"
                   FixedHeader="true"
                   FixedFooter="true"
                   Virtualize="true"
-                  RowsPerPage="25"
                   Height="calc(100vh - 265px)"
                   Style="min-height:700px"
                   Loading="@_loading"
-                  SortLabel="@L["Sort By"]"
+                  SortLabel="@L["Order By"]"
                   Hover="true" @ref="_table">
             <ToolBarContent>
                 <div class="justify-start pt-3">
@@ -37,19 +39,23 @@
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
             </ToolBarContent>
             <ColGroup>
-                <col style="width:110px;" />
-                <col style="width:180px;" />
-                <col style="width:90px;" />
+                <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                    <col style="width:110px;" />
+                    <col style="width:120px;" />
+                    <col style="width:90px;" />
+                    <col />
+                    <col />
+                </MudHidden>
             </ColGroup>
             <HeaderContent>
-                <MudTh Style="width:190px">@L["Actions"]</MudTh>
+                <MudTh>@L["Action"]</MudTh>
                 <MudTh><MudTableSortLabel SortLabel="TimeStamp" T="LogDto">@L["Time Stamp"]</MudTableSortLabel></MudTh>
                 <MudTh Style="text-align:center"><MudTableSortLabel SortLabel="Level" T="LogDto">@L["Level"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="Message" T="LogDto">@L["Message"]</MudTableSortLabel></MudTh>
                 <MudTh><MudTableSortLabel SortLabel="UserName" T="LogDto">@L["User Name"]</MudTableSortLabel></MudTh>
             </HeaderContent>
             <RowTemplate>
-                <MudTd DataLabel="@L["Actions"]">
+                <MudTd DataLabel="@L["Action"]">
                     <MudButton Variant="Variant.Filled" DisableElevation="true"
                                OnClick="@(() => OnShowDetail(context))"
                                StartIcon="@(context.ShowDetails == true?Icons.Material.Filled.Close:Icons.Material.Filled.Add)" IconColor="Color.Secondary" Size="Size.Small"
@@ -58,26 +64,34 @@
                     </MudButton>
                 </MudTd>
                 <MudTd DataLabel="@L["Time Stamp"]">
-                    @context.TimeStamp
+                    @context.TimeStamp.ToString("yyyy-MM-dd HH:mm:ss")
                 </MudTd>
                 <MudTd Style="text-align:center" DataLabel="@L["Level"]">
-                    @switch(context.Level) {
-                         case "Trace" : <MudChip Label="true">@context.Level</MudChip>
+                    @switch (context.Level)
+                    {
+                        case "Trace":
+                            <MudChip Label="true">@context.Level</MudChip>
                             break;
-                        case "Debug" : <MudChip Label="true">@context.Level</MudChip>
+                        case "Debug":
+                            <MudChip Label="true">@context.Level</MudChip>
                             break;
-                        case "Information": <MudChip Color="Color.Info" Label="true">@context.Level</MudChip>
+                        case "Information":
+                            <MudChip Color="Color.Info" Label="true">@context.Level</MudChip>
                             break;
-                        case "Warning": <MudChip Color="Color.Warning" Label="true">@context.Level</MudChip>
+                        case "Warning":
+                            <MudChip Color="Color.Warning" Label="true">@context.Level</MudChip>
                             break;
-                       case "Error": <MudChip Color="Color.Error" Label="true">@context.Level</MudChip>
+                        case "Error":
+                            <MudChip Color="Color.Error" Label="true">@context.Level</MudChip>
                             break;
-                        case "Critical":  <MudChip Color="Color.Error" Label="true">@context.Level</MudChip>
+                        case "Critical":
+                            <MudChip Color="Color.Error" Label="true">@context.Level</MudChip>
                             break;
-                       default: <MudChip Label="true">@context.Level</MudChip>
-                         break;
+                        default:
+                            <MudChip Label="true">@context.Level</MudChip>
+                            break;
                     }
-                       
+
                 </MudTd>
                 <MudTd DataLabel="@L["Message"]">
                     @context.Message
@@ -114,24 +128,27 @@
                 }
             </ChildRowContent>
             <NoRecordsContent>
-                <MudText>@L["No matching records found"]</MudText>
+                <MudText>@L["NOMACHING"]</MudText>
             </NoRecordsContent>
             <LoadingContent>
-                <MudText>@L["Loading.."].</MudText>
+                <MudText>@L["Loading"]</MudText>
             </LoadingContent>
             <PagerContent>
-                <MudTablePager  />
+                <MudTablePager />
             </PagerContent>
         </MudTable>
     </ChildContent>
     <ErrorContent>
-        <CustomError Exception="context" ></CustomError>
+        <CustomError Exception="context"></CustomError>
     </ErrorContent>
 </ErrorBoundary>
 @code {
+    private LogsLineCharts? chartcomponent;
     public string Title { get; private set; } = "Logs";
     private string _searchString = string.Empty;
     private MudTable<LogDto> _table = default!;
+
+    public List<LogTimeLineDto> _data { get; set; } = new();
     private bool _loading;
     [Inject]
     private ISender _mediator { get; set; } = default!;
@@ -140,19 +157,30 @@
     {
         Title = L["Logs"];
     }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _data = await _mediator.Send(new LogsTimeLineChatDataQuery());
+            StateHasChanged();
+            await chartcomponent!.RenderChart();
+          
+        }
+    }
 
     private async Task<TableData<LogDto>> ServerReload(TableState state)
     {
-        try{
+        try
+        {
             _loading = true;
             var request = new LogsWithPaginationQuery()
-            {
-                Keyword = _searchString,
-                OrderBy = string.IsNullOrEmpty(state.SortLabel) ? "Id" : state.SortLabel,
-                SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString()),
-                PageNumber = state.Page + 1,
-                PageSize = state.PageSize
-            };
+                {
+                    Keyword = _searchString,
+                    OrderBy = string.IsNullOrEmpty(state.SortLabel) ? "Id" : state.SortLabel,
+                    SortDirection = (state.SortDirection == SortDirection.None ? SortDirection.Descending.ToString() : state.SortDirection.ToString()),
+                    PageNumber = state.Page + 1,
+                    PageSize = state.PageSize
+                };
             var result = await _mediator.Send(request).ConfigureAwait(false);
             return new TableData<LogDto>() { TotalItems = result.TotalItems, Items = result.Items };
         }

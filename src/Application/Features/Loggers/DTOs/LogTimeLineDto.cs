@@ -3,10 +3,10 @@
 
 namespace CleanArchitecture.Blazor.Application.Features.Logs.DTOs;
 
-public class LogLevelChartDto
+
+public class LogTimeLineDto
 {
-    public string level { get; set; }
+    public DateTime dt { get; set; }
     public int total { get; set; }
+
 }
-
-
