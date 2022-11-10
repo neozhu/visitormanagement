@@ -19,7 +19,7 @@ public class CachingBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest,
         _cache = cache;
         _logger = logger;
     }
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (!string.IsNullOrEmpty(request.CacheKey))
         {

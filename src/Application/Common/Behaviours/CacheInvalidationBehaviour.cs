@@ -6,7 +6,7 @@ using LazyCache;
 namespace CleanArchitecture.Blazor.Application.Common.Behaviours;
 
 public class CacheInvalidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
-      where TRequest : IRequest<TResponse>,ICacheInvalidator 
+      where TRequest : IRequest<TResponse>, ICacheInvalidator
 {
     private readonly IAppCache _cache;
     private readonly ILogger<CacheInvalidationBehaviour<TRequest, TResponse>> _logger;
@@ -19,7 +19,7 @@ public class CacheInvalidationBehaviour<TRequest, TResponse> : IPipelineBehavior
         _cache = cache;
         _logger = logger;
     }
-    public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         _logger.LogTrace("{Name} cache expire with {@Request}.", nameof(request), request);
         var response = await next();
