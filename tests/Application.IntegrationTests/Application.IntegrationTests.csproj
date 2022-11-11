@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>CleanArchitecture.Blazor.Application.IntegrationTests</RootNamespace>
     <AssemblyName>CleanArchitecture.Blazor.Application.IntegrationTests</AssemblyName>
     

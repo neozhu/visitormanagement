@@ -42,8 +42,7 @@ public static class DependencyInjection
         services.AddTransient<IDomainEventService, DomainEventService>();
 
         services
-            .AddDefaultIdentity<ApplicationUser>()
-            .AddRoles<ApplicationRole>()
+            .AddIdentity<ApplicationUser, ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
        

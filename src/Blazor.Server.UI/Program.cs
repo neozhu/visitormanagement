@@ -29,7 +29,7 @@ builder.Host.UseSerilog((context, configuration) =>
           .Enrich.WithClientAgent()
           .WriteTo.Console()
     );
-builder.Services.AddMudBlazorDialog();
+builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor(
     options =>
     {
@@ -49,6 +49,7 @@ builder.Services.AddServerSideBlazor(
     options.MaximumReceiveMessageSize = 32 * 1024;
     options.StreamBufferCapacity = 10;
 });
+builder.Services.AddMudBlazorDialog();
 builder.Services.AddHotKeys();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(config =>
