@@ -58,7 +58,7 @@ builder.Services.AddServerSideBlazor(
     options.StreamBufferCapacity = 10;
 });
 builder.Services.AddMudBlazorDialog();
-builder.Services.AddHotKeys();
+builder.Services.AddHotKeys2();
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddMudServices(config =>
 {

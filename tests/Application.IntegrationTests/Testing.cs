@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
 using Respawn;
+using Respawn.Graph;
 using System;
 using System.IO;
 using System.Linq;
@@ -23,11 +24,12 @@ public class Testing
 {
     private static IConfigurationRoot _configuration;
     private static IServiceScopeFactory _scopeFactory;
-    private static Checkpoint _checkpoint;
+    private static Respawner _checkpoint;
     private static string _currentUserId;
+    private static string _currentTenantId;
 
     [OneTimeSetUp]
-    public void RunBeforeAnyTests()
+    public async void RunBeforeAnyTests()
     {
         var builder = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -60,15 +62,14 @@ public class Testing
         services.Remove(currentUserServiceDescriptor);
 
         // Register testing version
-        services.AddTransient(provider =>
-            Mock.Of<ICurrentUserService>(s =>  s.UserId().Result == _currentUserId));
+
 
         _scopeFactory = services.BuildServiceProvider().GetService<IServiceScopeFactory>();
 
-        _checkpoint = new Checkpoint
+        _checkpoint = await Respawner.CreateAsync(_configuration.GetConnectionString("DefaultConnection"), new RespawnerOptions
         {
-            TablesToIgnore = new[] { "__EFMigrationsHistory" }
-        };
+            TablesToIgnore = new Table[] { "__EFMigrationsHistory" }
+        });
 
         EnsureDatabase();
     }
@@ -137,8 +138,9 @@ public class Testing
 
     public static async Task ResetState()
     {
-        await _checkpoint.Reset(_configuration.GetConnectionString("DefaultConnection"));
+        await _checkpoint.ResetAsync(_configuration.GetConnectionString("DefaultConnection"));
         _currentUserId = null;
+        _currentTenantId = null;
     }
 
     public static async Task<TEntity> FindAsync<TEntity>(params object[] keyValues)
@@ -171,6 +173,13 @@ public class Testing
 
         return await context.Set<TEntity>().CountAsync();
     }
+
+    public static IPicklistService CreatePicklistService()
+    {
+        var scope = _scopeFactory.CreateScope();
+        return scope.ServiceProvider.GetRequiredService<IPicklistService>();
+    }
+    
 
     [OneTimeTearDown]
     public void RunAfterAnyTests()

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Localization;
 using System.Data;
 using ClosedXML.Excel;
 
+
 namespace CleanArchitecture.Blazor.Infrastructure.Services;
 
 public class ExcelService : IExcelService
@@ -51,7 +52,7 @@ public class ExcelService : IExcelService
     }
 
     public async Task<byte[]> ExportAsync<TData>(IEnumerable<TData> data
-        , Dictionary<string, Func<TData, object>> mappers
+        , Dictionary<string, Func<TData, object?>> mappers
         , string sheetName = "Sheet1")
     {
         using (var workbook = new XLWorkbook())
@@ -87,7 +88,16 @@ public class ExcelService : IExcelService
 
                 foreach (var value in result)
                 {
-                    ws.Cell(rowIndex, colIndex++).Value = value;
+                    if (value is null)
+                    {
+                        ws.Cell(rowIndex, colIndex++).SetValue(Blank.Value);
+                    }
+                    else
+                    {
+                        ws.Cell(rowIndex, colIndex++).SetValue(value.ToString());
+
+                    }
+
                 }
             }
             using (var stream = new MemoryStream())
@@ -100,7 +110,7 @@ public class ExcelService : IExcelService
         }
     }
 
-    public async Task<IResult<IEnumerable<TEntity>>> ImportAsync<TEntity>(byte[] data, Dictionary<string, Func<DataRow, TEntity, object>> mappers, string sheetName = "Sheet1")
+    public async Task<IResult<IEnumerable<TEntity>>> ImportAsync<TEntity>(byte[] data, Dictionary<string, Func<DataRow, TEntity, object?>> mappers, string sheetName = "Sheet1")
     {
 
         using (var workbook = new XLWorkbook(new MemoryStream(data)))
@@ -138,7 +148,7 @@ public class ExcelService : IExcelService
                 try
                 {
                     DataRow datarow = dt.Rows.Add();
-                    var item = (TEntity)Activator.CreateInstance(typeof(TEntity));
+                    var item = (TEntity?)Activator.CreateInstance(typeof(TEntity)) ?? throw new NullReferenceException($"{nameof(TEntity)}");
                     foreach (IXLCell cell in row.Cells())
                     {
                         if (cell.DataType == XLDataType.DateTime)

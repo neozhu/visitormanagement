@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Blazor.Server.UI.Components.Shared;
 using Blazor.Server.UI.Models;
-using Toolbelt.Blazor.HotKeys;
 using Microsoft.AspNetCore.Components.Authorization;
 using CleanArchitecture.Blazor.Application.Common.Models;
 using CleanArchitecture.Blazor.Infrastructure.Services.Authentication;
@@ -11,6 +10,7 @@ using CleanArchitecture.Blazor.Application.Common.Interfaces.Identity;
 using CleanArchitecture.Blazor.Infrastructure.Hubs;
 using CleanArchitecture.Blazor.Infrastructure.Extensions;
 using Blazor.Server.UI.Services;
+using Toolbelt.Blazor.HotKeys2;
 
 namespace Blazor.Server.UI.Shared;
 
@@ -60,7 +60,7 @@ public partial class MainLayout: IDisposable
         LayoutService.MajorUpdateOccured += LayoutServiceOnMajorUpdateOccured;
         _profileService.OnChange += _profileService_OnChange;
         _hotKeysContext = _hotKeys.CreateContext()
-            .Add(ModKeys.Meta, Keys.K, OpenCommandPalette, "Open command palette.");
+            .Add(ModCode.Ctrl, Code.K, async ()=>await OpenCommandPalette(), "Open command palette.");
         _authenticationStateProvider.AuthenticationStateChanged += _authenticationStateProvider_AuthenticationStateChanged;
         var state = await _authState;
         if (state.User.Identity != null && state.User.Identity.IsAuthenticated)

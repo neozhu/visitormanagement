@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 
 using CleanArchitecture.Blazor.Application.Common.Behaviours;
+using CleanArchitecture.Blazor.Application.Common.PublishStrategies;
 using CleanArchitecture.Blazor.Application.Features.ApprovalHistories.EventHandlers;
 using CleanArchitecture.Blazor.Application.Services.MessageService;
 using CleanArchitecture.Blazor.Application.Services.Picklist;
+using MediatR.Pipeline;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -16,7 +18,18 @@ public static class DependencyInjection
     {
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(config => {
+            config.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+            config.NotificationPublisher = new ParallelNoWaitPublisher();
+            config.AddOpenBehavior(typeof(RequestExceptionProcessorBehavior<,>));
+            config.AddOpenBehavior(typeof(ValidationBehaviour<,>));
+            config.AddOpenBehavior(typeof(AuthorizationBehaviour<,>));
+            config.AddOpenBehavior(typeof(CachingBehaviour<,>));
+            config.AddOpenBehavior(typeof(CacheInvalidationBehaviour<,>));
+            config.AddOpenBehavior(typeof(PerformanceBehaviour<,>));
+            config.AddOpenBehavior(typeof(UnhandledExceptionBehaviour<,>));
+
+        });
         foreach (var assembly in new[] { Assembly.GetExecutingAssembly() }) // add all your assemblies here
         {
             foreach (var createdEvent in assembly
@@ -27,12 +40,7 @@ public static class DependencyInjection
                 services.AddTransient(typeof(INotificationHandler<>).MakeGenericType(createdEvent), typeof(ApprovalHistoryCreatedEventHandler));
             }
         }
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CachingBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CacheInvalidationBehaviour<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
+
         services.AddLazyCache();
         services.AddScoped<SMSMessageService>();
         services.AddScoped<MailMessageService>();
