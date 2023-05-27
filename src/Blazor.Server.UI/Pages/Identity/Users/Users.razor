@@ -105,7 +105,7 @@
                 <MudSpacer />
                 @if (_canSearch)
                 {
-                    <MudTextField @bind-Value="_searchString" Immediate="true" FullWidth="false"
+                    <MudTextField @bind-Value="_searchString" Immediate="false" FullWidth="false"
                               Placeholder="@(L["Search for user name"])" Adornment="Adornment.End"
                               AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0 mb-3">
                     </MudTextField>
@@ -130,11 +130,9 @@
                 <MudTd DataLabel="@L["Actions"]">
                     @if (_canEdit || _canManageRoles || _canRestPassword || _canActive)
                     {
-                        <MudMenu Label="@L["Actions"]" Variant="Variant.Filled" DisableElevation="true"
-                             Size="Size.Small"
+                        <MudMenu Label="@L["Actions"]" Variant="Variant.Filled" DisableElevation="true"  Size="Size.Small"
                              Dense="true"
-                             EndIcon="@Icons.Filled.KeyboardArrowDown" IconColor="Color.Info" Direction="Direction.Left"
-                             OffsetX="true">
+                             EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Info" >
                             @if (_canEdit)
                             {
                                 <MudMenuItem OnClick=@(()=>OnEdit(context))>@L["Edit"]</MudMenuItem>
