@@ -44,7 +44,7 @@
         imgstream.Position = 0;
         using (var outStream = new MemoryStream())
         {
-            using (var image = Image.Load(imgstream, out IImageFormat format))
+            using (var image = Image.Load(imgstream))
             {
                 var scale = 0m;
                 if (image.Width > 900)
@@ -61,14 +61,14 @@
                 }
                 image.Mutate(
                    i => i.AutoOrient().Resize(Convert.ToInt32((image.Width*scale)), 0));
-                image.Save(outStream, format);
+                image.Save(outStream, new SixLabors.ImageSharp.Formats.Jpeg.JpegEncoder());
                 var filename = file.Name;
                 var fi = new FileInfo(filename);
                 var ext = fi.Extension;
                 var result = await _uploadService.UploadAsync(new UploadRequest()
                     {
                         Data = outStream.ToArray(),
-                        FileName = Tag + "_" + Guid.NewGuid().ToString() + ext,
+                        FileName = Tag + "_" + Guid.NewGuid().ToString() + ".jpg",
                         Extension = ext,
                         Folder = PassCode,
                         UploadType = UploadType.VisitorPricture

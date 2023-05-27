@@ -5,6 +5,7 @@ using CleanArchitecture.Blazor.Application.Common.Models;
 using CleanArchitecture.Blazor.Infrastructure.Services.Authentication;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
+using Color = MudBlazor.Color;
 
 namespace Blazor.Server.UI.Components.Shared;
 
@@ -26,7 +27,7 @@ public partial class UserMenu
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall, FullWidth = true };
         var dialog = DialogService.Show<LogoutConfirmation>(L["Logout"], parameters, options);
         var result = await dialog.Result;
-        if (!result.Cancelled)
+        if (!result.Canceled)
         {
             await _authenticationService.Logout();
             await JS.InvokeVoidAsync("externalLogout");
