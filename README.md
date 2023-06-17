@@ -8,7 +8,7 @@ helps in managing visitors visiting the institutions for various reasons. It all
 ![image](https://user-images.githubusercontent.com/1549611/183225025-96295845-add4-4b00-89d5-8d280a08c192.png)
 
 # Process flow
-![Dashboard](doc/2.jpg)
+![Dashboard](doc/flow_chart.jpg)
 
 ## Development Enviroment
 - Microsoft Visual Studio Community 2022 (64-bit) 
