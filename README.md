@@ -3,7 +3,7 @@ helps in managing visitors visiting the institutions for various reasons. It all
 
 # Live Demo
 + http://106.52.105.140:6103/ (Please use IP access if you are from outside China)
-+ [https://visitor.dotnet6.cn/](https://visitor.blazorserver.com/)
++ [https://visitor.blazorserver.com/](https://visitor.blazorserver.com/)
 
 ![image](https://user-images.githubusercontent.com/1549611/183225025-96295845-add4-4b00-89d5-8d280a08c192.png)
 
