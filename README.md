@@ -22,6 +22,9 @@ helps in managing visitors visiting the institutions for various reasons. It all
 - Manage User secrets to save password 
     - cmd: dotnet user-secrets init 
     - cmd: dotnet user-secrets -p Blazor.Server.UI.csproj set "Kestrel:Certificates:Development:Password" "Password@123"
+## Docker compose run
+- cd project directory eg:  .\vsitormanagement
+    - cmd: docker-compose -f ./docker-compose.yml up --build -V --remove-orphans
 
 
 # Features of Visitor Pass Management System Software
