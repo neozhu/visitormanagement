@@ -35,6 +35,7 @@ Remember to install LocalDB in visual studio 2022.
 ## Docker compose run
 - cd project directory eg:  .\vsitormanagement
     - cmd: `docker-compose -f ./docker-compose.yml up --build -V --remove-orphans`
+<img width="1146" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/e5c81536-dcf1-46b0-9d4a-fa61ca5009ac">
 
 
 # Features of Visitor Pass Management System Software
