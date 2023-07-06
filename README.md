@@ -15,6 +15,7 @@ helps in managing visitors visiting the institutions for various reasons. It all
 - SQL Server Express 2019 LocalDB
 - Docker
 - .NET 7.0
+  
 Remember to install LocalDB in visual studio 2022.
 <img width="965" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/61394d05-bc64-4b8b-80cc-c8d563839f8e">
 
