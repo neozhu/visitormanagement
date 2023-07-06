@@ -6,22 +6,11 @@
     <ProjectGuid>6bd2ec46-fa8f-44f3-af33-903bbb347116</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>webui</DockerServiceName>
+    <DockerServiceName>visitormanagerment</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.yml" />
     <None Include="docker-compose.override.yml" />
     <None Include=".dockerignore" />
-    <None Include="src\Blazor.Server.UI\Pages\Identity\Users\Users.razor.cs" />
-    <None Include="src\Blazor.Server.UI\Shared\UserLoginState.razor.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="launchSettings.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="launchSettings.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="launchSettings.json" />
   </ItemGroup>
 </Project>

@@ -191,7 +191,7 @@ public class ApplicationDbContext : IdentityDbContext<
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=VisitorManagement;Trusted_Connection=True;MultipleActiveResultSets=true;");
+            optionsBuilder.UseSqlServer("Server=sqldb;Database=visitormanagementdb;User=sa;Password=Password@123;MultipleActiveResultSets=true");
         }
     }
 }

@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  dashboard:
-    image: visitormanagement/dashboard
+  visitormanagement:
+    image: visitormanagement/web
     build:
       context: .
       dockerfile: src/Blazor.Server.UI/Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - UseInMemoryDatabase=true
-      - ConnectionStrings__DefaultConnection=Server=sqldb;Database=BlazorDashboardDb;User=sa;Password=Password@123;MultipleActiveResultSets=true
+      - UseInMemoryDatabase=false
+      - ConnectionStrings__DefaultConnection=Server=sqldb;Database=visitormanagementdb;User=sa;Password=Password@123;MultipleActiveResultSets=true;Trust Server Certificate=False;Encrypt=false;
       - ASPNETCORE_URLS=https://+:443;http://+:80
-      #- ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
-      #- ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/Blazor.Server.UI.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Password@123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/root/.aspnet/https/Blazor.Server.UI.pfx
     volumes:
      - ${APPDATA}\microsoft\UserSecrets\:/root/.microsoft/usersecrets:ro
      - ~/.aspnet/https:/root/.aspnet/https:ro
