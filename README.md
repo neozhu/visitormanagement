@@ -19,9 +19,10 @@ Remember to install LocalDB in visual studio 2022.
 <img width="965" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/61394d05-bc64-4b8b-80cc-c8d563839f8e">
 
 ## Debugging and Running in Visual Studio 2022
-1. Clone the repo. cmd: 'git clone https://github.com/neozhu/visitormanagement.git'
+1. Clone the repo. cmd: `git clone https://github.com/neozhu/visitormanagement.git`
 2. Go to the project folder and open `CleanArchitecture.Blazor.sln`
 3. Debugging it.
+4. 
 <img width="1519" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/1fc491e3-af40-4ca8-9b5c-6ab70050112f">
 
 
