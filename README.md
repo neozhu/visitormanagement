@@ -10,10 +10,20 @@ helps in managing visitors visiting the institutions for various reasons. It all
 # Process flow
 ![Dashboard](doc/flow_chart.jpg)
 
-## Development Enviroment
-- Microsoft Visual Studio Community 2022 (64-bit) 
+## Development Environment
+- Microsoft Visual Studio Community 2022 (64-bit)
+- SQL Server Express 2019 LocalDB
 - Docker
-- .NET 6.0
+- .NET 7.0
+Remember to install LocalDB in visual studio 2022.
+<img width="965" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/61394d05-bc64-4b8b-80cc-c8d563839f8e">
+
+## Debugging and Running in Visual Studio 2022
+1. Clone the repo. cmd: 'git clone https://github.com/neozhu/visitormanagement.git'
+2. Go to the project folder and open `CleanArchitecture.Blazor.sln`
+3. Debugging it.
+<img width="1519" alt="image" src="https://github.com/neozhu/visitormanagement/assets/1549611/1fc491e3-af40-4ca8-9b5c-6ab70050112f">
+
 
 ## Docker compose https deployment
 - Create self-signed development certificates for the project
