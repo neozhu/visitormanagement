@@ -34,7 +34,6 @@ builder.Host.UseSerilog((context, configuration) =>
                 .MinimumLevel.Override("BlazorState.Pipeline.RenderSubscriptions.RenderSubscriptionsPostProcessor", LogEventLevel.Error)
           .Enrich.FromLogContext()
           .Enrich.WithClientIp()
-          .Enrich.WithClientAgent()
           .WriteTo.Console()
     );
 builder.Services.AddRazorPages();
