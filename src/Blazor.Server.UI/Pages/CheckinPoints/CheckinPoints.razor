@@ -1,6 +1,7 @@
 @page "/visitor/checkinPoints"
 
 
+@using CleanArchitecture.Blazor.Application.Features.CheckinPoints.Caching;
 @using CleanArchitecture.Blazor.Application.Features.CheckinPoints.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.CheckinPoints.DTOs
 @using CleanArchitecture.Blazor.Application.Features.CheckinPoints.Queries.Pagination
@@ -274,6 +275,7 @@
     {
         _selectedItems = new();
         _searchString = string.Empty;
+        CheckinPointCacheKey.Refresh();
         await _table.ReloadServerData();
     }
     private async Task OnCreate()

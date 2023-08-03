@@ -1,6 +1,7 @@
 @page "/visitor/visitors"
 
 
+@using CleanArchitecture.Blazor.Application.Features.Visitors.Caching;
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Approve
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Create
 @using CleanArchitecture.Blazor.Application.Features.Visitors.Commands.Delete
@@ -372,6 +373,7 @@
     {
         _selectedItems = new();
         _searchString = string.Empty;
+        VisitorCacheKey.Refresh();
         await _table.ReloadServerData();
     }
     private async Task OnShowPreview(VisitorDto dto)

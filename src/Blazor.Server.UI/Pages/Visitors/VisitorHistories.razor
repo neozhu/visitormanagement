@@ -1,6 +1,7 @@
 @page "/visitor/visitorhistories"
 
 
+@using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Caching;
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Commands.Delete
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.DTOs
 @using CleanArchitecture.Blazor.Application.Features.VisitorHistories.Queries.Pagination
@@ -159,6 +160,7 @@
     {
         _selectedItems = new();
         _searchString = string.Empty;
+        VisitorHistoryCacheKey.Refresh();
         await _table.ReloadServerData();
     }
      private async Task OnDeleteChecked()
