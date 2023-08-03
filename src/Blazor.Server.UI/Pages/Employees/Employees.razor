@@ -1,5 +1,6 @@
 @page "/visitor/employees"
 
+@using CleanArchitecture.Blazor.Application.Features.Employees.Caching;
 @using CleanArchitecture.Blazor.Application.Features.KeyValues.DTOs
 @using CleanArchitecture.Blazor.Application.Features.KeyValues.Queries.ByName
 @using CleanArchitecture.Blazor.Application.Features.Employees.Commands.Delete
@@ -278,6 +279,7 @@
     {
         _selectedItems = new();
         _searchString = string.Empty;
+        EmployeeCacheKey.Refresh();
         await _table.ReloadServerData();
     }
     private async Task OnCreate()
