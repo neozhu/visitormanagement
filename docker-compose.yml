@@ -5,7 +5,7 @@ services:
     image: visitormanagement/web
     build:
       context: .
-      dockerfile: src/Blazor.Server.UI/Dockerfile
+      dockerfile: ./Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - UseInMemoryDatabase=false
