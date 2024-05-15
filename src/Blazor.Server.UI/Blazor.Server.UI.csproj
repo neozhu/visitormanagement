@@ -12,16 +12,16 @@
 
     <ItemGroup>
         <PackageReference Include="Blazor-Analytics" Version="3.12.0" />
-        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+        <PackageReference Include="Blazored.LocalStorage" Version="4.4.0" />
       <PackageReference Include="Blazor-ApexCharts" Version="0.9.21-beta" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.9">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-       <PackageReference Include="MudBlazor" Version="6.8.0" />
+       <PackageReference Include="MudBlazor" Version="6.9.0" />
 
        <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
-        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta15" />
+        <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
         <PackageReference Include="Toolbelt.Blazor.HotKeys2" Version="1.0.0" />
 
 
