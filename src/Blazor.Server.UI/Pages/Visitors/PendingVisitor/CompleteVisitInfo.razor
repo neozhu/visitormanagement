@@ -30,7 +30,7 @@
     <ErrorBoundary>
         <ChildContent>
             <MudPaper Class="pa-4 mt-4">
-                <MudTextField @bind-Value="_searchString" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearch" />
+                <MudTextField @bind-Value="_searchString" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="OnSearch" />
             </MudPaper>
             <MudPaper Class="pa-4 mt-4">
                 @if (_notfound)

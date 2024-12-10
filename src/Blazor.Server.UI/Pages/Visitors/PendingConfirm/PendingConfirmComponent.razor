@@ -7,7 +7,7 @@
 @inherits MudComponentBase
 <div class="d-flex flex-column">
     <MudPaper Class="pa-4 mt-4">
-        <MudTextField @bind-Value="_keyword" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="SearchPendingVisitor" />
+        <MudTextField @bind-Value="_keyword" Label="@L["Search for visitor's email or phone number."]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="SearchPendingVisitor" />
     </MudPaper>
     <MudPaper Class="mt-4">
         <MudList Clickable="true">
@@ -27,7 +27,7 @@
                         <div class="d-flex flex-column flex-grow-0">
                             <MudButton Class="ml-auto"
                                        Disabled="@(item._processing)"
-                                       EndIcon="@Icons.Filled.FactCheck"
+                                       EndIcon="@Icons.Material.Filled.FactCheck"
                                        Variant="Variant.Text"
                                        OnClick="@(()=>Confirm(item))"
                                        Color="MudBlazor.Color.Primary">

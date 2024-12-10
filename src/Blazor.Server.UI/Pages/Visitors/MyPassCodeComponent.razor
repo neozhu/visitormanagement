@@ -8,7 +8,7 @@
 @inherits MudComponentBase
 <div class="d-flex flex-column justify-center align-content-center">
     <MudPaper Class="align-self-center pa-4 mt-4" Elevation="10" Style="width:320px">
-        <MudTextField @bind-Value="Keyword" Label="@L["Search my QRcode"]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="SearchQRcode" />
+        <MudTextField @bind-Value="Keyword" Label="@L["Search my QRcode"]" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Search" AdornmentColor="MudBlazor.Color.Primary" OnAdornmentClick="SearchQRcode" />
     </MudPaper>
     <MudCard Class="align-self-center mt-4"  Elevation="10" Style="width:320px">
         @if (_notfound)
