@@ -7,13 +7,12 @@
 helps in managing visitors visiting the institutions for various reasons. It allows visitors to check-in digitally to eliminate the tedious registeration and other paperwork. Additionally, it also keeps a track of every individual inside the campus and their timings. Institutions has guards who enter their detail in some notebooks to keep a log which are practically impossible to reconcile. It is really unpleasent and hectic for visitor to stand at the gate and give details about the visit. To ease the process of registeration, Entry-In, Entry-Out, time tracking and logging the history, this VMS can be of great use!! 
 
 # Live Demo
-+ http://106.52.105.140:6103/ (Please use IP access if you are from outside China)
-+ [https://visitor.blazorserver.com/](https://visitor.blazorserver.com/)
++ [https://visitor-training.blazorserver.com/](https://visitor-training.blazorserver.com/)
 
 ![image](https://user-images.githubusercontent.com/1549611/183225025-96295845-add4-4b00-89d5-8d280a08c192.png)
 
 # Process flow
-![Dashboard](doc/flow_chart.jpg)
+
 
 ## Development Environment
 - Microsoft Visual Studio Community 2022 (64-bit)
